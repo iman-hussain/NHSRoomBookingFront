@@ -1,15 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Header from '/Layout/Header';
-import Footer from '/Layout/Footer';
-
+import Header from './Layout/Header';
+import Footer from './Layout/Footer';
+import HomePage from './Pages/Homepage';
 
 function App() {
   return (
     <div className="App">
       <Header/>
-      
+      <HomePage />
       <Footer/>
     </div>
   );
