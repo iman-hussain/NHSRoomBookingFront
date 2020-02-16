@@ -1,0 +1,17 @@
+.blockMenu {
+    background-color: #005eb8;
+    color: whitesmoke;
+    height: 2.5em;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.blockMenu header {
+    margin: 0;
+}
+
+.blockMenu .vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}

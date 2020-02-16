@@ -28,6 +28,27 @@
   color: #61dafb;
 }
 
+nav {
+  background-color: #005eb8!important;
+}
+
+.title{
+  color: white;
+  background-color: #005eb8;
+  padding: 5px 5px;
+  margin-bottom: 1em;
+}
+
+.menu {
+  background-color: #f0f4f5;
+  padding: 1em;
+}
+
+.line {
+  height: 2px;
+  background-color: #ffeb3b;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
