@@ -118,14 +118,18 @@ class App extends Component {
         days = 29;
       }
       var day = r * 7;
+      var prevDays = DaysInMonth[this.state.month-1];
+      var nextDays = (new Date(this.state.year, this.state.month+1)).getDay();
       return <tr key={r}>{[...Array(7)].map((e, i) => {
         day+=1;
-        return <th key={i}>{day <= days + firstDay && day > firstDay ? day - firstDay : ''}
-        <p>{day <= days + firstDay ? "Content" : ''}</p>
+        return <th key={i}>{day <= days + firstDay && day > firstDay ? day - firstDay : day >= days + firstDay ? i+1 - nextDays : (prevDays-firstDay+1)+i}
+        <p>{day <= days + firstDay ? "Content" : "Content"}</p>
         </th>
       })}</tr>
     })
   }
+
+  /*Get Previous Month Amount*/
 
   render(){
     return(
