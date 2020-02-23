@@ -5,6 +5,107 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"];
 let DaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
+var CLIENT_ID = '918654715325-45up7aj6ab0cohqestspdi2p9e0a4uam.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyBahaMZOI8jFnjLC9SPgLBJqwxNt37vSQk';
+// Array of API discovery doc URLs for APIs used by the quickstart
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+
+/**
+ *  On load, called to load the auth2 library and API client library.
+*/
+function handleClientLoad() {
+  window.gapi.load('client:auth2', initClient);
+}
+
+/**
+ *  Initializes the API client library and sets up sign-in state
+ *  listeners.
+ */
+function initClient() {
+  window.gapi.client.init({
+    apiKey: API_KEY,
+    clientId: CLIENT_ID,
+    discoveryDocs: DISCOVERY_DOCS,
+    scope: SCOPES
+  }).then(function () {
+    //console.log(window.gapi);
+    // Listen for sign-in state changes.
+    let isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+    // Handle the initial sign-in state.
+    updateSigninStatus(isSignedIn);
+
+
+  }, function (error) {
+    console.log(JSON.stringify(error, null, 2));
+    this.appendPre(JSON.stringify(error, null, 2));
+  });
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+  if (isSignedIn) {
+    listUpcomingEvents();
+  } else {
+    calendarEvents = [];
+  }
+}
+
+var calendarEvents = [];
+/**
+ * Print the summary and start datetime/date of the next ten events in
+ * the authorized user's calendar. If no events are found an
+ * appropriate message is printed.
+ */
+function listUpcomingEvents() {
+  console.log("Listing Events")
+  window.gapi.client.calendar.events.list({
+    'calendarId': 'primary',
+    'timeMin': (new Date()).toISOString(),
+    'showDeleted': false,
+    'singleEvents': true,
+    'maxResults': 10,
+    'orderBy': 'startTime'
+  }).then(function (response) {
+    var events = response.result.items;
+    if (events.length > 0) {
+      for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        var when = event.start.dateTime;
+        if (!when) {
+          when = event.start.date;
+        }
+        calendarEvents.push([event.summary, event.start.date]);
+      }
+    } else {
+      //return.
+    }
+  });
+}
+
+// Lists the events.
+function List() {
+  /*return calendarEvents.map((data,i) => {
+    return (
+        <li key={i}>{data}</li>
+    )
+  })*/
+
+  return calendarEvents.map(event => {
+    return <ul>
+      {event.map(info => {
+        return <li key={info}>{info}</li>
+      })}
+    </ul>
+  })
+}
+
 class App extends Component {
 
   constructor(props) {
@@ -16,18 +117,56 @@ class App extends Component {
       calendarRows: 5,
       dates: [],
       content: [],
+      events: [],
+      signedIn: false,
     };
     // Bind Functions to button press.
     this.nextMonth = this.nextMonth.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
+    this.handleAuthClick = this.handleAuthClick.bind(this)
+    this.handleSignoutClick = this.handleSignoutClick.bind(this)
+    
   }
 
   //Functions Called On Load
   componentDidMount(){
+    window.gapi.load("client:auth2", () => {
+      window.gapi.client.init({
+        clientId:
+          CLIENT_ID,
+        scope: SCOPES
+      });
+    });
+    handleClientLoad();
+    this.timerID = setInterval(
+      () => this.tick(),
+      5000
+    );
     this.currentYear()
     this.currentMonth()
     this.checkLeapYear()
     this.calendarRows()
+  }
+
+  // Refresh the components state (needed!!!)
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  /**
+   *  Sign in the user upon button click.
+   */
+  handleAuthClick(event) {
+    window.gapi.auth2.getAuthInstance().signIn();
+  }
+
+  /**
+   *  Sign out the user upon button click.
+   */
+  handleSignoutClick(event) {
+    window.gapi.auth2.getAuthInstance().signOut();
   }
 
   //Used on button press to load in the next month
@@ -136,10 +275,13 @@ class App extends Component {
     })
   }
 
-  /*Get Previous Month Amount*/
-
+  state = { events: calendarEvents }
   render(){
     return(
+      <div>
+        <button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</button>
+        <button id="authorize_button" onClick={this.handleAuthClick}>Authorize</button>
+        <List />
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -165,6 +307,7 @@ class App extends Component {
           {this.calendarContent()}
         </tbody>
       </Table>
+      </div>
     );
   }
 }
