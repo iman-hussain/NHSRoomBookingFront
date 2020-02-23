@@ -2,33 +2,24 @@ import React from 'react';
 import './App.css';
 import Header from './Layout/Header.js';
 import Footer from './Layout/Footer.js';
-import Block from './components/blocks.js';
-import MyCalendar from './Pages/Calendar/Calendar.js';
-import {Container, Row} from 'react-bootstrap';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Login from './Pages/LogIn';
+import HomePage from './Pages/Homepage';
 
 
 function App() {
   return (
     <div className="App">
-      <Header/>
-      <div className="line"></div>
-      <div class="title">
-        <h4>Calendar</h4>
-      </div>
-      <Container>
-        <Row className="justify-content-center">
-          <MyCalendar/>
-        </Row>
-      </Container>
-      <hr></hr>
-      <Container className="menu">
-          <h5>Room Booking Services</h5>
-          <Block title="Book a Room"></Block>
-          <Block title="View Meeting"></Block>
-          <Block title="Another Link"></Block>
-      </Container>
+      <Router>
+        <Header/>
+        <div className="line"></div>
+          <div>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/login" exact component={Login} />
+          </div>
 
-      <Footer/>
+        <Footer/>
+      </Router>
     </div>
   );
 }

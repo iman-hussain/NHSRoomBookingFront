@@ -4,19 +4,13 @@ import React from 'react';
 class Footer extends React.Component {
     render() {
       return (
-        <Navbar variant="dark justify-content-between">
+        <Navbar className="footer" variant="dark justify-content-between">
             <ul>
               <li>
-                <a href="#pablo">Home</a>
+                <a href="/">Home</a>
               </li>
               <li>
-                <a href="#pablo">Company</a>
-              </li>
-              <li>
-                <a href="#pablo">Portfolio</a>
-              </li>
-              <li>
-                <a href="#pablo">Blog</a>
+                <a href="/login">Log In</a>
               </li>
             </ul>
         </Navbar>
