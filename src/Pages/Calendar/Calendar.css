@@ -1,0 +1,27 @@
+.Calendar{
+    width: 100vw;
+    text-align: center;
+}
+
+.Previous{
+    position: absolute;
+    left: 10vw;
+}
+
+.Next{
+    position: absolute;
+    right: 10vw;
+}
+
+
+tr {
+    width: 100vw;
+}
+
+th {
+    width: 100px;
+}
+
+#monthTitle {
+    text-align: center;
+}
