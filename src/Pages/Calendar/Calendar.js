@@ -98,12 +98,23 @@ function List() {
   })*/
 
   return calendarEvents.map(event => {
-    return <ul>
+    return <ul key={event}>
       {event.map(info => {
         return <li key={info}>{info}</li>
       })}
     </ul>
   })
+}
+
+/*
+TODO - Pass in a date, loop through calendarEvents[i][1] if date = calendarEvents[i][1] return calendarEvents[i][0]
+ */
+function CheckDay(d){
+   for(var i=0; i<calendarEvents.length; i++){
+      if({d}.d===calendarEvents[i][1]){
+        return <p>{calendarEvents[i][0]}</p>
+      }
+   }
 }
 
 class App extends Component {
@@ -257,7 +268,6 @@ class App extends Component {
         days = 29;
       }
       var day = r * 7;
-
       var prevDays = 0;
       if(this.state.month-1 === -1){
         prevDays = DaysInMonth[0];
@@ -269,38 +279,38 @@ class App extends Component {
       return <tr key={r}>{[...Array(7)].map((e, i) => {
         day+=1;
         return <th key={i}>{day <= days + firstDay && day > firstDay ? day - firstDay : day >= days + firstDay ? i+1 - nextDays : (prevDays-firstDay+1)+i}
-        <p>{day <= days + firstDay ? "Content" : "Content"}</p>
+        {CheckDay(new Date(this.state.year, day >= days + firstDay ? this.state.month+1 : this.state.month, day <= days + firstDay && day > firstDay ? day - firstDay : day >= days + firstDay ? i+1 - nextDays : (prevDays-firstDay+1)+1).toISOString().split('T')[0])}
         </th>
       })}</tr>
     })
   }
-
+//<p>{day <= days + firstDay ? "Content" : "Content"}</p>
   state = { events: calendarEvents }
   render(){
     return(
-      <div>
+      <div className="Calendar">
         <button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</button>
         <button id="authorize_button" onClick={this.handleAuthClick}>Authorize</button>
         <List />
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th colSpan="7">
-              <button onClick={this.previousMonth}>Previous</button>
-              Calendar - {Months[this.state.month]} - {this.state.year}.
-              <button onClick={this.nextMonth}>Next</button>
+              <button onClick={this.previousMonth}>P</button>
+              {Months[this.state.month]} - {this.state.year}.
+              <button onClick={this.nextMonth}>N</button>
             </th>
           </tr>
         </thead>
         <thead>
           <tr>
-            <th>Sunday</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thur</th>
+            <th>Fri</th>
+            <th>Sat</th>
           </tr>
         </thead>
         <tbody>
