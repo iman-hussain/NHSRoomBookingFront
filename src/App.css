@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+  position: relative;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -27,6 +28,39 @@
 .App-link {
   color: #61dafb;
 }
+
+nav {
+  background-color: #005eb8!important;
+}
+
+.title{
+  color: white;
+  background-color: #005eb8;
+  padding: 5px 5px;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.menu {
+  background-color: #f0f4f5;
+  padding: 1em;
+}
+
+.line {
+  height: 2px;
+  background-color: #ffeb3b;
+}
+
+.footer {
+  position:fixed!important;
+  left:0px;
+  bottom:0px;
+  width:100%;
+}
+
+.footer a {
+  color: white;
+} 
 
 @keyframes App-logo-spin {
   from {
