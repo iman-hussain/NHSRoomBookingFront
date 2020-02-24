@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./Calendar.css";
 
 const Months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"];
 let DaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -24,6 +25,7 @@ function handleClientLoad() {
  *  Initializes the API client library and sets up sign-in state
  *  listeners.
  */
+var isSignedIn = false;
 function initClient() {
   window.gapi.client.init({
     apiKey: API_KEY,
@@ -31,9 +33,8 @@ function initClient() {
     discoveryDocs: DISCOVERY_DOCS,
     scope: SCOPES
   }).then(function () {
-    //console.log(window.gapi);
     // Listen for sign-in state changes.
-    let isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+    isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
     // Handle the initial sign-in state.
     updateSigninStatus(isSignedIn);
@@ -64,7 +65,6 @@ var calendarEvents = [];
  * appropriate message is printed.
  */
 function listUpcomingEvents() {
-  console.log("Listing Events")
   window.gapi.client.calendar.events.list({
     'calendarId': 'primary',
     'timeMin': (new Date()).toISOString(),
@@ -251,9 +251,9 @@ class App extends Component {
   calendarRows(){
     var firstDay = (new Date(this.state.year, this.state.month)).getDay()
     let date = new Date(this.state.year, this.state.month), m = date.getMonth();
-    console.log("First Day: " + firstDay)
-    console.log("Month: " + m)
-    console.log("Days in Month: " + DaysInMonth[m])
+    //console.log("First Day: " + firstDay)
+    //console.log("Month: " + m)
+    //console.log("Days in Month: " + DaysInMonth[m])
     this.setState({
       calendarRows: (firstDay === 5 && DaysInMonth[m] >= 30) || (firstDay === 6 && DaysInMonth[m] > 29) ? 6 : 5
     });
@@ -284,21 +284,22 @@ class App extends Component {
       })}</tr>
     })
   }
-//<p>{day <= days + firstDay ? "Content" : "Content"}</p>
+
   state = { events: calendarEvents }
   render(){
     return(
       <div className="Calendar">
-        <button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</button>
-        <button id="authorize_button" onClick={this.handleAuthClick}>Authorize</button>
+        {isSignedIn 
+        ?<button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</button>
+        :<button id="authorize_button" onClick={this.handleAuthClick}>Authorize</button>}
         <List />
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th colSpan="7">
-              <button onClick={this.previousMonth}>P</button>
+              <button className="Previous" onClick={this.previousMonth}>Prev</button>
               {Months[this.state.month]} - {this.state.year}.
-              <button onClick={this.nextMonth}>N</button>
+              <button className="Next" onClick={this.nextMonth}>Next</button>
             </th>
           </tr>
         </thead>
