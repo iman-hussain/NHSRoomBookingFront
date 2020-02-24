@@ -1,16 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-
-function Header() {
-    return(
-        <div>
-            Header
-        </div>
-    );
-}
-
-export default Header;
-=======
 import Navbar from "react-bootstrap/Navbar";
 import {Form, Container, Button} from "react-bootstrap";
 import { Link  } from "react-router-dom";
@@ -43,4 +31,3 @@ class Header extends React.Component {
   }
 
   export default Header;
->>>>>>> origin/simpleCalendar

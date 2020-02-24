@@ -1,22 +1,14 @@
 import React from 'react';
-<<<<<<< HEAD
-import Calendar from './Calendar/Calendar';
-
+import Block from '../components/blocks';
+import MyCalendar from './Calendar/Calendar';
+import {Container, Row} from 'react-bootstrap';
 /*
 TODO: Show Calander - RoomBooking - Meeting
 */
-=======
-import Block from '../components/blocks';
-import MyCalendar from './Calendar/Calendar.js';
-import {Container, Row} from 'react-bootstrap';
->>>>>>> origin/simpleCalendar
 
 function HomePage() {
     return (
         <div>
-<<<<<<< HEAD
-           <Calendar/>
-=======
             <div class="title">
                 <h4>Calendar</h4>
             </div>
@@ -32,7 +24,6 @@ function HomePage() {
                 <Block title="View Meeting"></Block>
                 <Block title="Another Link"></Block>
             </Container>
->>>>>>> origin/simpleCalendar
         </div>
     );
 }
