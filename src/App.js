@@ -5,6 +5,7 @@ import Footer from './Layout/Footer.js';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from './Pages/LogIn';
 import HomePage from './Pages/Homepage';
+import RoomBooking from './Pages/RoomBooking/RoomBooking';
 
 
 function App() {
@@ -12,12 +13,15 @@ function App() {
     <div className="App">
       <Router>
         <Header/>
-        <div className="line"></div>
-          <div>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/login" exact component={Login} />
-          </div>
+        <div className="yellowLine"></div>
+        
+        <div>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/roomBooking" exact component={RoomBooking} />
+        </div>
 
+        <div className="footerSpace"></div>
         <Footer/>
       </Router>
     </div>

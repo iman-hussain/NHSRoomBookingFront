@@ -44,9 +44,10 @@ nav {
 .menu {
   background-color: #f0f4f5;
   padding: 1em;
+  text-align: center;
 }
 
-.line {
+.yellowLine {
   height: 2px;
   background-color: #ffeb3b;
 }
@@ -61,6 +62,10 @@ nav {
 .footer a {
   color: white;
 } 
+
+.footerSpace{
+  height: 10vh;
+}
 
 @keyframes App-logo-spin {
   from {

@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import {Form, Container, Button} from "react-bootstrap";
-import { Link  } from "react-router-dom";
 import logo from "../assets/img/nhsRoomBookingLogo.png";
 
 class Header extends React.Component {
@@ -20,8 +19,8 @@ class Header extends React.Component {
             </Navbar.Brand>
             <Form inline>
                 {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
-                <Button variant="outline-light">
-                  <Link to="/login" >Log In</Link>
+                <Button href="/login" variant="outline-light">
+                  Log In
                 </Button>
             </Form>
         </Container>
