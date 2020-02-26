@@ -1,5 +1,12 @@
+@font-face {
+    font-family: 'MyWebFont';
+    src:url('/assets/Product-sans/Product_sans_regular_webfont.woff') format('woff'),
+        url('/assets/Product-sans/ProductSansBold.ttf') format('truetype');
+}
+
 .Calendar{
     width: 100vw;
+    padding: 16px;
 }
 
 .Previous{
@@ -12,6 +19,9 @@
     right: 10px;
 }
 
+.Previous, .Next{
+    border: 0px;
+}
 
 tr {
     width: 100vw;
@@ -42,5 +52,25 @@ th {
 }
 
 .List{
+    text-align: left;
+    padding-left: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.Days{
     text-align: center;
+    font-family: 'MyWebFont', Fallback, sans-serif;
+    background: white;
+}
+
+.Day{
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 60px;
+    background: #f5f6ff;
+}
+
+/*Override react-bootstrapt settings using !important*/ 
+th {    
+    border: 1px solid #a0a0a1!important;
 }

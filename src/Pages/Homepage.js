@@ -9,7 +9,7 @@ TODO: Show Calander - RoomBooking - Meeting
 function HomePage() {
     return (
         <div>
-            <div class="title">
+            <div className="title">
                 <h4>Calendar</h4>
             </div>
             <Container>
