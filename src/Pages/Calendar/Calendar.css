@@ -1,16 +1,15 @@
 .Calendar{
-    height: 100vh;
     width: 100vw;
 }
 
 .Previous{
     position: absolute;
-    left: 20vw;
+    left: 10px;
 }
 
 .Next{
     position: absolute;
-    right: 20vw;
+    right: 10px;
 }
 
 
@@ -28,4 +27,20 @@ th {
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
+}
+
+.calendarTitle {
+    padding: 0px;
+    border: 0px;
+    display: inline-block;
+}
+
+.calendarTitleContainer {
+    text-align: center;
+    width: 100%;
+    position: relative;
+}
+
+.List{
+    text-align: center;
 }

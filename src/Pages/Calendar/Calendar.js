@@ -94,8 +94,8 @@ function listUpcomingEvents() {
 function List() {
   return calendarEvents.map((event, i) => {
     return <div key={event}>
-      <span className="circle" style={{background: calendarEvents[i][2]}}></span>
-      <p>{event.join(' - ')}</p>
+      <p><span className="circle" style={{background: calendarEvents[i][2]}}></span>&nbsp;&nbsp;
+      {event.join(' - ')}</p>
     </div>
   })
 }
@@ -292,10 +292,12 @@ class App extends Component {
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
-            <th colSpan="7">
-              <button className="Previous" onClick={this.previousMonth}>Prev</button>
-              {Months[this.state.month]} - {this.state.year}.
-              <button className="Next" onClick={this.nextMonth}>Next</button>
+            <th colSpan="7" className="test">
+              <div className="calendarTitleContainer">
+                <button className="Previous" onClick={this.previousMonth}>Prev</button>
+                <h4 className="calendarTitle">{Months[this.state.month]} - {this.state.year}</h4>
+                <button className="Next" onClick={this.nextMonth}>Next</button>
+              </div>
             </th>
           </tr>
         </thead>
@@ -314,7 +316,9 @@ class App extends Component {
           {this.calendarContent()}
         </tbody>
       </Table>
-      <List />
+      <div className="List">
+        <List />
+      </div>
       </div>
     );
   }
