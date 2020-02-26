@@ -21,3 +21,11 @@ tr {
 th {
     width: 100px;
 }
+
+.circle {
+    width: 15px;
+    height: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}

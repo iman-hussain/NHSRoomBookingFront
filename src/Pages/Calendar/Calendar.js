@@ -81,7 +81,8 @@ function listUpcomingEvents() {
         if (!when) {
           when = event.start.date;
         }
-        calendarEvents.push([event.summary, event.start.date]);
+        var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+        calendarEvents.push([event.summary, event.start.date, randomColor]);
       }
     } else {
       //return.
@@ -91,28 +92,24 @@ function listUpcomingEvents() {
 
 // Lists the events.
 function List() {
-  /*return calendarEvents.map((data,i) => {
-    return (
-        <li key={i}>{data}</li>
-    )
-  })*/
-
-  return calendarEvents.map(event => {
-    return <ul key={event}>
-      {event.map(info => {
-        return <li key={info}>{info}</li>
-      })}
-    </ul>
+  return calendarEvents.map((event, i) => {
+    return <div key={event}>
+      <span className="circle" style={{background: calendarEvents[i][2]}}></span>
+      <p>{event.join(' - ')}</p>
+    </div>
   })
 }
 
 /*
 TODO - Pass in a date, loop through calendarEvents[i][1] if date = calendarEvents[i][1] return calendarEvents[i][0]
  */
+// Show calendar event - <p>{calendarEvents[i][0]}</p>
 function CheckDay(d){
    for(var i=0; i<calendarEvents.length; i++){
       if({d}.d===calendarEvents[i][1]){
-        return <p>{calendarEvents[i][0]}</p>
+        return <div>
+          <span className="circle" style={{background: calendarEvents[i][2]}}></span>
+        </div>
       }
    }
 }
@@ -292,7 +289,6 @@ class App extends Component {
         {isSignedIn 
         ?<button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</button>
         :<button id="authorize_button" onClick={this.handleAuthClick}>Authorize</button>}
-        <List />
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -318,6 +314,7 @@ class App extends Component {
           {this.calendarContent()}
         </tbody>
       </Table>
+      <List />
       </div>
     );
   }
