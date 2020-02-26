@@ -113,6 +113,7 @@ Passes in a date - if the date is in the calendar add a circle to the calendar c
 function CheckDay(d){
    for(var i=0; i<calendarEvents.length; i++){
       if({d}.d===calendarEvents[i][1]){
+        console.log({d}.d)
         return <div>
           <span className="circle" style={{background: calendarEvents[i][2]}}></span>
         </div>
@@ -306,7 +307,8 @@ class App extends Component {
         return <th key={i} className="Day" onClick={this.onSelectedRow.bind(this)}>{day <= days + firstDay && day > firstDay ? day - firstDay 
                 : day >= days + firstDay ? i+1 - nextDays
                 : (prevDays-firstDay+1)+i}
-        {CheckDay(new Date(this.state.year, day >= days + firstDay ? this.state.month+1 
+        {CheckDay(new Date( this.state.year, day >= days + firstDay ? this.state.month+1 
+                          : day - firstDay <= 0 ? this.state.month-1 
                           : this.state.month, day <= days + firstDay && day > firstDay ? day - firstDay 
                           : day >= days + firstDay ? i+1 - nextDays 
                           : (prevDays-firstDay+1)+1).toISOString().split('T')[0])}
