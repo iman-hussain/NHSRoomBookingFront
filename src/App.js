@@ -9,6 +9,7 @@ import RoomBooking from './Pages/RoomBooking/RoomBooking';
 
 
 function App() {
+  
   return (
     <div className="App">
       <Router>
@@ -22,7 +23,7 @@ function App() {
         </div>
 
         <div className="footerSpace"></div>
-        <Footer/>
+        {/* <Footer/> */}
       </Router>
     </div>
   );

@@ -2,6 +2,8 @@ import React from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "./RoomBooking.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 
 class RoomBooking extends React.Component {
     state = {
@@ -16,6 +18,13 @@ class RoomBooking extends React.Component {
 
     render() {
       return (
+        <div>
+        <div className="title">
+            <a href="/" id="backIcon">
+                <h4><FontAwesomeIcon icon={faArrowAltCircleLeft} /></h4>
+            </a>
+            <h4>Create Booking</h4>
+        </div>
         <Container>
             <Form id="createBookingForm">
                 <h2>Facilities available</h2>
@@ -93,6 +102,7 @@ class RoomBooking extends React.Component {
                 </div>
             </Form>
         </Container>
+        </div>
       )
     }
   }

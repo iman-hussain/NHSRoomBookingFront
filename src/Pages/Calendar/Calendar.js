@@ -74,7 +74,7 @@ function updateSigninStatus(isSignedIn) {
 function listUpcomingEvents() {
   window.gapi.client.calendar.events.list({
     'calendarId': 'primary',
-    'timeMin': (new Date()).toISOString(),
+    'timeMin': (new Date(2020,1)).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
     'maxResults': 10,
@@ -100,10 +100,20 @@ function listUpcomingEvents() {
 // Joins the details in each event and display a circle with a randomly generated color.
 function List() {
   return calendarEvents.map((event, i) => {
-    return <div key={event}>
+    return (
+      <tbody key={event}>
+        <tr >
+          <td className="center"><div className="circle" style={{background: calendarEvents[i][2]}}></div></td>
+          <td>{calendarEvents[i][0]}</td>
+          <td>{calendarEvents[i][1]}</td>
+        </tr>        
+      </tbody>
+      
+    /* <div key={event}>
       <p><span className="circle" style={{background: calendarEvents[i][2]}}></span>&nbsp;&nbsp;
       {event.join(' - ')}</p>
-    </div>
+    </div> */
+    )
   })
 }
 
@@ -324,10 +334,12 @@ class App extends Component {
     var cellElements = document.getElementsByClassName("Day");
     for (var i = 0; i < cellElements.length; i++) {
         cellElements[i].style.backgroundColor= "#f5f6ff";
+        cellElements[i].style.color= "black";
         //cellElements[i].style.boxShadow = "inset 0px 0px 0px 0px #b8b6b8";
   
     }
     clickEvent.currentTarget.style.background = "#ef5350";
+    clickEvent.currentTarget.style.color = "white";
     //clickEvent.currentTarget.style.boxShadow = "inset 0px 0px 0px 5px #b8b6b8";
   }
 
@@ -341,6 +353,7 @@ class App extends Component {
     var currentDate = new Date().getDate();
     var cellElements = document.getElementsByClassName("Day");
     cellElements[currentDate + extraDays].style.backgroundColor= "#ef5350";
+    cellElements[currentDate + extraDays].style.color= "white";
   }
 
   state = { events: calendarEvents }
@@ -378,7 +391,17 @@ class App extends Component {
           </tbody>
         </Table>
         <div className="List">
-          <List />
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th className="center">#</th>
+                <th>Event Name</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <List />
+      
+          </Table>
         </div>
       </div> // End Of Calendar
     );
