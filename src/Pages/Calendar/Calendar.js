@@ -74,7 +74,7 @@ function updateSigninStatus(isSignedIn) {
 function listUpcomingEvents() {
   window.gapi.client.calendar.events.list({
     'calendarId': 'primary',
-    'timeMin': (new Date()).toISOString(),
+    'timeMin': (new Date(2020, 1)).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
     'maxResults': 10,
@@ -324,10 +324,13 @@ class App extends Component {
     var cellElements = document.getElementsByClassName("Day");
     for (var i = 0; i < cellElements.length; i++) {
         cellElements[i].style.backgroundColor= "#f5f6ff";
+        cellElements[i].style.color = "black";
         //cellElements[i].style.boxShadow = "inset 0px 0px 0px 0px #b8b6b8";
   
     }
     clickEvent.currentTarget.style.background = "#ef5350";
+    clickEvent.currentTarget.style.color = "white";
+    
     //clickEvent.currentTarget.style.boxShadow = "inset 0px 0px 0px 5px #b8b6b8";
   }
 
@@ -341,6 +344,7 @@ class App extends Component {
     var currentDate = new Date().getDate();
     var cellElements = document.getElementsByClassName("Day");
     cellElements[currentDate + extraDays].style.backgroundColor= "#ef5350";
+    cellElements[currentDate + extraDays].style.color = "white";
   }
 
   state = { events: calendarEvents }
