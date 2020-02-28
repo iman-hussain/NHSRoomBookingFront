@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Calendar.css";
 import {GoogleLogin, events} from '../../components/GoogleLogin.js';
+import MettingList from '../MettingList/MeetingList.js';
+import MeetingList from '../MettingList/MeetingList.js';
 
 // Months used to display the viewed month on the calendar.
 const Months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"];
@@ -287,7 +289,7 @@ class App extends Component {
                 <th>Date</th>
               </tr>
             </thead>
-            <List/>
+            <MeetingList/>
           </Table>
         </div>
       </div> // End Of Calendar
