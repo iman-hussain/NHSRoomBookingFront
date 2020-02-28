@@ -6,96 +6,15 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Calendar.css";
+import {GoogleLogin, events} from '../../components/GoogleLogin.js';
 
 // Months used to display the viewed month on the calendar.
 const Months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"];
 // DaysInMonth used to get how many days are in each month - Future development could remove this using new Date(year, month, 32) - .GetDate()
 let DaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-// My CLIENT_ID and API_KEY from Google Calendar Project - Currently Connected to my Gmail
-var CLIENT_ID = '918654715325-45up7aj6ab0cohqestspdi2p9e0a4uam.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyBahaMZOI8jFnjLC9SPgLBJqwxNt37vSQk';
-
-// Array of API discovery doc URLs for APIs used by the quickstart
-var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-
-// Authorization scopes required by the API; multiple scopes can be included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-
-/**
- *  On load, called to load the auth2 library and API client library.
-*/
-function handleClientLoad() {
-  window.gapi.load('client:auth2', initClient);
-}
-
-/**
- *  Initializes the API client library and sets up sign-in state
- *  listeners.
- */
-var isSignedIn = false;
-function initClient() {
-  window.gapi.client.init({
-    apiKey: API_KEY,
-    clientId: CLIENT_ID,
-    discoveryDocs: DISCOVERY_DOCS,
-    scope: SCOPES
-  }).then(function () {
-    // Listen for sign-in state changes.
-    isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-    // Handle the initial sign-in state.
-    updateSigninStatus(isSignedIn);
-  }, function (error) {
-    console.log(JSON.stringify(error, null, 2));
-    this.appendPre(JSON.stringify(error, null, 2));
-  });
-}
-
 // Used to store events collected from the calendar.
 var calendarEvents = [];
-
-/**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
-function updateSigninStatus(isSignedIn) {
-  if (isSignedIn) {
-    listUpcomingEvents();
-  } else {
-    calendarEvents = [];
-  }
-}
-
-/**
- * Print the summary and start datetime/date of the next ten events in
- * the authorized user's calendar. If no events are found an
- * appropriate message is printed.
- */
-function listUpcomingEvents() {
-  window.gapi.client.calendar.events.list({
-    'calendarId': 'primary',
-    'timeMin': (new Date(2020,1)).toISOString(),
-    'showDeleted': false,
-    'singleEvents': true,
-    'maxResults': 10,
-    'orderBy': 'startTime'
-  }).then(function (response) {
-    var events = response.result.items;
-    if (events.length > 0) {
-      for (var i = 0; i < events.length; i++) {
-        var event = events[i];
-        var when = event.start.dateTime;
-        if (!when) {
-          when = event.start.date;
-        }
-        var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
-        calendarEvents.push([event.summary, event.start.date, randomColor]);
-      }
-    } else {
-      console.log("no events");
-    }
-  });
-}
 
 // Joins the details in each event and display a circle with a randomly generated color.
 function List() {
@@ -108,11 +27,6 @@ function List() {
           <td>{calendarEvents[i][1]}</td>
         </tr>        
       </tbody>
-      
-    /* <div key={event}>
-      <p><span className="circle" style={{background: calendarEvents[i][2]}}></span>&nbsp;&nbsp;
-      {event.join(' - ')}</p>
-    </div> */
     )
   })
 }
@@ -149,22 +63,10 @@ class App extends Component {
     // Bind Functions to button press.
     this.nextMonth = this.nextMonth.bind(this);
     this.previousMonth = this.previousMonth.bind(this);
-    this.handleAuthClick = this.handleAuthClick.bind(this)
-    this.handleSignoutClick = this.handleSignoutClick.bind(this) 
-  }
+    }
 
   //Functions Called On Load
   componentDidMount(){
-    // Initialises client on mounth.
-    window.gapi.load("client:auth2", () => {
-      window.gapi.client.init({
-        clientId:
-          CLIENT_ID,
-        scope: SCOPES
-      });
-    });
-    // Handles the client load
-    handleClientLoad();
     // Start the tick event every 5s - !Used to continously display data in calendar.
     this.timerID = setInterval(
       () => this.tick(),
@@ -175,6 +77,7 @@ class App extends Component {
     this.checkLeapYear() // Sets leapyear on mount
     this.calendarRows() // Sets amount of rows to display on mount
     this.onStartCell()
+    this.setState({events: GoogleLogin.events});
   }
 
   // Refresh the components state !Required!
@@ -182,20 +85,7 @@ class App extends Component {
     this.setState({
       date: new Date()
     });
-  }
-
-  /**
-   *  Sign in the user upon button click.
-   */
-  handleAuthClick(event) {
-    window.gapi.auth2.getAuthInstance().signIn();
-  }
-
-  /**
-   *  Sign out the user upon button click.
-   */
-  handleSignoutClick(event) {
-    window.gapi.auth2.getAuthInstance().signOut();
+    calendarEvents = events;
   }
 
   /*
@@ -360,9 +250,7 @@ class App extends Component {
   render(){
     return(
       <div className="Calendar">
-        {isSignedIn 
-        ?<Button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</Button>
-        :<Button id="authorize_button" onClick={this.handleAuthClick}>Authorize</Button>}
+        <GoogleLogin/>
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
@@ -399,8 +287,7 @@ class App extends Component {
                 <th>Date</th>
               </tr>
             </thead>
-            <List />
-      
+            <List/>
           </Table>
         </div>
       </div> // End Of Calendar
