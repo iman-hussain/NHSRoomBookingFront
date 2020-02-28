@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+import React from 'react';
+=======
 import React from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -41,3 +44,4 @@ function Login() {
     )}
 
 export default Login;
+>>>>>>> origin/simpleCalendar

@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+import React from 'react';
+
+function Footer() {
+    return(
+        <div>
+            Footer
+        </div>
+    );
+}
+=======
 import Navbar from "react-bootstrap/Navbar";
 import React from 'react';
 
@@ -17,5 +28,6 @@ class Footer extends React.Component {
       )
     }
   }
+>>>>>>> origin/simpleCalendar
 
 export default Footer;
