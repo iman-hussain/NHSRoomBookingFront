@@ -38,7 +38,7 @@ Passes in a date - if the date is in the calendar add a circle to the calendar c
 */
 function CheckDay(d){
    for(var i=0; i<calendarEvents.length; i++){
-      if({d}.d===calendarEvents[i][1]){
+      if({d}.d===calendarEvents[i][1].slice(0, 10).replace('T', ' ')){
         console.log({d}.d)
         return <div>
           <span className="circle" style={{background: calendarEvents[i][2]}}></span>

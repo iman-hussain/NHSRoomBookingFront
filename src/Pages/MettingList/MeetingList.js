@@ -16,7 +16,7 @@ function MeetingList() {
         <tr >
           <td className="center"><div className="circle" style={{background: calendarEvents[i][2]}}></div></td>
           <td>{calendarEvents[i][0]}</td>
-          <td>{calendarEvents[i][1]}</td>
+          <td>{calendarEvents[i][1].slice(0, 19).replace('T', ' ')}</td>
         </tr>        
       </tbody>
     )
