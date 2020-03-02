@@ -142,7 +142,12 @@ function listUpcomingEvents() {
           when = event.start.date;
         }
         var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-        calendarEvents.push([event.summary, event.start.date, randomColor]);
+        if(!event.start.dateTime){
+            calendarEvents.push([event.summary, event.start.date, randomColor]);
+        } else {
+            calendarEvents.push([event.summary, event.start.dateTime, randomColor]);
+        }
+        
       }
     } else {
       console.log("no events");
