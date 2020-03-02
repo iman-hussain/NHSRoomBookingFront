@@ -7,7 +7,6 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Calendar.css";
 import {GoogleLogin, events} from '../../components/GoogleLogin.js';
-import MettingList from '../MettingList/MeetingList.js';
 import MeetingList from '../MettingList/MeetingList.js';
 
 // Months used to display the viewed month on the calendar.
@@ -37,14 +36,21 @@ function List() {
 Passes in a date - if the date is in the calendar add a circle to the calendar cell.
 */
 function CheckDay(d){
+  var events = [];
    for(var i=0; i<calendarEvents.length; i++){
       if({d}.d===calendarEvents[i][1].slice(0, 10).replace('T', ' ')){
-        console.log({d}.d)
-        return <div>
-          <span className="circle" style={{background: calendarEvents[i][2]}}></span>
-        </div>
+        events.push(calendarEvents[i][2]);
       }
-   }
+    }
+
+    return (
+      <div>
+        {events.map(function(name, index){
+          return <span className="circle" style={{background: events[index]}}></span>
+        })}
+      </div>
+    )
+
 }
 
 class App extends Component {
