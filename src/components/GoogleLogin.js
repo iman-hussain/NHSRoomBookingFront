@@ -1,3 +1,6 @@
+/*
+  Developed by Liam Penn - 1415065
+*/
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 
@@ -159,6 +162,7 @@ function getEvents() {
   return calendarEvents;
 }
 
+// Exports the calendarEvents obtained by google calendar api.
 export {
   calendarEvents as events
 }

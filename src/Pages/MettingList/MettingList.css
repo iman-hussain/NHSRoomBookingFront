@@ -1,3 +1,10 @@
+/*
+  Developed by Liam Penn - 1415065
+*/
+
+/*
+    Circle class, draws a circle with a grey-ish background color, this is then randomised in javascript
+*/
 .circle {
     width: 15px;
     height: 15px;

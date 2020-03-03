@@ -1,13 +1,15 @@
+/*
+  Developed by Liam Penn - 1415065
+*/
+
 import React from 'react';
 import './MettingList.css';
 import {GoogleLogin, events} from '../../components/GoogleLogin.js';
 
-/*
-TODO - GetCalendarEvents? From GoogleLogin? OR Send into function from Calendar?
-TODO - Style Circle 
-*/
-
 // Joins the details in each event and display a circle with a randomly generated color.
+// calendarEvents[i][0] is the events title
+// calendarEvents[i][1] is the events date or date time
+// calendarEvents[i][2] is the color corresponding to the event, used to visually match events in the calendar with the list.
 function MeetingList() {
   var calendarEvents = events;
   return calendarEvents.map((event, i) => {
