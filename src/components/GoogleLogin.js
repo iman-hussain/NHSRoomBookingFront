@@ -186,7 +186,7 @@ var event = {
     'RRULE:FREQ=DAILY;COUNT=1'
   ],
   'attendees': [
-    //{'email': 'liamcsdev@gmail.com'}
+    {'email': 'liamcsdev@gmail.com'}
   ],
   'reminders': {
     'useDefault': false,
@@ -208,6 +208,7 @@ export const sendEvent = () => {
   });
 }
 
+// Returns the accessible google calendars
 export const getList = () => {
   var request = window.gapi.client.calendar.calendarList.list();
 
