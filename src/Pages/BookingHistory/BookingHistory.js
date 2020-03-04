@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../BookingHistory/BookingHistory.css";
-import { GoogleLogin, events } from '../../components/GoogleLogin.js';
+import { GoogleLogin, events, sendEvent, getList} from '../../components/GoogleLogin.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import {Link} from 'react-router-dom';
@@ -92,7 +92,7 @@ class BookingTable extends Component {
                     </a>
                     <h4>Booking History</h4>
                 </div>
-                <GoogleLogin />
+                <GoogleLogin show={true}/>
                 <div className="HistoryList">
                     <h3>Bookings Today</h3>
                     <Table striped bordered hover>
@@ -128,6 +128,7 @@ class BookingTable extends Component {
                         {PreviousBookings()}
                     </Table>
                 </div>
+                <Button onClick={sendEvent}>Add event</Button>
             </div>
         )
     }

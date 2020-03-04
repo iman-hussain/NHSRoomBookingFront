@@ -12,7 +12,7 @@ var API_KEY = 'AIzaSyBahaMZOI8jFnjLC9SPgLBJqwxNt37vSQk';
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 
 // Authorization scopes required by the API; multiple scopes can be included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+var SCOPES = "https://www.googleapis.com/auth/calendar";
 
 export class GoogleLogin extends Component {
   constructor(props) {
@@ -169,5 +169,53 @@ function getEvents() {
 export {
   calendarEvents as events
 }
+
+var event = {
+  'summary': 'Google I/O 2015',
+  'location': '800 Howard St., San Francisco, CA 94103',
+  'description': 'A chance to hear more about Google\'s developer products.',
+  'start': {
+    'dateTime': '2020-03-5T09:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'end': {
+    'dateTime': '2020-03-06T17:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'recurrence': [
+    'RRULE:FREQ=DAILY;COUNT=2'
+  ],
+  'attendees': [
+    //{'email': 'liamcsdev@gmail.com'}
+  ],
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'email', 'minutes': 24 * 60},
+      {'method': 'popup', 'minutes': 10}
+    ]
+  }
+};
+
+export const sendEvent = () => {
+  var request = window.gapi.client.calendar.events.insert({
+    'calendarId': "liamparsons2013@gmail.com",
+    'resource': event
+  });
+  
+  request.execute(function(event) {
+    console.log('Event created: ' + event.summary);
+  });
+}
+
+export const getList = () => {
+  var request = window.gapi.client.calendar.calendarList.list();
+
+  request.execute(function(resp){
+          var calendars = resp.items[0].id;
+          console.log(calendars);
+  });
+}
+
 
 //export default GoogleLogin;
