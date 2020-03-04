@@ -179,11 +179,11 @@ var event = {
     'timeZone': 'America/Los_Angeles'
   },
   'end': {
-    'dateTime': '2020-03-06T17:00:00-07:00',
+    'dateTime': '2020-03-05T17:00:00-07:00',
     'timeZone': 'America/Los_Angeles'
   },
   'recurrence': [
-    'RRULE:FREQ=DAILY;COUNT=2'
+    'RRULE:FREQ=DAILY;COUNT=1'
   ],
   'attendees': [
     //{'email': 'liamcsdev@gmail.com'}
@@ -199,7 +199,7 @@ var event = {
 
 export const sendEvent = () => {
   var request = window.gapi.client.calendar.events.insert({
-    'calendarId': "liamparsons2013@gmail.com",
+    'calendarId': "primary",
     'resource': event
   });
   
