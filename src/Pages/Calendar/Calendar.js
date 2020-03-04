@@ -259,12 +259,12 @@ class App extends Component {
   */
   onStartCell() {
     var firstDay = (new Date(this.state.year, this.state.month)).getDay(); // Get FirstDay
-    console.log(firstDay);
-    var extraDays = 5;
-    var currentDate = new Date().getDate();
+    console.log("First day: " + firstDay);
+    var currentDate = new Date().getDate() - 1;
+    console.log("Current Date:" + currentDate);
     var cellElements = document.getElementsByClassName("Day");
-    cellElements[currentDate + extraDays].style.backgroundColor= "#ef5350";
-    cellElements[currentDate + extraDays].style.color= "white";
+    cellElements[currentDate].style.backgroundColor= "#ef5350";
+    cellElements[currentDate].style.color= "white";
   }
 
   state = { events: calendarEvents }
