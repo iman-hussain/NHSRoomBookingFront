@@ -61,12 +61,15 @@ export class GoogleLogin extends Component {
   }
 
   renderAuthButton() {
-    if (this.state.isSignedIn === null) {
-      return <div>I dont know if I am signed in</div>;
-    } else if (this.state.isSignedIn) {
-      return <Button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</Button>;
-    } else {
-      return <Button id="authorize_button" onClick={this.handleAuthClick}>Authorize</Button>;
+    // Added this.props.show which is used to determine when to show the sign in - sign out buttons
+    if(this.props.show){
+      if (this.state.isSignedIn === null) {
+        return <div>I dont know if I am signed in</div>;
+      } else if (this.state.isSignedIn) {
+        return <Button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</Button>;
+      } else {
+        return <Button id="authorize_button" onClick={this.handleAuthClick}>Authorize</Button>;
+      }
     }
   }
 
@@ -133,7 +136,7 @@ function listUpcomingEvents() {
     'timeMin': (new Date(2020, 1)).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
-    'maxResults': 10,
+    'maxResults': 15,
     'orderBy': 'startTime'
   }).then(function (response) {
     var events = response.result.items;

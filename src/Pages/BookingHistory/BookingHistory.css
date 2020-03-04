@@ -1,0 +1,23 @@
+.Event {
+    width: 40%;
+}
+
+.Date {
+    width: 40%;
+}
+
+.Details{
+    width: 20%;
+}
+
+tr {
+    width: 100vw;
+}
+
+th {
+    width: 100px;
+}
+
+.HistoryList {
+    padding: 16px;
+}

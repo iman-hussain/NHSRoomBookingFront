@@ -7,7 +7,7 @@ import Login from './Pages/LogIn';
 import HomePage from './Pages/Homepage';
 import RoomBooking from './Pages/RoomBooking/RoomBooking';
 import SearchRoom from './Pages/SearchBooking/SearchRoom';
-
+import BookingTable from './Pages/BookingHistory/BookingHistory';
 
 function App() {
   
@@ -22,6 +22,7 @@ function App() {
           <Route path="/login" exact component={Login} />
           <Route path="/roomBooking" exact component={RoomBooking} />
           <Route path="/searchRoom" exact component={SearchRoom} />
+          <Route path="/bookingHistory" exact component={BookingTable} />
         </div>
 
         <div className="footerSpace"></div>
