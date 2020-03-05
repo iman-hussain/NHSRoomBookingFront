@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import "./Login.css";
 import Title from "../components/title";
+import {GoogleLogin} from "../components/GoogleLogin.js";
 
 function Login() {
     return (
@@ -27,6 +28,10 @@ function Login() {
                     <Button variant="primary float-right" type="submit" >
                         Submit
                     </Button>
+                    <Form.Group controlId="formGoogleLogin">
+                        <Form.Label>Google Email</Form.Label>
+                    </Form.Group>
+                    <GoogleLogin show={true}/>
                 </form>
             </Container>
         </div>
