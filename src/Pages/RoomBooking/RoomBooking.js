@@ -12,7 +12,7 @@ class RoomBooking extends React.Component {
         super(props)
     }
     state = {
-        startDate: new Date()
+        startDate: new Date(),
       };
     
     handleChange = date => {
@@ -20,6 +20,7 @@ class RoomBooking extends React.Component {
         startDate: date
     });
     };
+
 
     render() {
       return (
@@ -111,5 +112,6 @@ class RoomBooking extends React.Component {
       )
     }
   }
+
 
 export default RoomBooking;

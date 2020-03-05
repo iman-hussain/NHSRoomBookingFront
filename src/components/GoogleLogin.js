@@ -1,3 +1,6 @@
+/*
+  Developed by Liam Penn - 1415065
+*/
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 
@@ -9,7 +12,7 @@ var API_KEY = 'AIzaSyBahaMZOI8jFnjLC9SPgLBJqwxNt37vSQk';
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 
 // Authorization scopes required by the API; multiple scopes can be included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+var SCOPES = "https://www.googleapis.com/auth/calendar";
 
 export class GoogleLogin extends Component {
   constructor(props) {
@@ -58,12 +61,15 @@ export class GoogleLogin extends Component {
   }
 
   renderAuthButton() {
-    if (this.state.isSignedIn === null) {
-      return <div>I dont know if I am signed in</div>;
-    } else if (this.state.isSignedIn) {
-      return <Button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</Button>;
-    } else {
-      return <Button id="authorize_button" onClick={this.handleAuthClick}>Authorize</Button>;
+    // Added this.props.show which is used to determine when to show the sign in - sign out buttons
+    if(this.props.show){
+      if (this.state.isSignedIn === null) {
+        return <div>I dont know if I am signed in</div>;
+      } else if (this.state.isSignedIn) {
+        return <Button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</Button>;
+      } else {
+        return <Button id="authorize_button" onClick={this.handleAuthClick}>Authorize</Button>;
+      }
     }
   }
 
@@ -130,7 +136,7 @@ function listUpcomingEvents() {
     'timeMin': (new Date(2020, 1)).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
-    'maxResults': 10,
+    'maxResults': 15,
     'orderBy': 'startTime'
   }).then(function (response) {
     var events = response.result.items;
@@ -159,8 +165,58 @@ function getEvents() {
   return calendarEvents;
 }
 
+// Exports the calendarEvents obtained by google calendar api.
 export {
   calendarEvents as events
 }
+
+var event = {
+  'summary': 'Google I/O 2015',
+  'location': '800 Howard St., San Francisco, CA 94103',
+  'description': 'A chance to hear more about Google\'s developer products.',
+  'start': {
+    'dateTime': '2020-03-5T09:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'end': {
+    'dateTime': '2020-03-05T17:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'recurrence': [
+    'RRULE:FREQ=DAILY;COUNT=1'
+  ],
+  'attendees': [
+    {'email': 'liamcsdev@gmail.com'}
+  ],
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'email', 'minutes': 24 * 60},
+      {'method': 'popup', 'minutes': 10}
+    ]
+  }
+};
+
+export const sendEvent = () => {
+  var request = window.gapi.client.calendar.events.insert({
+    'calendarId': "primary",
+    'resource': event
+  });
+  
+  request.execute(function(event) {
+    console.log('Event created: ' + event.summary);
+  });
+}
+
+// Returns the accessible google calendars
+export const getList = () => {
+  var request = window.gapi.client.calendar.calendarList.list();
+
+  request.execute(function(resp){
+          var calendars = resp.items[0].id;
+          console.log(calendars);
+  });
+}
+
 
 //export default GoogleLogin;

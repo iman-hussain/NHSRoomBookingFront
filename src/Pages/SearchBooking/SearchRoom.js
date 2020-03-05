@@ -59,7 +59,11 @@ class SearchRoom extends React.Component {
     }
 
     state = {
-        startDate: new Date()
+        startDate: new Date(),
+        toiletCheckBox: false,
+        cateringCheckBox: false,
+        accessableCheckBox: false,
+        parkingCheckBox: false,
       };
     
     handleChange = date => {
@@ -67,6 +71,14 @@ class SearchRoom extends React.Component {
             startDate: date
         });
     };
+
+    createBooking(){
+        console.log(this.state.toiletCheckBox);
+    }
+
+    handleCheckChange(evt) {
+        this.setState({ toiletCheckBox : evt.target.checked});
+    }
 
     render() {
       return (
@@ -134,7 +146,7 @@ class SearchRoom extends React.Component {
                     <Col sm={10}>
                         <Row>
                         <Col>
-                            <Form.Check type="switch" id="toilet-switch" label="Toilets"/>
+                            <Form.Check type="switch" id="toilet-switch" label="Toilets"  checked={this.state.toiletCheckBox} onChange={this.handleCheckChange}/>
                         </Col>
                         <Col>
                             <Form.Check type="switch" id="catering-switch" label="Catering"/>
@@ -148,7 +160,7 @@ class SearchRoom extends React.Component {
                         </Row>
                     </Col>
                     <Col className="pt-1" sm={2}>
-                        <Button variant="primary">Search</Button>
+                        <Button variant="primary"  onClick={this.createBooking}>Search</Button>
                     </Col>
                 </Row>
                 </Form.Group>

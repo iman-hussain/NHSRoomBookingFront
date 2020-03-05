@@ -1,19 +1,23 @@
-@font-face {
-    font-family: 'MyWebFont';
-    src:url('/assets/Product-sans/Product_sans_regular_webfont.woff') format('woff'),
-        url('/assets/Product-sans/ProductSansBold.ttf') format('truetype');
-}
+/*
+  Developed by Liam Penn - 1415065
+*/
 
+/*
+    Sets the calendar to the full view width of the screen, will resize to fit screen size
+    Added padding to meet material.io guidelines.
+*/ 
 .Calendar{
     width: 100vw;
     padding: 16px;
 }
 
+/*Positioning the previous button*/
 .Previous{
     position: absolute;
     left: 10px;
 }
 
+/*Position the next button*/
 .Next{
     position: absolute;
     right: 10px;
@@ -31,6 +35,7 @@ tr {
     width: 100px;
 }
 
+/*Creates a circle*/
 .circle {
     width: 15px;
     height: 15px;
@@ -39,6 +44,7 @@ tr {
     display: inline-block;
 }
 
+/*Position the calendar title to the center*/
 .calendarTitle {
     padding: 0px;
     border: 0px;
@@ -51,6 +57,7 @@ tr {
     position: relative;
 }
 
+/*Setting the lists font to Segoe UI*/
 .List{
     text-align: left;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

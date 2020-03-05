@@ -1,13 +1,13 @@
-/*Developed by Liam Penn - 
+/*
+  Developed by Liam Penn - 1415065
   Use of Google Calendar API Quickstart to connect to the API with slight changes
-  */
+*/
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Calendar.css";
 import {GoogleLogin, events} from '../../components/GoogleLogin.js';
-import MettingList from '../MettingList/MeetingList.js';
 import MeetingList from '../MettingList/MeetingList.js';
 
 // Months used to display the viewed month on the calendar.
@@ -18,7 +18,12 @@ let DaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 // Used to store events collected from the calendar.
 var calendarEvents = [];
 
-// Joins the details in each event and display a circle with a randomly generated color.
+/*
+  Joins the details in each event and display a circle with a randomly generated color.
+  calendarEvents[i][0] is the event name
+  calendarEvents[i][1] is the event time/date
+  calendarEvents[i][2] is the event colour 
+*/
 function List() {
   return calendarEvents.map((event, i) => {
     return (
@@ -34,17 +39,27 @@ function List() {
 }
 
 /*
-Passes in a date - if the date is in the calendar add a circle to the calendar cell.
+Passes in a date - if the date is in the calendar add a circle to the calendar cell, 
+checks for multiple events on the same day and adds the appropriate amount of circles.
+  calendarEvents[i][1] is the event time/date
+  calendarEvents[i][2] is the event colour 
 */
 function CheckDay(d){
+  var events = [];
    for(var i=0; i<calendarEvents.length; i++){
-      if({d}.d===calendarEvents[i][1]){
-        console.log({d}.d)
-        return <div>
-          <span className="circle" style={{background: calendarEvents[i][2]}}></span>
-        </div>
+      if({d}.d===calendarEvents[i][1].slice(0, 10).replace('T', ' ')){
+        events.push(calendarEvents[i][2]);
       }
-   }
+    }
+
+    return (
+      <div>
+        {events.map(function(name, index){
+          return <span className="circle" style={{background: events[index]}}></span>
+        })}
+      </div>
+    )
+
 }
 
 class App extends Component {
@@ -56,10 +71,7 @@ class App extends Component {
       year: 0, // Current viewed year
       leapYear: false, // Is Current viewed year a leap year
       calendarRows: 5, // Default amount of rows needed
-      dates: [], // Stores dates - !Currently not used
-      content: [], // Stores Content - !Currently not used
-      events: [], // Stores events - !Currently not used
-      signedIn: false, // Stores whether the user is signedIn - !Currently not used
+      events: [], // Stores events
     };
 
     // Bind Functions to button press.
@@ -67,7 +79,7 @@ class App extends Component {
     this.previousMonth = this.previousMonth.bind(this);
     }
 
-  //Functions Called On Load
+  //Functions Called On Load of the component
   componentDidMount(){
     // Start the tick event every 5s - !Used to continously display data in calendar.
     this.timerID = setInterval(
@@ -78,7 +90,7 @@ class App extends Component {
     this.currentMonth() // Sets current month on mount
     this.checkLeapYear() // Sets leapyear on mount
     this.calendarRows() // Sets amount of rows to display on mount
-    this.onStartCell()
+    this.onStartCell() // 
     this.setState({events: GoogleLogin.events});
   }
 
@@ -186,13 +198,20 @@ class App extends Component {
   */
   calendarContent(){
     return [...Array(this.state.calendarRows)].map((e, r) => {
-      var firstDay = (new Date(this.state.year, this.state.month)).getDay(); // Get FirstDay
-      var days = DaysInMonth[this.state.month]; // Get Amount of Days in viewed month
+      // Get FirstDay
+      var firstDay = (new Date(this.state.year, this.state.month)).getDay(); 
+
+      // Get Amount of Days in viewed month
+      var days = DaysInMonth[this.state.month]; 
+      
       // Check for leap year if current month is february.
       if(this.state.leapYear && this.state.month === 1){
         days = 29;
       }
-      var day = r * 7; // Multiple days by 7 for each row
+
+      // Multiple days by 7 for each row
+      var day = r * 7; 
+      
       // Get previous days to fill out missing calendar cells.
       var prevDays = 0;
       if(this.state.month-1 === -1){
@@ -203,12 +222,15 @@ class App extends Component {
 
       // Get next days to fill out missing calendar cells.
       var nextDays = (new Date(this.state.year, this.state.month+1)).getDay();
+      
       return <tr key={r}>{[...Array(7)].map((e, i) => {
         //Increment day after inserting a cell.
         day+=1;
-        return <th key={i} className="Day" onClick={this.onSelectedRow.bind(this)}>{day <= days + firstDay && day > firstDay ? day - firstDay 
+        return <th key={i} className="Day" onClick={this.onSelectedRow.bind(this)}>
+                {day <= days + firstDay && day > firstDay ? day - firstDay 
                 : day >= days + firstDay ? i+1 - nextDays
-                : (prevDays-firstDay+1)+i}
+                : (prevDays-firstDay+1)+i
+                }
         {CheckDay(new Date( this.state.year, day >= days + firstDay ? this.state.month+1 
                           : day - firstDay <= 0 ? this.state.month-1 
                           : this.state.month, day <= days + firstDay && day > firstDay ? day - firstDay 
@@ -220,19 +242,16 @@ class App extends Component {
   }
 
   /*
-    Set the selected cells color. 
+    Set the selected cells color.
   */
   onSelectedRow(clickEvent){
     var cellElements = document.getElementsByClassName("Day");
     for (var i = 0; i < cellElements.length; i++) {
         cellElements[i].style.backgroundColor= "#f5f6ff";
         cellElements[i].style.color= "black";
-        //cellElements[i].style.boxShadow = "inset 0px 0px 0px 0px #b8b6b8";
-  
     }
     clickEvent.currentTarget.style.background = "#ef5350";
     clickEvent.currentTarget.style.color = "white";
-    //clickEvent.currentTarget.style.boxShadow = "inset 0px 0px 0px 5px #b8b6b8";
   }
 
   /*
@@ -240,12 +259,12 @@ class App extends Component {
   */
   onStartCell() {
     var firstDay = (new Date(this.state.year, this.state.month)).getDay(); // Get FirstDay
-    console.log(firstDay);
-    var extraDays = 5;
-    var currentDate = new Date().getDate();
+    console.log("First day: " + firstDay);
+    var currentDate = new Date().getDate() - 1;
+    console.log("Current Date:" + currentDate);
     var cellElements = document.getElementsByClassName("Day");
-    cellElements[currentDate + extraDays].style.backgroundColor= "#ef5350";
-    cellElements[currentDate + extraDays].style.color= "white";
+    cellElements[currentDate].style.backgroundColor= "#ef5350";
+    cellElements[currentDate].style.color= "white";
   }
 
   state = { events: calendarEvents }

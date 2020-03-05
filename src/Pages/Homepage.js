@@ -22,6 +22,10 @@ function HomePage() {
                 <Button href="/searchRoom" variant="primary" size="lg">
                     Search Room
                 </Button>
+                <br></br><br></br>
+                <Button href="/bookingHistory" variant="primary" size="lg">
+                    Booking History
+                </Button>
                 {/* <h5>Room Booking Services</h5>
                 <Block title="Book a Room"></Block>
                 <Block title="View Meeting"></Block>
