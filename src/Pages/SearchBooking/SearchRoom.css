@@ -17,3 +17,7 @@
 .centered{
     text-align: center;
 }
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
