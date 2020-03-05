@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 
 // My CLIENT_ID and API_KEY from Google Calendar Project - Currently Connected to my Gmail
-var CLIENT_ID = '918654715325-45up7aj6ab0cohqestspdi2p9e0a4uam.apps.googleusercontent.com';
+var CLIENT_ID = '918654715325-m1m6prpm5kmdqq3glmkvpui5vso2ip18.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyBahaMZOI8jFnjLC9SPgLBJqwxNt37vSQk';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
@@ -105,7 +105,7 @@ function initClient() {
     updateSigninStatus(isSignedIn);
   }, function (error) {
     console.log(JSON.stringify(error, null, 2));
-    this.appendPre(JSON.stringify(error, null, 2));
+    //this.appendPre(JSON.stringify(error, null, 2));
   });
 }
 
