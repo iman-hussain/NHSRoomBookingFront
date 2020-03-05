@@ -20,6 +20,7 @@ export default class Room extends Component {
         console.log(this.props.isParking);
         console.log(this.props.attendees);
         console.log(this.props.date);
+        console.log(this.props.time);
         console.log(this.props.location);
     }
     showElement(elem, type){

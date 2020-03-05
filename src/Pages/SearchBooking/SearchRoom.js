@@ -11,7 +11,7 @@ var rooms = [];
 var attendees = 0;
 var location = ""
 var time = ""
-var date = ""
+var date;
 class SearchRoom extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +40,7 @@ class SearchRoom extends React.Component {
               {rooms.map((room, index) => (
                 <div key={room} class="col-md-6">
                   <Room
-                    picId={index+1}
+                    picId={room[5]}
                     roomName={room[0]}
                     isAssessible={room[1]}
                     isToilets={room[2]}
@@ -60,24 +60,33 @@ class SearchRoom extends React.Component {
     
     generateRooms(){
       var rooms2 = [
-      ["MI101", true, true, true, false], 
-      ["MI102", false, false, true, true], 
-      ["MI103", true, false, false, true], 
-      ["MI201", false, true, true, true], 
-      ["MI202", true, true, true, true], 
-      ["MI203", false, false, true, false], 
-      ["MI301", true, true, true, true], 
-      ["MI302", false, false, false, true], 
-      ["MI304", false, false, true, false],
-      ["MA101", false, true, false, false], 
-      ["MA102", true, false, false, false], 
-      ["MA103", false, false, false, true], 
-      ["MA201", false, true, true, true], 
-      ["MA202", true, true, true, true], 
-      ["MA203", true, false, true, true], 
-      ["MA301", true, true, true, true], 
-      ["MA302", true, false, false, true], 
-      ["MA304", true, true, false, false]
+      ["MI101", true, true, true, false, 1], 
+      ["MI102", false, false, true, true, 2], 
+      ["MI103", true, false, false, true, 3], 
+      ["MI201", false, true, true, true, 4], 
+      ["MI202", true, true, true, true, 6], 
+      ["MI203", false, false, true, false, 7], 
+      ["MI301", true, true, true, true, 8], 
+      ["MI302", false, false, false, true, 9], 
+      ["MI304", false, false, true, false, 2],
+      ["MA101", false, true, false, false, 4], 
+      ["MA102", true, false, false, false, 6], 
+      ["MA103", false, false, false, true, 8], 
+      ["MA201", false, true, true, true, 9], 
+      ["MA202", true, true, true, true, 1], 
+      ["MA203", true, false, true, true, 3], 
+      ["MA301", true, true, true, true, 5], 
+      ["MA302", true, false, false, true, 7], 
+      ["MA304", true, true, false, false, 9],
+      ["MC101", false, false, false, false, 1], 
+      ["MC102", true, false, false, true, 2], 
+      ["MC103", false, true, false, true, 3], 
+      ["MC201", true, true, true, false, 4], 
+      ["MC202", true, true, true, true, 5], 
+      ["MC203", false, false, true, true, 6], 
+      ["MC301", false, true, true, true, 7], 
+      ["MC302", true, false, false, true, 8], 
+      ["MC304", true, true, false, false, 9]
     ]
       this.setState({rooms: rooms2, isLoaded: true})
       rooms = rooms2;
@@ -113,11 +122,20 @@ class SearchRoom extends React.Component {
     };
     
     handleChange = dates => {
-      date = date;
+      console.log("dates: " + dates);
+      console.log("dates: " + dates.getMonth());
+      date = dates.getDate() + "/" + dates.getMonth() + "/" + dates.getFullYear();
+      time = dates.getHours() + ":" + dates.getMinutes();
+      console.log(date);
         this.setState({
             startDate: dates
         });
     };
+
+    onValueChange = value => {
+      console.log(value);
+      attendees = value;
+    }
 
     handleCheckChange1 = () => {
         this.setState({ toiletCheckBox : !this.state.toiletCheckBox});
