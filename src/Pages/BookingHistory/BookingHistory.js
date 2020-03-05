@@ -33,11 +33,16 @@ function NextBookings() {
     var calendarEvents = events;
     return calendarEvents.map((event, i) => {
         if (calendarEvents[i][1].slice(0, 10) > date) {
+            var calendarDate = calendarEvents[i][1].slice(0, 10);
+            var diff = Math.floor((
+                Date.parse(calendarDate) - Date.parse(date)
+            ) / 86400000);
             return (
                 <tbody key={event}>
                     <tr >
                         <td>{calendarEvents[i][0]}</td>
                         <td>{calendarEvents[i][1].slice(0, 19).replace('T', ' ')}</td>
+                        <td>{diff}</td>
                         <td><Link to="/">Details</Link></td>
                     </tr>
                 </tbody>
@@ -92,7 +97,7 @@ class BookingTable extends Component {
                     </a>
                     <h4>Booking History</h4>
                 </div>
-                <GoogleLogin show={true}/>
+                <GoogleLogin show={false}/>
                 <div className="HistoryList">
                     <h3>Bookings Today</h3>
                     <Table striped bordered hover>
@@ -111,6 +116,7 @@ class BookingTable extends Component {
                             <tr>
                                 <th className="Event">Event Name</th>
                                 <th className="Date">Date</th>
+                                <th className="Details">Days to Event</th>
                                 <th className="Details">Details</th>
                             </tr>
                         </thead>
@@ -127,8 +133,8 @@ class BookingTable extends Component {
                         </thead>
                         {PreviousBookings()}
                     </Table>
+                    <Button onClick={sendEvent}>Add event</Button>
                 </div>
-                <Button onClick={sendEvent}>Add event</Button>
             </div>
         )
     }
