@@ -6,6 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 
 class RoomBooking extends React.Component {
+
+    // eslint-disable-next-line no-useless-constructor
+    constructor(props){
+        super(props)
+    }
     state = {
         startDate: new Date()
       };

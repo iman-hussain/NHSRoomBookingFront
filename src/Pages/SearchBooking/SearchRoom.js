@@ -2,18 +2,70 @@ import React from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "./SearchRoom.css";
+import Room from '../../components/room.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft, faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
 
 class SearchRoom extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          error: null,
+          isLoaded: false,
+          items: []
+        };
+    }
+
+    getRooms(){
+        const { error, isLoaded, items } = this.state;
+        if (error) {
+          return <div>Error: {error.message}</div>;
+        } else if (!isLoaded) {
+          return <div>Loading...</div>;
+        } else {
+          return (
+            <Row>
+              {items.map((room, index) => (
+                <div key={room} class="col-md-6">
+                  <Room
+                    picId={index+1}
+                    roomName={room[0]}
+                  ></Room>
+                </div>
+              ))}
+            </Row>
+          );
+        }
+    }
+    
+
+    componentDidMount() {
+        fetch("http://localhost:5000/rooms")
+          .then(res => res.json())
+          .then(
+            (result) => {
+              this.setState({
+                isLoaded: true,
+                items: result.rows
+              });
+            },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+            }
+        )
+    }
+
     state = {
         startDate: new Date()
       };
     
     handleChange = date => {
-    this.setState({
-        startDate: date
-    });
+        this.setState({
+            startDate: date
+        });
     };
 
     render() {
@@ -102,10 +154,12 @@ class SearchRoom extends React.Component {
                 </Form.Group>
                 <hr></hr>
             </Form>
+              {this.getRooms()}
         </Container>
         </div>
       )
-    }
+    }     
   }
+  
 
 export default SearchRoom;
