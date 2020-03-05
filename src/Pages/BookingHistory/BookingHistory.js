@@ -23,6 +23,8 @@ function BookingsToday() {
                     </tr>
                 </tbody>
             )
+        } else {
+            return "";
         }
     });
 }
@@ -47,7 +49,7 @@ function NextBookings() {
                     </tr>
                 </tbody>
             )
-        }
+        } else {return "";}
     });
 }
 
@@ -66,7 +68,7 @@ function PreviousBookings() {
                     </tr>
                 </tbody>
             )
-        }
+        } else {return "";}
     });
 }
 

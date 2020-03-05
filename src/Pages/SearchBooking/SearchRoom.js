@@ -40,7 +40,7 @@ class SearchRoom extends React.Component {
     
 
     componentDidMount() {
-        fetch("http://localhost:5000/rooms")
+        fetch("http://209.97.191.60:3001/rooms")
           .then(res => res.json())
           .then(
             (result) => {
