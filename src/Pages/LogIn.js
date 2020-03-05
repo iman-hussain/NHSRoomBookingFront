@@ -28,10 +28,11 @@ function Login() {
                     <Button variant="primary float-right" type="submit" >
                         Submit
                     </Button>
-                    <Form.Group controlId="formGoogleLogin">
-                        <Form.Label>Google Email</Form.Label>
-                    </Form.Group>
-                    <GoogleLogin show={true}/>
+                    <br></br><br></br><br></br>
+                    <div className="GoogleLogin">
+                        <GoogleLogin show={true}/>
+                    </div>
+                    
                 </form>
             </Container>
         </div>

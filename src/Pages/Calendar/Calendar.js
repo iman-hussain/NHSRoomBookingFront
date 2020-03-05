@@ -277,9 +277,9 @@ class App extends Component {
             <tr>
               <th colSpan="7">
                 <div className="calendarTitleContainer">
-                  <Button className="Previous" onClick={this.previousMonth}>Prev</Button>
+                  <Button variant="secondary" className="Previous" onClick={this.previousMonth}>Prev</Button>
                   <h4 className="calendarTitle">{Months[this.state.month]} - {this.state.year}</h4>
-                  <Button className="Next" onClick={this.nextMonth}>Next</Button>
+                  <Button variant="secondary" className="Next" onClick={this.nextMonth}>Next</Button>
                 </div>
               </th>
             </tr>

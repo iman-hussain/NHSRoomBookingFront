@@ -8,10 +8,30 @@ import HomePage from './Pages/Homepage';
 import RoomBooking from './Pages/RoomBooking/RoomBooking';
 import SearchRoom from './Pages/SearchBooking/SearchRoom';
 import BookingTable from './Pages/BookingHistory/BookingHistory';
-import SideBar from './Layout/sidebar'
+import SideBar from './Layout/sidebar';
+import {GoogleLogin} from './components/GoogleLogin.js';
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-function App() {
+    //Functions Called On Load of the component
+    componentDidMount() {
+      // Start the tick event every 5s - !Used to continously display data in calendar.
+      this.timerID = setInterval(
+          () => this.tick(),
+          5000
+      );
+  }
 
+  // Refresh the components state !Required!
+  tick() {
+      this.setState({
+          date: new Date()
+      });
+  }
+
+  render(){
   return (
     <div className="App">
       <SideBar></SideBar>
@@ -31,6 +51,6 @@ function App() {
       </Router>
     </div>
   );
-}
+}}
 
 export default App;

@@ -11,6 +11,10 @@
   margin-bottom: 8em;
 }
 
+.GoogleLogin{
+  text-align: center;
+}
+
 #backIcon {
     color: white;
     text-align: left;

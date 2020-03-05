@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../BookingHistory/BookingHistory.css";
-import { GoogleLogin, events, sendEvent, getList} from '../../components/GoogleLogin.js';
+import { GoogleLogin, events, SendEvent, getList} from '../../components/GoogleLogin.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import {Link} from 'react-router-dom';
@@ -135,7 +135,7 @@ class BookingTable extends Component {
                         </thead>
                         {PreviousBookings()}
                     </Table>
-                    <Button onClick={sendEvent}>Add event</Button>
+                    <Button onClick={SendEvent}>Add event</Button>
                 </div>
             </div>
         )

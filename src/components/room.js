@@ -3,14 +3,35 @@ import { Container, Card, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faParking, faRestroom, faUtensils, faWheelchair} from '@fortawesome/free-solid-svg-icons'
 import "./room.css";
+import {SendEvent, GoogleLogin} from './GoogleLogin.js';
 
+var event;
 export default class Room extends Component {
 
     // eslint-disable-next-line no-useless-constructor
     constructor(props) {
         super(props);
+        this.state = {
+          eventClick: true,
+        }
         this.createEvent = this.createEvent.bind(this);
     }
+
+    //Functions Called On Load of the component
+    componentDidMount() {
+      // Start the tick event every 5s - !Used to continously display data in calendar.
+      this.timerID = setInterval(
+          () => this.tick(),
+          5000
+      );
+  }
+
+  // Refresh the components state !Required!
+  tick() {
+      this.setState({
+          date: new Date()
+      });
+  }
 
     componentDidUpdate(){
         console.log(this.props.roomName);
@@ -30,16 +51,16 @@ export default class Room extends Component {
     }
 
     createEvent(){
-        var event = {
-            'summary': this.props.isAssessible,
+        event = {
+            'summary': this.props.roomName + "@" + this.props.date + " " + this.props.time,
             'location': '800 Howard St., San Francisco, CA 94103',
-            'description': 'A chance to hear more about Google\'s developer products.',
+            'description': this.props.attendees,
             'start': {
-              'dateTime': '2020-03-7T09:00:00-07:00',
+              'dateTime': this.props.date + 'T09:00:00-07:00',
               'timeZone': 'America/Los_Angeles'
             },
             'end': {
-              'dateTime': '2020-03-07T17:00:00-07:00',
+              'dateTime': this.props.date + 'T17:00:00-07:00',
               'timeZone': 'America/Los_Angeles'
             },
             'recurrence': [
@@ -56,12 +77,12 @@ export default class Room extends Component {
               ]
             }
           };
-
+          //{this.state.eventClick? <SendEvent event={event}/>: ""}
     }
     
     render() {
         return (
-            <a href="/roomBooking">
+          <a href="/">
             <Container>
             <Card style={{ width: '100%', marginBottom:'1em' }}>
                 <Card.Img variant="top" src={"/roomPics/room"+this.props.picId+".jpg"} />

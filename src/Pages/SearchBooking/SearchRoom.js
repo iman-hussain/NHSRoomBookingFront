@@ -6,6 +6,7 @@ import Room from '../../components/room.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from "../../components/title";
 import { faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
+import { GoogleLogin } from '../../components/GoogleLogin';
 
 var rooms = [];
 var attendees = 0;
@@ -124,7 +125,7 @@ class SearchRoom extends React.Component {
     handleChange = dates => {
       console.log("dates: " + dates);
       console.log("dates: " + dates.getMonth());
-      date = dates.getDate() + "/" + dates.getMonth() + "/" + dates.getFullYear();
+      date = dates.getDate() + "-" + dates.getMonth() + "-" + dates.getFullYear();
       time = dates.getHours() + ":" + dates.getMinutes();
       console.log(date);
         this.setState({
@@ -174,6 +175,7 @@ class SearchRoom extends React.Component {
     render() {
       return (
         <div>
+        <GoogleLogin/>
         <Title title="Search Room"></Title>
         <Container>
             <Form id="createBookingForm">

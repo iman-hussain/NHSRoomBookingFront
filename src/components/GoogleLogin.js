@@ -66,9 +66,9 @@ export class GoogleLogin extends Component {
       if (this.state.isSignedIn === null) {
         return <div>I dont know if I am signed in</div>;
       } else if (this.state.isSignedIn) {
-        return <Button id="signout_button" onClick={this.handleSignoutClick}>Sign Out</Button>;
+        return <Button variant="secondary" id="signout_button" onClick={this.handleSignoutClick}>Sign Out with Google</Button>;
       } else {
-        return <Button id="authorize_button" onClick={this.handleAuthClick}>Authorize</Button>;
+        return <Button variant="secondary" id="authorize_button" onClick={this.handleAuthClick}>Sign in with Google Email</Button>;
       }
     }
   }
@@ -197,7 +197,7 @@ var event = {
   }
 };
 
-export const sendEvent = () => {
+export const SendEvent = (evt) => {
   var request = window.gapi.client.calendar.events.insert({
     'calendarId': "primary",
     'resource': event
@@ -208,15 +208,28 @@ export const sendEvent = () => {
   });
 }
 
-export const createEvent = (evt) => {
-  var request = window.gapi.client.calendar.events.insert({
-    'calendarId': "primary",
-    'resource': evt
-  });
-  
-  request.execute(function(event) {
-    console.log('Event created: ' + event.summary);
-  });
+export class CreateEvent extends Component{
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount(){
+    console.log("event created?");
+    var request = window.gapi.client.calendar.events.insert({
+      'calendarId': "primary",
+      'resource': this.props.event
+    });
+    
+    request.execute(function(event) {
+      console.log('Event created: ' + event.summary);
+    });
+  }
+
+  render(){
+    return(
+      <GoogleLogin/>
+    );
+  }
 }
 
 // Returns the accessible google calendars
