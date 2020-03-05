@@ -8,22 +8,23 @@ import HomePage from './Pages/Homepage';
 import RoomBooking from './Pages/RoomBooking/RoomBooking';
 import SearchRoom from './Pages/SearchBooking/SearchRoom';
 import BookingTable from './Pages/BookingHistory/BookingHistory';
+import SideBar from './Layout/sidebar'
 
 function App() {
-  
+
   return (
     <div className="App">
+      <SideBar></SideBar>
       <Router>
         <Header/>
         <div className="yellowLine"></div>
         
-        <div>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/roomBooking" exact component={RoomBooking} />
-          <Route path="/searchRoom" exact component={SearchRoom} />
-          <Route path="/bookingHistory" exact component={BookingTable} />
-        </div>
+        
+        <Route path="/" exact component={HomePage} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/roomBooking" exact component={RoomBooking} />
+        <Route path="/searchRoom" exact component={SearchRoom} />
+        <Route path="/bookingHistory" exact component={BookingTable} />
 
         <div className="footerSpace"></div>
         {/* <Footer/> */}

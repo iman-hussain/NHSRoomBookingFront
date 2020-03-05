@@ -4,7 +4,8 @@ import DatePicker from "react-datepicker";
 import "./SearchRoom.css";
 import Room from '../../components/room.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleLeft, faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
+import Title from "../../components/title";
+import { faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
 
 class SearchRoom extends React.Component {
     constructor(props) {
@@ -83,12 +84,7 @@ class SearchRoom extends React.Component {
     render() {
       return (
         <div>
-        <div className="title">
-            <a href="/" id="backIcon">
-                <h4><FontAwesomeIcon icon={faArrowAltCircleLeft} /></h4>
-            </a>
-            <h4>Search Room</h4>
-        </div>
+        <Title title="Search Room"></Title>
         <Container>
             <Form id="createBookingForm">
                 <Form.Group>

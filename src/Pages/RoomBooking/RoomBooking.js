@@ -2,8 +2,7 @@ import React from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "./RoomBooking.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
+import Title from '../../components/title';
 
 class RoomBooking extends React.Component {
 
@@ -25,12 +24,8 @@ class RoomBooking extends React.Component {
     render() {
       return (
         <div>
-        <div className="title">
-            <a href="/" id="backIcon">
-                <h4><FontAwesomeIcon icon={faArrowAltCircleLeft} /></h4>
-            </a>
-            <h4>Create Booking</h4>
-        </div>
+        <Title title="Room Details" route="/searchRoom"></Title>
+        
         <Container>
             <Form id="createBookingForm">
                 <h2>Facilities available</h2>

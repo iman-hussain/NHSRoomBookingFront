@@ -1,5 +1,6 @@
 import React from 'react';
 // import Block from '../components/blocks';
+import Title from '../components/title';
 import MyCalendar from './Calendar/Calendar';
 import {Container, Row, Button} from 'react-bootstrap';
 /*
@@ -9,9 +10,7 @@ TODO: Show Calander - RoomBooking - Meeting
 function HomePage() {
     return (
         <div>
-            <div className="title">
-                <h4>Calendar</h4>
-            </div>
+            <Title title="Homepage"></Title>
             <Container>
                 <Row className="justify-content-center">
                     <MyCalendar/>

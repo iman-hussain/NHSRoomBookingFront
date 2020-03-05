@@ -1,20 +1,12 @@
 import React from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import "./Login.css";
+import Title from "../components/title";
 
 function Login() {
     return (
         <div className="Login">
-            <div class="title">
-                <a href="/" id="backIcon">
-                    <h4><FontAwesomeIcon icon={faArrowAltCircleLeft} /></h4>
-                </a>
-                <h4>
-                    Log In
-                </h4>
-            </div>
+            <Title title="Log In"></Title>
             <Container>
                 <form>
                     <Form.Group controlId="formBasicEmail">

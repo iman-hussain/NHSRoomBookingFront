@@ -6,16 +6,18 @@ import logo from "../assets/img/nhsRoomBookingLogo.png";
 class Header extends React.Component {
     render() {
       return (
-        <Navbar variant="dark justify-content-between">
+        <Navbar variant="blue justify-content-between">
         <Container id="header-container">
             <Navbar.Brand href="#home">
-            <img
-                alt=""
-                src={logo}
-                width="130"
-                height="50"
-                className="d-inline-block align-top"
-            />{' '}
+            <a href="/">
+              <img
+                  alt=""
+                  src={logo}
+                  width="130"
+                  height="50"
+                  className="d-inline-block align-top"
+              />{' '}
+            </a>
             </Navbar.Brand>
             <Form inline>
                 {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
