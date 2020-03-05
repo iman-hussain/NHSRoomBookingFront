@@ -208,6 +208,17 @@ export const sendEvent = () => {
   });
 }
 
+export const createEvent = (evt) => {
+  var request = window.gapi.client.calendar.events.insert({
+    'calendarId': "primary",
+    'resource': evt
+  });
+  
+  request.execute(function(event) {
+    console.log('Event created: ' + event.summary);
+  });
+}
+
 // Returns the accessible google calendars
 export const getList = () => {
   var request = window.gapi.client.calendar.calendarList.list();

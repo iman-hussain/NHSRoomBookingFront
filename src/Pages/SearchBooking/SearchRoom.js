@@ -7,14 +7,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from "../../components/title";
 import { faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
 
+var rooms = [];
+var attendees = 0;
+var location = ""
+var time = ""
+var date = ""
 class SearchRoom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
           error: null,
           isLoaded: false,
-          items: []
+          items: [],
+          toiletCheckBox: false,
+          cateringCheckBox: false,
+          accessableCheckBox: false,
+          parkingCheckBox: false,
         };
+        this.createBooking = this.createBooking.bind(this);
+        this.getRooms = this.getRooms.bind(this);
     }
 
     getRooms(){
@@ -26,11 +37,19 @@ class SearchRoom extends React.Component {
         } else {
           return (
             <Row>
-              {items.map((room, index) => (
+              {rooms.map((room, index) => (
                 <div key={room} class="col-md-6">
                   <Room
                     picId={index+1}
                     roomName={room[0]}
+                    isAssessible={room[1]}
+                    isToilets={room[2]}
+                    isCatering={room[3]}
+                    isParking={room[4]}
+                    attendees={attendees}
+                    date={date}
+                    time={time}
+                    location={location}
                   ></Room>
                 </div>
               ))}
@@ -39,9 +58,34 @@ class SearchRoom extends React.Component {
         }
     }
     
+    generateRooms(){
+      var rooms2 = [
+      ["MI101", true, true, true, false], 
+      ["MI102", false, false, true, true], 
+      ["MI103", true, false, false, true], 
+      ["MI201", false, true, true, true], 
+      ["MI202", true, true, true, true], 
+      ["MI203", false, false, true, false], 
+      ["MI301", true, true, true, true], 
+      ["MI302", false, false, false, true], 
+      ["MI304", false, false, true, false],
+      ["MA101", false, true, false, false], 
+      ["MA102", true, false, false, false], 
+      ["MA103", false, false, false, true], 
+      ["MA201", false, true, true, true], 
+      ["MA202", true, true, true, true], 
+      ["MA203", true, false, true, true], 
+      ["MA301", true, true, true, true], 
+      ["MA302", true, false, false, true], 
+      ["MA304", true, true, false, false]
+    ]
+      this.setState({rooms: rooms2, isLoaded: true})
+      rooms = rooms2;
+      console.log("First Rooms" + rooms);
+    }
 
     componentDidMount() {
-        fetch("http://209.97.191.60:3001/rooms")
+/*         fetch("http://209.97.191.60:3001/rooms")
           .then(res => res.json())
           .then(
             (result) => {
@@ -56,7 +100,8 @@ class SearchRoom extends React.Component {
                 error
               });
             }
-        )
+        ) */
+        this.generateRooms();
     }
 
     state = {
@@ -65,20 +110,47 @@ class SearchRoom extends React.Component {
         cateringCheckBox: false,
         accessableCheckBox: false,
         parkingCheckBox: false,
-      };
+    };
     
-    handleChange = date => {
+    handleChange = dates => {
+      date = date;
         this.setState({
-            startDate: date
+            startDate: dates
         });
     };
 
-    createBooking(){
-        console.log(this.state.toiletCheckBox);
+    handleCheckChange1 = () => {
+        this.setState({ toiletCheckBox : !this.state.toiletCheckBox});
     }
 
-    handleCheckChange(evt) {
-        this.setState({ toiletCheckBox : evt.target.checked});
+    handleCheckChange2 = () => {
+      this.setState({ cateringCheckBox : !this.state.cateringCheckBox});
+    }
+    
+    handleCheckChange3 = () => {
+      this.setState({ accessableCheckBox : !this.state.accessableCheckBox});
+    }
+
+    handleCheckChange4 = () => {
+      this.setState({ parkingCheckBox : !this.state.parkingCheckBox});
+    }
+  
+    createBooking(){
+      var roomQuery = [];
+
+      this.generateRooms();
+      rooms.map(room => {
+        if(room[1] === this.state.accessableCheckBox
+          && room[2] === this.state.toiletCheckBox
+          && room[3] === this.state.cateringCheckBox
+          && room[4] === this.state.parkingCheckBox){
+            roomQuery.push(room)
+          }
+      })
+
+      rooms = roomQuery;
+      console.log(rooms);
+      this.getRooms();
     }
 
     render() {
@@ -92,7 +164,7 @@ class SearchRoom extends React.Component {
                     <Form.Group as={Col}controlId="formGridDate">
                         <FontAwesomeIcon icon={faUserFriends} />&nbsp;
                         <label>Guests</label>
-                        <Form.Control type="number" placeholder="Guests" />
+                        <Form.Control type="number" placeholder="Guests"/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridDate">
                         <FontAwesomeIcon icon={faCalendarDay} />&nbsp;
@@ -142,16 +214,16 @@ class SearchRoom extends React.Component {
                     <Col sm={10}>
                         <Row>
                         <Col>
-                            <Form.Check type="switch" id="toilet-switch" label="Toilets"  checked={this.state.toiletCheckBox} onChange={this.handleCheckChange}/>
+                            <Form.Check type="switch" id="toilet-switch" label="Toilets"  checked={this.state.toiletCheckBox} onChange={this.handleCheckChange1}/>
                         </Col>
                         <Col>
-                            <Form.Check type="switch" id="catering-switch" label="Catering"/>
+                            <Form.Check type="switch" id="catering-switch" label="Catering" checked={this.state.cateringCheckBox} onChange={this.handleCheckChange2}/>
                         </Col>
                         <Col>
-                            <Form.Check type="switch" id="accessable-switch" label="Accessable"/>
+                            <Form.Check type="switch" id="accessable-switch" label="Accessable" checked={this.state.accessableCheckBox} onChange={this.handleCheckChange3}/>
                         </Col>
                         <Col>
-                            <Form.Check type="switch" id="parking-switch" label="Parking"/>
+                            <Form.Check type="switch" id="parking-switch" label="Parking" checked={this.state.parkingCheckBox} onChange={this.handleCheckChange4}/>
                         </Col>
                         </Row>
                     </Col>
