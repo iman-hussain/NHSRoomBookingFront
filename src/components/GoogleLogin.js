@@ -171,7 +171,7 @@ export {
 }
 
 var event = {
-  'summary': 'MI101 @ 07/03/2020 - 07:00-09:00',
+  'summary': 'MI101 @ 07/03/2020 - 16:00-17:00',
   'location': 'MI1010',
   'description': 'A booked room',
   'start': {
