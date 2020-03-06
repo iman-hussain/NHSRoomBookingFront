@@ -200,7 +200,7 @@ var event = {
 
 export const SendEvent = () => {
   var request = window.gapi.client.calendar.events.insert({
-    'calendarId': "liamparsons2013@gmail.com",
+    'calendarId': "primary",
     'resource': event
   });
   
@@ -209,28 +209,9 @@ export const SendEvent = () => {
   });
 }
 
-export class CreateEvent extends Component{
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount(){
-    console.log("event created?");
-    var request = window.gapi.client.calendar.events.insert({
-      'calendarId': "primary",
-      'resource': this.props.event
-    });
-    
-    request.execute(function(event) {
-      console.log('Event created: ' + event.summary);
-    });
-  }
-
-  render(){
-    return(
-      <GoogleLogin/>
-    );
-  }
+export const CreateEvent = (evt) =>{
+  event = evt;    
+  SendEvent();
 }
 
 // Returns the accessible google calendars

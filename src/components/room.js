@@ -3,7 +3,7 @@ import { Container, Card, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faParking, faRestroom, faUtensils, faWheelchair} from '@fortawesome/free-solid-svg-icons'
 import "./room.css";
-import {SendEvent, GoogleLogin} from './GoogleLogin.js';
+import {SendEvent, GoogleLogin, CreateEvent} from './GoogleLogin.js';
 
 var event;
 export default class Room extends Component {
@@ -82,7 +82,6 @@ export default class Room extends Component {
     
     render() {
         return (
-          
             <a href="/">
             <Container>
             <GoogleLogin/>
@@ -96,11 +95,12 @@ export default class Room extends Component {
                         {this.showElement(this.props.isCatering, faUtensils)}
                         {this.showElement(this.props.isAssessible, faWheelchair)}
                     </div>
-                    <Button variant="primary" onClick={SendEvent}>Book Room</Button>
+                    <Button variant="primary" onClick={this.createEvent()}>Book Room</Button>
                 </Card.Body>
             </Card>
             </Container>
             </a>
+            
         )
     }
 }
