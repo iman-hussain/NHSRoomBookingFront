@@ -34,7 +34,7 @@ export default class Room extends Component {
   }
 
     componentDidUpdate(){
-        console.log(this.props.roomName);
+        /* console.log(this.props.roomName);
         console.log(this.props.isAssessible);
         console.log(this.props.isToilets);
         console.log(this.props.isCatering);
@@ -42,7 +42,7 @@ export default class Room extends Component {
         console.log(this.props.attendees);
         console.log(this.props.date);
         console.log(this.props.time);
-        console.log(this.props.location);
+        console.log(this.props.location); */
     }
     showElement(elem, type){
         if(elem){
@@ -51,7 +51,7 @@ export default class Room extends Component {
     }
 
     createEvent(){
-        event = {
+       return event = {
             'summary': this.props.roomName + "@" + this.props.date + " " + this.props.time,
             'location': '800 Howard St., San Francisco, CA 94103',
             'description': this.props.attendees,
@@ -82,8 +82,10 @@ export default class Room extends Component {
     
     render() {
         return (
-          <a href="/">
+          
+            <a href="/">
             <Container>
+            <GoogleLogin/>
             <Card style={{ width: '100%', marginBottom:'1em' }}>
                 <Card.Img variant="top" src={"/roomPics/room"+this.props.picId+".jpg"} />
                 <Card.Body>
@@ -94,7 +96,7 @@ export default class Room extends Component {
                         {this.showElement(this.props.isCatering, faUtensils)}
                         {this.showElement(this.props.isAssessible, faWheelchair)}
                     </div>
-                    <Button variant="primary" onClick={this.createEvent()}>Book Room</Button>
+                    <Button variant="primary" onClick={SendEvent}>Book Room</Button>
                 </Card.Body>
             </Card>
             </Container>

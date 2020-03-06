@@ -197,9 +197,10 @@ var event = {
   }
 };
 
-export const SendEvent = (evt) => {
+
+export const SendEvent = () => {
   var request = window.gapi.client.calendar.events.insert({
-    'calendarId': "primary",
+    'calendarId': "liamparsons2013@gmail.com",
     'resource': event
   });
   
