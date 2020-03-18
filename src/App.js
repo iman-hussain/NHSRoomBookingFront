@@ -3,6 +3,11 @@ import './App.css';
 import Header from './Layout/Header.js';
 import Footer from './Layout/Footer.js';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Provider } from 'react-redux'
+import { PersistGate } from "redux-persist/lib/integration/react"
+import configureStore from "./Redux/configureStore" // CUSTOM configureStore WITH REDUX-PERSIST & REDUX TOOLKIT
+
+
 import Login from './Pages/LogIn';
 import HomePage from './Pages/Homepage';
 import RoomBooking from './Pages/RoomBooking/RoomBooking';
@@ -10,6 +15,9 @@ import SearchRoom from './Pages/SearchBooking/SearchRoom';
 import BookingTable from './Pages/BookingHistory/BookingHistory';
 import SideBar from './Layout/sidebar';
 import {GoogleLogin} from './components/GoogleLogin.js';
+
+const [store, persistor] = configureStore();
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +41,8 @@ class App extends React.Component {
 
   render(){
   return (
+    <Provider store={store}>
+    <PersistGate persistor={persistor}>
     <div className="App">
       <SideBar></SideBar>
       <Router>
@@ -50,6 +60,8 @@ class App extends React.Component {
         {/* <Footer/> */}
       </Router>
     </div>
+    </PersistGate>
+    </Provider>
   );
 }}
 
