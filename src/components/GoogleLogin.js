@@ -171,9 +171,9 @@ export {
 }
 
 var event = {
-  'summary': 'Google I/O 2015',
-  'location': '800 Howard St., San Francisco, CA 94103',
-  'description': 'A chance to hear more about Google\'s developer products.',
+  'summary': 'MI101 @ 07/03/2020 - 16:00-17:00',
+  'location': 'MI1010',
+  'description': 'A booked room',
   'start': {
     'dateTime': '2020-03-7T09:00:00-07:00',
     'timeZone': 'America/Los_Angeles'
@@ -197,7 +197,8 @@ var event = {
   }
 };
 
-export const SendEvent = (evt) => {
+
+export const SendEvent = () => {
   var request = window.gapi.client.calendar.events.insert({
     'calendarId': "primary",
     'resource': event
@@ -208,28 +209,9 @@ export const SendEvent = (evt) => {
   });
 }
 
-export class CreateEvent extends Component{
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount(){
-    console.log("event created?");
-    var request = window.gapi.client.calendar.events.insert({
-      'calendarId': "primary",
-      'resource': this.props.event
-    });
-    
-    request.execute(function(event) {
-      console.log('Event created: ' + event.summary);
-    });
-  }
-
-  render(){
-    return(
-      <GoogleLogin/>
-    );
-  }
+export const CreateEvent = (evt) =>{
+  event = evt;    
+  SendEvent();
 }
 
 // Returns the accessible google calendars

@@ -25,10 +25,11 @@ function Login() {
                     <Form.Group controlId="formBasicCheckbox">
                         <Form.Check type="checkbox" label="Check me out" />
                     </Form.Group>
-                    <Button variant="primary float-right" type="submit" >
+                    <Button variant="primary float-right" type="submit" href="/">
                         Submit
                     </Button>
                     <br></br><br></br><br></br>
+                    <hr></hr>
                     <div className="GoogleLogin">
                         <GoogleLogin show={true}/>
                     </div>

@@ -240,7 +240,7 @@ class SearchRoom extends React.Component {
                             <Form.Check type="switch" id="catering-switch" label="Catering" checked={this.state.cateringCheckBox} onChange={this.handleCheckChange2}/>
                         </Col>
                         <Col>
-                            <Form.Check type="switch" id="accessable-switch" label="Accessable" checked={this.state.accessableCheckBox} onChange={this.handleCheckChange3}/>
+                            <Form.Check type="switch" id="accessable-switch" label="Accessible" checked={this.state.accessableCheckBox} onChange={this.handleCheckChange3}/>
                         </Col>
                         <Col>
                             <Form.Check type="switch" id="parking-switch" label="Parking" checked={this.state.parkingCheckBox} onChange={this.handleCheckChange4}/>

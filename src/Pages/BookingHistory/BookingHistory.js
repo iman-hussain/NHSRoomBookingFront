@@ -135,7 +135,6 @@ class BookingTable extends Component {
                         </thead>
                         {PreviousBookings()}
                     </Table>
-                    <Button onClick={SendEvent}>Add event</Button>
                 </div>
             </div>
         )
