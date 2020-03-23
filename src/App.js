@@ -25,7 +25,7 @@ class App extends React.Component {
 
     //Functions Called On Load of the component
     componentDidMount() {
-      // Start the tick event every 5s - !Used to continously display data in calendar.
+      // Start the tick event every 5s - !Used to continously display data in calendar. (this can be removed when database is connected)
       this.timerID = setInterval(
           () => this.tick(),
           5000
