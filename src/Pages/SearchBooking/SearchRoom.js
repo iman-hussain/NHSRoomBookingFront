@@ -7,12 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Title from "../../components/title";
 import { faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
 import { GoogleLogin } from '../../components/GoogleLogin';
+import ls from 'local-storage';
 
 var rooms = [];
 var attendees = 0;
-var location = ""
+var location = {};
 var time = ""
-var date;
+var date; 
 class SearchRoom extends React.Component {
     constructor(props) {
         super(props);
@@ -29,6 +30,12 @@ class SearchRoom extends React.Component {
         this.getRooms = this.getRooms.bind(this);
     }
 
+    handleRoomClick(room){
+      ls.set('roomJson', JSON.stringify(room));
+      ls.set('attendees', attendees? attendees.toString():'0');
+      ls.set('date', date? date.toString():'0');
+    }
+
     getRooms(){
         const { error, isLoaded, items } = this.state;
         if (error) {
@@ -39,20 +46,23 @@ class SearchRoom extends React.Component {
           return (
             <Row>
               {rooms.map((room, index) => (
-                <div key={room} class="col-md-6">
-                  <Room
-                    picId={room[5]}
-                    roomName={room[0]}
-                    isAssessible={room[1]}
-                    isToilets={room[2]}
-                    isCatering={room[3]}
-                    isParking={room[4]}
-                    attendees={attendees}
-                    date={date}
-                    time={time}
-                    location={location}
-                  ></Room>
-                </div>
+                  <div key={room} class="col-md-6">
+                    <a href="/roomDetails" onClick={this.handleRoomClick(room)}>
+                    <Room 
+                      picId={room[5]}
+                      roomName={room[0]}
+                      isAssessible={room[1]}
+                      isToilets={room[2]}
+                      isCatering={room[3]}
+                      isParking={room[4]}
+                      attendees={attendees}
+                      date={date}
+                      time={time}
+                      latitude={room[6]}
+                      longitude={room[7]}
+                    ></Room>
+                    </a>
+                  </div>
               ))}
             </Row>
           );
@@ -61,33 +71,33 @@ class SearchRoom extends React.Component {
     
     generateRooms(){
       var rooms2 = [
-      ["MI101", true, true, true, false, 1], 
-      ["MI102", false, false, true, true, 2], 
-      ["MI103", true, false, false, true, 3], 
-      ["MI201", false, true, true, true, 4], 
-      ["MI202", true, true, true, true, 6], 
-      ["MI203", false, false, true, false, 7], 
-      ["MI301", true, true, true, true, 8], 
-      ["MI302", false, false, false, true, 9], 
-      ["MI304", false, false, true, false, 2],
-      ["MA101", false, true, false, false, 4], 
-      ["MA102", true, false, false, false, 6], 
-      ["MA103", false, false, false, true, 8], 
-      ["MA201", false, true, true, true, 9], 
-      ["MA202", true, true, true, true, 1], 
-      ["MA203", true, false, true, true, 3], 
-      ["MA301", true, true, true, true, 5], 
-      ["MA302", true, false, false, true, 7], 
-      ["MA304", true, true, false, false, 9],
-      ["MC101", false, false, false, false, 1], 
-      ["MC102", true, false, false, true, 2], 
-      ["MC103", false, true, false, true, 3], 
-      ["MC201", true, true, true, false, 4], 
-      ["MC202", true, true, true, true, 5], 
-      ["MC203", false, false, true, true, 6], 
-      ["MC301", false, true, true, true, 7], 
-      ["MC302", true, false, false, true, 8], 
-      ["MC304", true, true, false, false, 9]
+      ["MI101", true, true, true, false, 1, 53.476292, -2.231379], 
+      ["MI102", false, false, true, true, 2, 53.476292, -2.231379], 
+      ["MI103", true, false, false, true, 3, 53.476292, -2.231379], 
+      ["MI201", false, true, true, true, 4, 53.476292, -2.231379], 
+      ["MI202", true, true, true, true, 6, 53.476292, -2.231379], 
+      ["MI203", false, false, true, false, 7, 53.476292, -2.231379], 
+      ["MI301", true, true, true, true, 8, 53.476292, -2.231379], 
+      ["MI302", false, false, false, true, 9, 53.476292, -2.231379], 
+      ["MI304", false, false, true, false, 2, 53.476292, -2.231379],
+      ["MA101", false, true, false, false, 4, 53.476292, -2.231379], 
+      ["MA102", true, false, false, false, 6, 53.476292, -2.231379], 
+      ["MA103", false, false, false, true, 8, 53.476292, -2.231379], 
+      ["MA201", false, true, true, true, 9, 53.476292, -2.231379], 
+      ["MA202", true, true, true, true, 1, 53.476292, -2.231379], 
+      ["MA203", true, false, true, true, 3, 53.476292, -2.231379], 
+      ["MA301", true, true, true, true, 5, 53.476292, -2.231379], 
+      ["MA302", true, false, false, true, 7, 53.476292, -2.231379], 
+      ["MA304", true, true, false, false, 9, 53.476292, -2.231379],
+      ["MC101", false, false, false, false, 1, 53.476292, -2.231379], 
+      ["MC102", true, false, false, true, 2, 53.476292, -2.231379], 
+      ["MC103", false, true, false, true, 3, 53.476292, -2.231379], 
+      ["MC201", true, true, true, false, 4, 53.476292, -2.231379], 
+      ["MC202", true, true, true, true, 5, 53.476292, -2.231379], 
+      ["MC203", false, false, true, true, 6, 53.476292, -2.231379], 
+      ["MC301", false, true, true, true, 7, 53.476292, -2.231379], 
+      ["MC302", true, false, false, true, 8, 53.476292, -2.231379], 
+      ["MC304", true, true, false, false, 9, 53.476292, -2.231379]
     ]
       this.setState({rooms: rooms2, isLoaded: true})
       rooms = rooms2;

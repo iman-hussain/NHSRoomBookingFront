@@ -1,11 +1,14 @@
 import React from 'react';
-import {Container, Row, Col, Form, Button} from 'react-bootstrap';
+import {Container, Row, Col, Form, Button, Card} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "./RoomDetails.css";
 import Title from '../../components/title';
+import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
+import ls from 'local-storage';
+import { faParking, faRestroom, faUtensils, faWheelchair, faUserFriends} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-class RoomDetails extends React.Component {
-
+export class RoomDetails extends React.Component {
     // eslint-disable-next-line no-useless-constructor
     constructor(props){
         super(props)
@@ -13,6 +16,12 @@ class RoomDetails extends React.Component {
     state = {
         startDate: new Date(),
       };
+
+    showElement(elem, type){
+        if(elem){
+            return <FontAwesomeIcon size="2x" icon={type} className="fa-fw" />
+        }
+    }
     
     handleChange = date => {
     this.setState({
@@ -20,6 +29,37 @@ class RoomDetails extends React.Component {
     });
     };
 
+    getRoomLatitudeLongitude() { 
+        var room = ls.get('roomJson').split(',');
+        return {lat: parseFloat(room[6]), lng: parseFloat(room[7])};
+    }
+
+    getRoomName(){
+        return ls.get('roomJson').split(',')[0].slice(1);
+    }
+
+    getPictureId(){
+        return ls.get('roomJson').split(',')[5];
+    }
+
+    getAtendees(){
+        return parseInt(ls.get('attendees'));
+    }
+
+    buildGuestForms(){
+        var guestFields = [];
+        // Use function "this.getAtendees()" later.
+        for (let i = 0; i < 4; i++) {
+            guestFields.push(
+            <Form.Group as={Col}controlId="formGridDate">
+                <FontAwesomeIcon icon={faUserFriends} />&nbsp;
+                <label>Guest {i+1}</label>
+                <Form.Control type="number" placeholder="Guests"/>
+            </Form.Group>
+            );
+        }
+        return guestFields;
+    }
 
     render() {
       return (
@@ -27,81 +67,52 @@ class RoomDetails extends React.Component {
         <Title title="Room Details" route="/roomDetails"></Title>
         
         <Container>
-            <Form id="createBookingForm">
-                <h2>Facilities available</h2>
-                <hr></hr>
-                <h5>
-                <Row>
-                    <Col>
-                        <Form.Check type="switch" id="toilet-switch" label="Toilets"/>
-                    </Col>
-                    <Col>
-                        <Form.Check type="switch" id="catering-switch" label="Catering"/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Check type="switch" id="accessable-switch" label="Accessable"/>
-                    </Col>
-                    <Col>
-                        <Form.Check type="switch" id="parking-switch" label="Parking"/>
-                    </Col>
-                </Row>
-                </h5>
-                {/* <h2>Create Booking</h2> */}
-                <hr></hr>
-                <Form.Group as={Col} controlId="formGridBuilding">
-                    <h5>Building</h5>
-                    <Form.Control as="select">
-                    <option>Alan Turing Building</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group as={Col} controlId="formGridRoom">
-                    <h5>Room</h5>
-                    <Form.Control as="select">
-                    <option>Main Room</option>
-                    <option>1A</option>
-                    <option>1B</option>
-                    <option>1C</option>
-                    <option>2A</option>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group as={Col}>
-                    <Form.Row>
-                        <Form.Group as={Col} controlId="formGridDate">
-                        <h5>Date</h5>
-                        <DatePicker
-                            className="datePickerStyle"
-                            selected={this.state.startDate}
-                            onChange={this.handleChange}
-                        />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="formGridTime">
-                        <h5>Time</h5>
-                        <DatePicker
-                            className="datePickerStyle"
-                            selected={this.state.startDate}
-                            onChange={this.handleChange}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            timeIntervals={15}
-                            timeCaption="Time"
-                            dateFormat="h:mm aa"
-                            />
-                        </Form.Group>
-                    </Form.Row>
-                </Form.Group>
-                <div className="centered">
-                <Button variant="primary" size="lg">
-                    Create Booking
-                </Button>
+        <h3>Room: {this.getRoomName()} </h3>
+        <Card style={{ width: '100%', marginBottom:'1em' }}>
+            <Card.Img variant="top" src={"/roomPics/room"+this.getPictureId()+".jpg"} />
+            <Card.Body>
+                <Card.Title>{this.props.roomName}</Card.Title>
+                <div className="iconContainer">
+                    {this.showElement(this.props.isParking, faParking)}
+                    {this.showElement(this.props.isToilets, faRestroom)}
+                    {this.showElement(this.props.isCatering, faUtensils)}
+                    {this.showElement(this.props.isAssessible, faWheelchair)}
                 </div>
-            </Form>
+                <Button variant="primary">Book Room</Button>
+            </Card.Body>
+        </Card>
+
+        <Container>
+            <Row>
+                <div class="col-6">
+                    <Form id="createBookingForm">
+                        {this.buildGuestForms()}
+                    </Form>
+                </div>
+                <div class="col-6">
+                    <Map google={this.props.google}
+                        style={{width: '100%', height: '100vh', position: 'relative'}}
+                        className={'map'}
+                        zoom={17}
+                        initialCenter={this.getRoomLatitudeLongitude()}>
+                    <Marker
+                        title={this.getRoomName()}
+                        name={this.getRoomName()}
+                        position={this.getRoomLatitudeLongitude()} />
+                    </Map>
+                </div>
+            </Row>
+        </Container>
+            {/* <div style={{ height: '100vh', width: '100%' }}>
+                <GoogleMapReact
+                bootstrapURLKeys={{ key: 'AIzaSyC1w6F4vC24W9aufbaWqXL4ILyanygTT7Y' }}
+                defaultCenter={this.getRoomLatitudeLongitude()}
+                defaultZoom={15}
+                >
+                <Marker position={this.getRoomLatitudeLongitude()} />
+
+                </GoogleMapReact>
+            </div> */}
         </Container>
         </div>
       )
@@ -109,4 +120,6 @@ class RoomDetails extends React.Component {
   }
 
 
-export default RoomDetails;
+export default GoogleApiWrapper({
+apiKey: ('AIzaSyC1w6F4vC24W9aufbaWqXL4ILyanygTT7Y')
+})(RoomDetails)

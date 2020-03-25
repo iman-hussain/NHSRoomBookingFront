@@ -82,7 +82,6 @@ export default class Room extends Component {
     
     render() {
         return (
-            <a href="/">
             <Container>
             <GoogleLogin/>
             <Card style={{ width: '100%', marginBottom:'1em' }}>
@@ -95,11 +94,10 @@ export default class Room extends Component {
                         {this.showElement(this.props.isCatering, faUtensils)}
                         {this.showElement(this.props.isAssessible, faWheelchair)}
                     </div>
-                    <Button variant="primary" onClick={this.createEvent()}>Book Room</Button>
+                    <Button variant="primary">Book Room</Button>
                 </Card.Body>
             </Card>
             </Container>
-            </a>
             
         )
     }
