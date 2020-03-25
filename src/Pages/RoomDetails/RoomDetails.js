@@ -1,10 +1,10 @@
 import React from 'react';
 import {Container, Row, Col, Form, Button} from 'react-bootstrap';
 import DatePicker from "react-datepicker";
-import "./RoomBooking.css";
+import "./RoomDetails.css";
 import Title from '../../components/title';
 
-class RoomBooking extends React.Component {
+class RoomDetails extends React.Component {
 
     // eslint-disable-next-line no-useless-constructor
     constructor(props){
@@ -24,7 +24,7 @@ class RoomBooking extends React.Component {
     render() {
       return (
         <div>
-        <Title title="Room Details" route="/searchRoom"></Title>
+        <Title title="Room Details" route="/roomDetails"></Title>
         
         <Container>
             <Form id="createBookingForm">
@@ -109,4 +109,4 @@ class RoomBooking extends React.Component {
   }
 
 
-export default RoomBooking;
+export default RoomDetails;

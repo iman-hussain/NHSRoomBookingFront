@@ -10,7 +10,7 @@ import configureStore from "./Redux/configureStore" // CUSTOM configureStore WIT
 
 import Login from './Pages/LogIn';
 import HomePage from './Pages/Homepage';
-import RoomBooking from './Pages/RoomBooking/RoomBooking';
+import RoomDetails from './Pages/RoomDetails/RoomDetails';
 import SearchRoom from './Pages/SearchBooking/SearchRoom';
 import BookingTable from './Pages/BookingHistory/BookingHistory';
 import SideBar from './Layout/sidebar';
@@ -52,7 +52,7 @@ class App extends React.Component {
         
         <Route path="/" exact component={HomePage} />
         <Route path="/login" exact component={Login} />
-        <Route path="/roomBooking" exact component={RoomBooking} />
+        <Route path="/roomDetails" exact component={RoomDetails} />
         <Route path="/searchRoom" exact component={SearchRoom} />
         <Route path="/bookingHistory" exact component={BookingTable} />
 
