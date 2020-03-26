@@ -27,7 +27,7 @@ const Login = () => {
   const dispatch = useDispatch(); // Prevents us from needing mapDispatch and connect
   const loggedIn = useSelector(state => state.userInfo);
   const [userData, setData] = useState([
-    {        
+    {
       username: "",
       userType: "",
       userID: "",
@@ -35,9 +35,10 @@ const Login = () => {
       email: "",
       address: "",
       phoneNumber: "",
-      expenseCode: "",}
+      expenseCode: ""
+    }
   ]);
-  console.log("Logged: " + loggedIn);
+  console.log("Logged: " + JSON.stringify(loggedIn));
   console.log("User data: " + JSON.stringify(userData));
   return (
     <div>
@@ -113,18 +114,25 @@ const Login = () => {
                               email: userData.email,
                               address: userData.address,
                               phoneNumber: userData.phoneNumber,
-                              expenseCode: userData.expenseCode,
-                              loggedIn: true
+                              expenseCode: userData.expenseCode
                             })
                           )
                         : dispatch(
-                            userLoggedIn({ email: "", loggedIn: false })
-                          );
+                          userLoggedIn({
+                            username: "",
+                            userType: "",
+                            userID: "",
+                            name: "",
+                            email: "",
+                            address: "",
+                            phoneNumber: "",
+                            expenseCode: ""
+                          })
+                          )
                     }}
                   >
                     Submit
                   </Button>
-                  {{ loginState } === false ? <p>Not Wrong!</p> : <p>Wrong!</p>}
                   <br></br>
                   <br></br>
                   <br></br>
@@ -165,26 +173,28 @@ async function attemptLogin(values, setLoginState, setData) {
       email: values.email,
       password: values.password
     })
-  }).then(response => response.json())
-  .then((json) => {
-    console.log(JSON.stringify(json.rows));
-    if(json.success) {
-      setData({        
-        username: json.rows.rows[0][2],
-        userType: json.rows.rows[0][1],
-        userID: json.rows.rows[0][0],
-        name: json.rows.rows[0][3] + " " + json.rows.rows[0][4],
-        email: json.rows.rows[0][5],
-        address: json.rows.rows[0][6],
-        phoneNumber: json.rows.rows[0][7],
-        expenseCode: json.rows.rows[0][8],})
-      setLoginState(true);
-      return true;
-    } else {
-      setLoginState(false);
-      return false;
-    }
-  });
+  })
+    .then(response => response.json())
+    .then(json => {
+      console.log(JSON.stringify(json.rows));
+      if (json.success) {
+        setData({
+          username: json.rows.rows[0][2],
+          userType: json.rows.rows[0][1],
+          userID: json.rows.rows[0][0],
+          name: json.rows.rows[0][3] + " " + json.rows.rows[0][4],
+          email: json.rows.rows[0][5],
+          address: json.rows.rows[0][6],
+          phoneNumber: json.rows.rows[0][7],
+          expenseCode: json.rows.rows[0][8]
+        });
+        setLoginState(true);
+        return true;
+      } else {
+        setLoginState(false);
+        return false;
+      }
+    });
   console.log("Response: " + response);
   return response;
 }
