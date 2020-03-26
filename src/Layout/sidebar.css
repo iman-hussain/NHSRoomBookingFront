@@ -58,6 +58,8 @@
   /* Individual item */
   .bm-item {
     display: inline-block;
+    color: white;
+    font-size: x-large;
   }
   
   /* Styling of overlay */
