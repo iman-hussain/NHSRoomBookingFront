@@ -11,10 +11,12 @@ const userInfoSlice = createSlice({
         address: "",
         phoneNumber: "",
         expenseCode: "",
+        bookings: [[]]
     },
     reducers: {
         userLoggedIn: (state, action) => {
-            const {username, userType, userID, name, email, address, phoneNumber, expenseCode, loggedIn} = action.payload
+            const {username, userType, userID, name, email, address, phoneNumber, expenseCode, loggedIn, bookings} = action.payload
+            console.log(action.payload)
             state.username = username
             state.userType = userType
             state.userID = userID
@@ -23,7 +25,7 @@ const userInfoSlice = createSlice({
             state.address = address
             state.phoneNumber = phoneNumber
             state.expenseCode = expenseCode
-            //state.bookings = getUserBookings(userID);
+            state.bookings = bookings
         },
         addToBookings: (state, action) => {
             const {bookings} = action.payload
@@ -34,53 +36,22 @@ const userInfoSlice = createSlice({
     }
 })
 
-//BOOKING_ID:,BOOKING_DATE:,BOOKING_TIME:,GUESTS:, USER_ID:,ROOM_ID:,REVIEW_ID:
-//1,"2018-01-25T00:00:00.000Z","2018-01-25T08:06:00.000Z",2,1,1,null
-async function getUserBookings(id) {
-    console.log("userBookings");
-    const bookings = [{
-      BOOKING_ID: 0,
-      BOOKING_DATE: null,
-      BOOKING_TIME: null,
-      GUESTS: null, 
-      USER_ID: null,
-      ROOM_ID: null,
-      REVIEW_ID: null
-    }]
-    const response = await fetch(`http://localhost:5000/bookings/?id=${encodeURIComponent(id)}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        },
-      })
-        .then(response => response.json())
-        .then(json => {
-          const jsonRows = JSON.stringify(json.rows.rows);
-          console.log(jsonRows);
-          if (json.success) {
-            bookings.push(
-              { 
-                BOOKING_ID: jsonRows.BOOKING_ID,
-                BOOKING_DATE: jsonRows.BOOKING_DATE,
-                BOOKING_TIME: jsonRows.BOOKING_TIME,
-                GUESTS: jsonRows.GUESTS, 
-                USER_ID: jsonRows.USER_ID,
-                ROOM_ID: jsonRows.ROOM_ID,
-                REVIEW_ID: jsonRows.REVIEW_ID
-              }
-            )
-            return true;
-          } else {
-            return false;
-          }
-        });
-      console.log("Bookings Response: " + response);
-      console.log(bookings);
-      return bookings;
+export const getUserDetails = details => {
+   return async dispatch => {
+    dispatch(userLoggedIn({
+      userID: details[0],
+      username: details[1],
+      userType: details[2],
+      name: details[3] + " " + details[4],
+      email: details[5],
+      address: details[6],
+      phoneNumber: details[7],
+      expenseCode: details[8],
+      bookings: details[9]
+    }))
+  } 
 }
-
-
 // Exported actions and reducers
-export const { userLoggedIn } = userInfoSlice.actions;
+export const { userLoggedIn, addToBookings } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
-import { userLoggedIn, getUserDetails } from "../Redux/userInfo";
+import { userLoggedIn, getUserBookings } from "../Redux/userInfo";
 
 /* The form will follow this schema */
 const schema = Yup.object({
@@ -38,8 +38,8 @@ const Login = () => {
       expenseCode: ""
     }
   ]);
-  //console.log("Logged: " + JSON.stringify(loggedIn));
-  //console.log("User data: " + JSON.stringify(userData));
+  console.log("Logged: " + JSON.stringify(loggedIn));
+  console.log("User data: " + JSON.stringify(userData));
   return (
     <div>
       {loggedIn.email ? (
@@ -104,9 +104,31 @@ const Login = () => {
                     variant="primary float-right"
                     type="submit"
                     onClick={async e => {
-                      (await attemptLogin(values, setLoginState, dispatch))
-                        ? setLoginState(true)
-                        : setLoginState(false);
+                      (await attemptLogin(values, setLoginState, setData))
+                        ? dispatch(
+                            userLoggedIn({
+                              username: userData.username,
+                              userType: userData.userType,
+                              userID: userData.userID,
+                              name: userData.name,
+                              email: userData.email,
+                              address: userData.address,
+                              phoneNumber: userData.phoneNumber,
+                              expenseCode: userData.expenseCode
+                            })
+                          )
+                        : dispatch(
+                          userLoggedIn({
+                            username: "",
+                            userType: "",
+                            userID: "",
+                            name: "",
+                            email: "",
+                            address: "",
+                            phoneNumber: "",
+                            expenseCode: ""
+                          })
+                          )
                     }}
                   >
                     Submit
@@ -128,14 +150,20 @@ const Login = () => {
   );
 };
 
-/*
-  Send Values
-  Check if they exist in database
-  Dispatch with userData + bookings
-  Return true;
-*/
-async function attemptLogin(values, setLoginState, dispatch) {
-  let userDetails = "";
+/*  Used for displaying user details and signing out.
+        <p>{loggedIn.username}</p>
+        <p>{loggedIn.userType}</p>
+        <p>{loggedIn.name}</p>
+        <p>{loggedIn.email}</p>
+        <p>{loggedIn.address}</p>
+        <p>{loggedIn.phoneNumber}</p>
+        <p>{loggedIn.expenseCode}</p>
+        <Button onClick={e => dispatch(userLoggedIn({email: "", loggedIn: false}))}>Sign Out</Button>*/
+
+async function attemptLogin(values, setLoginState, setData) {
+  console.log("Attempt Login");
+  console.log(values);
+  let userID = 0;
   const response = await fetch("http://localhost:5000/users/login", {
     method: "POST",
     mode: "cors",
@@ -149,24 +177,39 @@ async function attemptLogin(values, setLoginState, dispatch) {
   })
     .then(response => response.json())
     .then(json => {
-      //console.log(JSON.stringify(json.rows));
+      console.log(JSON.stringify(json.rows));
       if (json.success) {
-        userDetails = json.rows.rows[0];
+        setData({
+          username: json.rows.rows[0][2],
+          userType: json.rows.rows[0][1],
+          userID: json.rows.rows[0][0],
+          name: json.rows.rows[0][3] + " " + json.rows.rows[0][4],
+          email: json.rows.rows[0][5],
+          address: json.rows.rows[0][6],
+          phoneNumber: json.rows.rows[0][7],
+          expenseCode: json.rows.rows[0][8]
+        });
+        userID = json.rows.rows[0][0];
+        setLoginState(true);
         return true;
       } else {
+        setLoginState(false);
         return false;
       }
     });
-  console.log(userDetails);
-  const bookingResponse = await fetch("http://localhost:5000/bookings/user/1");
-  const responseData = await bookingResponse.json();
-  console.log(responseData.rows.rows);
-  const bookingData = responseData.rows.rows;
-  userDetails.push(bookingData);
-  console.log(userDetails);
+  await getUserBookings(userID);
   console.log("Response: " + response);
-  dispatch(getUserDetails(userDetails));
   return response;
 }
 
 export default Login;
+
+/*    console.log(response);
+    if (response.ok) {
+      setLoginState(true);
+      return true;
+    } else {
+      setLoginState(false);
+      console.log(response);
+      return false;
+    }*/
