@@ -23,22 +23,6 @@ class App extends React.Component {
     super(props);
   }
 
-    //Functions Called On Load of the component
-    componentDidMount() {
-      // Start the tick event every 5s - !Used to continously display data in calendar. (this can be removed when database is connected)
-      this.timerID = setInterval(
-          () => this.tick(),
-          5000
-      );
-  }
-
-  // Refresh the components state !Required!
-  tick() {
-      this.setState({
-          date: new Date()
-      });
-  }
-
   render(){
   return (
     <Provider store={store}>

@@ -8,7 +8,8 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Calendar.css";
 import {GoogleLogin, events} from '../../components/GoogleLogin.js';
-import MeetingList from '../MettingList/MeetingList.js';
+import MeetingList, {Events} from '../MettingList/MeetingList.js';
+import { useSelector } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
 
 // Months used to display the viewed month on the calendar.
 const Months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Decemeber"];
@@ -19,35 +20,19 @@ let DaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 var calendarEvents = [];
 
 /*
-  Joins the details in each event and display a circle with a randomly generated color.
-  calendarEvents[i][0] is the event name
-  calendarEvents[i][1] is the event time/date
-  calendarEvents[i][2] is the event colour 
-*/
-function List() {
-  return calendarEvents.map((event, i) => {
-    return (
-      <tbody key={event}>
-        <tr >
-          <td className="center"><div className="circle" style={{background: calendarEvents[i][2]}}></div></td>
-          <td>{calendarEvents[i][0]}</td>
-          <td>{calendarEvents[i][1]}</td>
-        </tr>        
-      </tbody>
-    )
-  })
-}
-
-/*
 Passes in a date - if the date is in the calendar add a circle to the calendar cell, 
 checks for multiple events on the same day and adds the appropriate amount of circles.
   calendarEvents[i][1] is the event time/date
   calendarEvents[i][2] is the event colour 
 */
-function CheckDay(d){
+const CheckDay = (d) => {
   var events = [];
+  console.log("D: " + d)
+  calendarEvents = Events;
+  if (calendarEvents.length >= 0){
    for(var i=0; i<calendarEvents.length; i++){
       if({d}.d===calendarEvents[i][1].slice(0, 10).replace('T', ' ')){
+        console.log(calendarEvents[i][1].slice(0, 10).replace('T', ' '))
         events.push(calendarEvents[i][2]);
       }
     }
@@ -55,11 +40,12 @@ function CheckDay(d){
     return (
       <div>
         {events.map(function(name, index){
-          return <span className="circle" style={{background: events[index]}}></span>
+          console.log(calendarEvents[index])
+          return <span className="circle" style={{background: events[index]}} key={index}></span>
         })}
       </div>
     )
-
+  }
 }
 
 class App extends Component {
@@ -82,10 +68,10 @@ class App extends Component {
   //Functions Called On Load of the component
   componentDidMount(){
     // Start the tick event every 5s - !Used to continously display data in calendar.
-    this.timerID = setInterval(
+/*     this.timerID = setInterval(
       () => this.tick(),
       5000
-    );
+    ); */
     this.currentYear() // Sets current year on mount
     this.currentMonth() // Sets current month on mount
     this.checkLeapYear() // Sets leapyear on mount
@@ -95,13 +81,13 @@ class App extends Component {
   }
 
   // Refresh the components state !Required!
-  tick() {
+  /* tick() {
     this.setState({
       date: new Date()
     });
     calendarEvents = events;
   }
-
+ */
   /*
     Used on button press to load in the next month - Check for LeapYear
   */
@@ -231,7 +217,7 @@ class App extends Component {
                 : day >= days + firstDay ? i+1 - nextDays
                 : (prevDays-firstDay+1)+i
                 }
-        {CheckDay(new Date( this.state.year, day >= days + firstDay ? this.state.month+1 
+        {CheckDay(new Date( this.state.year, day > days + firstDay ? this.state.month+1 
                           : day - firstDay <= 0 ? this.state.month-1 
                           : this.state.month, day <= days + firstDay && day > firstDay ? day - firstDay 
                           : day >= days + firstDay ? i+1 - nextDays 

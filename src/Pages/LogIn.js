@@ -157,16 +157,19 @@ async function attemptLogin(values, setLoginState, dispatch) {
         return false;
       }
     });
-  console.log(userDetails);
-  const bookingResponse = await fetch("http://localhost:5000/bookings/user/1");
-  const responseData = await bookingResponse.json();
-  console.log(responseData.rows.rows);
-  const bookingData = responseData.rows.rows;
-  userDetails.push(bookingData);
-  console.log(userDetails);
-  console.log("Response: " + response);
+  let bookings = await getBookings()
+  userDetails.push(bookings);
   dispatch(getUserDetails(userDetails));
   return response;
 }
 
+async function getBookings(){
+  const bookingResponse = await fetch("http://localhost:5000/bookings/user/1");
+  const responseData = await bookingResponse.json();
+  let bookings = responseData.rows.rows;
+/*   bookings = await bookings.map((data, i) => {
+    bookings[i].push('#' + Math.floor(Math.random() * 16777215).toString(16))
+  }); */
+  return bookings;
+}
 export default Login;

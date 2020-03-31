@@ -38,10 +38,12 @@ const userInfoSlice = createSlice({
 
 export const getUserDetails = details => {
    return async dispatch => {
+    console.log("Details: ")
+    console.log(details[9])
     dispatch(userLoggedIn({
       userID: details[0],
-      username: details[1],
-      userType: details[2],
+      userType: details[1],
+      username: details[2],
       name: details[3] + " " + details[4],
       email: details[5],
       address: details[6],
