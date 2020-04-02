@@ -9,12 +9,12 @@ import configureStore from "./Redux/configureStore" // CUSTOM configureStore WIT
 
 
 import Login from './Pages/LogIn';
+import Signup from './Pages/Signup';
 import HomePage from './Pages/Homepage';
 import RoomDetails from './Pages/RoomDetails/RoomDetails';
 import SearchRoom from './Pages/SearchBooking/SearchRoom';
 import BookingTable from './Pages/BookingHistory/BookingHistory';
 import SideBar from './Layout/sidebar';
-import {GoogleLogin} from './components/GoogleLogin.js';
 
 const [store, persistor] = configureStore();
 
@@ -36,6 +36,7 @@ class App extends React.Component {
         
         <Route path="/" exact component={HomePage} />
         <Route path="/login" exact component={Login} />
+        <Route path="/signup" exact component={Signup}/>
         <Route path="/roomDetails" exact component={RoomDetails} />
         <Route path="/searchRoom" exact component={SearchRoom} />
         <Route path="/bookingHistory" exact component={BookingTable} />

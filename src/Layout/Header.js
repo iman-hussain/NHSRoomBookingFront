@@ -22,9 +22,15 @@ const Header = () => {
         <Form inline>
           {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           {!loggedIn.email ? (
-            <Button href="/login" variant="outline-light">
-              Log In
-            </Button>
+            <div>
+              <Button href="/login" variant="outline-light">
+                Log In
+              </Button>
+              <span style={{padding:"5px"}}></span>
+              <Button href="/signup" variant="outline-light">
+                Sign up
+              </Button>
+            </div>
           ) : (
             <Button href="/login" variant="outline-light">
               Profile
