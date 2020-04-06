@@ -1,44 +1,19 @@
 import React, { useState } from "react";
 import { Button, Form, Container, Col } from "react-bootstrap";
 import Title from "../components/title";
-import * as Yup from "yup";
 import { Formik } from "formik";
-
-/* The form will follow this schema */
-const schema = Yup.object({
-  username: Yup.string().required(),
-  email: Yup.string().required(),
-  password: Yup.string().required(),
-  retypePassword: Yup.string().required(),
-  firstName: Yup.string().required(),
-  surname: Yup.string().required(),
-  address: Yup.string().required(),
-  phoneNumber: Yup.string().required(),
-});
-
-/* Initial Form values */
-const initialValues = {
-  username: "",
-  firstName: "",
-  surname: "",
-  email: "",
-  address: "",
-  phoneNumber: "",
-  expenseCode: "",
-  password: "",
-  retypePassword: "",
-};
+import {signUpValidation, initialValues} from '../components/SignupValidation';
 
 const Signup = () => {
   return (
     <Formik
-      validationSchema={schema}
+      validationSchema={signUpValidation}
       validateOnChange={false}
       onSubmit={values =>
         createUser(values)
       }
       initialValues={initialValues}
-      isInitialValid={schema.isValidSync(initialValues)}
+      isInitialValid={signUpValidation.isValidSync(initialValues)}
     >
       {({ handleSubmit, handleChange, values, touched, isInvalid, errors }) => (
         <div>
@@ -57,7 +32,7 @@ const Signup = () => {
                   placeholder="Username:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Username is required"}
+                  {errors.username}
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -72,7 +47,7 @@ const Signup = () => {
                   placeholder="First name:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"First name is required"}
+                  {errors.firstName}
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -87,7 +62,7 @@ const Signup = () => {
                   placeholder="Surname:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Surname is required"}
+                  {errors.surname}
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>
@@ -103,7 +78,7 @@ const Signup = () => {
                   placeholder="Enter address:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Address is required"}
+                  {errors.address}
                 </Form.Control.Feedback>
               </Form.Group>
             <Form.Row>
@@ -119,7 +94,7 @@ const Signup = () => {
                   placeholder="Enter phone number:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Phone number is required"}
+                  {errors.phoneNumber}
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -134,7 +109,7 @@ const Signup = () => {
                   placeholder="Enter expense code:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Expense code is required"}
+                  {errors.expenseCode}
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>
@@ -149,7 +124,7 @@ const Signup = () => {
                   placeholder="Enter Email:"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Email is required"}
+                  {errors.email && touched.email && errors.email}
                 </Form.Control.Feedback>
               </Form.Group>
             <Form.Row>
@@ -165,7 +140,7 @@ const Signup = () => {
                   placeholder="Password: "
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Password is required"}
+                  {errors.password}
                 </Form.Control.Feedback>
               </Form.Group>
               
@@ -180,7 +155,7 @@ const Signup = () => {
                   placeholder="Retype Password: "
                 />
                 <Form.Control.Feedback type="invalid">
-                  {"Password is required"}
+                  {errors.retypePassword}
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>
