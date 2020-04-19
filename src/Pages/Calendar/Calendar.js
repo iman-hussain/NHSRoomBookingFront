@@ -27,8 +27,8 @@ checks for multiple events on the same day and adds the appropriate amount of ci
 */
 const CheckDay = (d) => {
   var events = [];
-  console.log("D: " + d)
   calendarEvents = Events;
+  console.log(calendarEvents);
   if (calendarEvents.length >= 0){
    for(var i=0; i<calendarEvents.length; i++){
       if({d}.d===calendarEvents[i][1].slice(0, 10).replace('T', ' ')){
