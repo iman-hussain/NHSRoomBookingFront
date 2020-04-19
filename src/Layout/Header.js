@@ -2,8 +2,11 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import { Form, Container, Button } from "react-bootstrap";
 import logo from "../assets/img/nhsRoomBookingLogo.png";
-import { useSelector } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
+import { useSelector, useDispatch } from "react-redux"; // userSelector grabs state
+import { userLoggedOut} from "../Redux/userInfo";
+
 const Header = () => {
+  const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.userInfo);
   return (
     <Navbar variant="blue justify-content-between">
@@ -32,9 +35,15 @@ const Header = () => {
               </Button>
             </div>
           ) : (
+            <>
             <Button href="/login" variant="outline-light">
               Profile
             </Button>
+            <Button href="/login" variant="outline-light"
+            onClick={() => dispatch(userLoggedOut())}>
+              Log out
+            </Button>
+            </>
           )}
         </Form>
       </Container>

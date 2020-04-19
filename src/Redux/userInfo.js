@@ -27,6 +27,17 @@ const userInfoSlice = createSlice({
             state.expenseCode = expenseCode
             state.bookings = bookings
         },
+        userLoggedOut: (state, action) => {
+            state.username = ""
+            state.userType = ""
+            state.userID = ""
+            state.name = ""
+            state.email = ""
+            state.address = ""
+            state.phoneNumber = ""
+            state.expenseCode = ""
+            state.bookings = [[]]
+        },
         addToBookings: (state, action) => {
             const {bookings} = action.payload
             state.bookings = bookings // Get from API and store here. 
@@ -54,6 +65,6 @@ export const getUserDetails = details => {
   } 
 }
 // Exported actions and reducers
-export const { userLoggedIn, addToBookings } = userInfoSlice.actions;
+export const { userLoggedIn, addToBookings, userLoggedOut } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
