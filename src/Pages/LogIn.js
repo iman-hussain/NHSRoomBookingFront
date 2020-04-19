@@ -164,7 +164,7 @@ async function attemptLogin(values, setLoginState, dispatch) {
 }
 
 async function getBookings(){
-  const bookingResponse = await fetch("http://localhost:5000/bookings/user/5000");
+  const bookingResponse = await fetch("http://209.97.191.60:5000/bookings/user/5000");
   const responseData = await bookingResponse.json();
   let bookings = responseData.rows.rows;
 /*   bookings = await bookings.map((data, i) => {

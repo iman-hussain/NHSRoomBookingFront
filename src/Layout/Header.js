@@ -39,6 +39,7 @@ const Header = () => {
             <Button href="/login" variant="outline-light">
               Profile
             </Button>
+            <span style={{padding:"5px"}}></span>            
             <Button href="/login" variant="outline-light"
             onClick={() => dispatch(userLoggedOut())}>
               Log out
