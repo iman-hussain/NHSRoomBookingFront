@@ -5,14 +5,33 @@ import "./RoomDetails.css";
 import Title from '../../components/title';
 import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
 import ls from 'local-storage';
-import { faParking, faRestroom, faUtensils, faWheelchair, faUserFriends} from '@fortawesome/free-solid-svg-icons'
+import { faParking, faRestroom, faUtensils, faWheelchair, faUserFriends,
+         faBuilding, faMapMarkedAlt, faUsers, faPhoneSquareAlt, faClipboardList,
+         faCalendarAlt, faClock
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Select from "react-dropdown-select";
+
+
 
 export class RoomDetails extends React.Component {
     // eslint-disable-next-line no-useless-constructor
     constructor(props){
         super(props)
     }
+
+    componentDidMount () {
+        var users = [];
+        getUsers().then((result) => {
+            users = result;
+            this.setState({ 
+                users: users.map((user) => {
+                    return {'value': user[0], 'label': user[3]+' '+user[4]+' - '+user[5]}
+                })
+            })
+        });
+    }
+ 
     state = {
         startDate: new Date(),
       };
@@ -31,10 +50,10 @@ export class RoomDetails extends React.Component {
 
     getRoomLatitudeLongitude() { 
         var room = ls.get('roomJson').split(',');
-        return {lat: parseFloat(room[6]), lng: parseFloat(room[7])};
+        return {lat: parseFloat(room[9]), lng: parseFloat(room[10])};
     }
 
-    getRoomName(){
+    getRoomNumber(){
         return ls.get('roomJson').split(',')[0].slice(1);
     }
 
@@ -42,19 +61,36 @@ export class RoomDetails extends React.Component {
         return ls.get('roomJson').split(',')[5];
     }
 
+    getRoomDetails(){
+        console.log(ls.get('roomJson').split(','));
+        return ls.get('roomJson').split(',');
+    }
+
     getAtendees(){
         return parseInt(ls.get('attendees'));
+    }
+    getDateFromLocalStorage(){
+        return ls.get('date');
+    }
+    getTimeFromLocalStorage(){
+        return ls.get('time');
+    }
+        
+    setUserValues(user){
+        console.log(user);
     }
 
     buildGuestForms(){
         var guestFields = [];
-        // Use function "this.getAtendees()" later.
-        for (let i = 0; i < 4; i++) {
+        console.log(this.state.users);
+        
+        var guests = this.getAtendees() === 0 ? 1 : this.getAtendees();
+        for (let i = 0; i < guests; i++) {
             guestFields.push(
             <Form.Group as={Col}controlId="formGridDate">
                 <FontAwesomeIcon icon={faUserFriends} />&nbsp;
-                <label>Guest {i+1}</label>
-                <Form.Control type="number" placeholder="Guests"/>
+                <label>Guest {i+1}</label>  
+                <Select options={this.state.users} onChange={(values) => this.setUserValues(values[0])} />
             </Form.Group>
             );
         }
@@ -67,18 +103,41 @@ export class RoomDetails extends React.Component {
         <Title title="Room Details" route="/roomDetails"></Title>
         
         <Container>
-        <h3>Room: {this.getRoomName()} </h3>
+        {/* <h3>Building: {this.getRoomDetails()[7]} <br />
+            Room #{this.getRoomDetails()[1]} - Floor: {this.getRoomDetails()[2]} </h3> */}
         <Card style={{ width: '100%', marginBottom:'1em' }}>
             <Card.Img variant="top" src={"/roomPics/room"+this.getPictureId()+".jpg"} />
             <Card.Body>
-                <Card.Title>{this.props.roomName}</Card.Title>
-                <div className="iconContainer">
-                    {this.showElement(this.props.isParking, faParking)}
-                    {this.showElement(this.props.isToilets, faRestroom)}
-                    {this.showElement(this.props.isCatering, faUtensils)}
-                    {this.showElement(this.props.isAssessible, faWheelchair)}
+                <Card.Title>
+                <h5>{<FontAwesomeIcon icon={faBuilding} />} Building: {this.getRoomDetails()[7]} - 
+                Room #{this.getRoomDetails()[1]} - Floor: {this.getRoomDetails()[2]}</h5>
+                </Card.Title>
+                <div class="row">
+                    <div class="col-md-8 col-xs-12">
+                        {<FontAwesomeIcon icon={faMapMarkedAlt}/>}<b> Address:</b> {this.getRoomDetails()[8]}<br></br>
+                        {<FontAwesomeIcon icon={faUsers}/>}<b> Capacity:</b> {this.getRoomDetails()[3]}<br></br>
+                        {<FontAwesomeIcon icon={faClipboardList}/>}<b> Facilities:</b> {this.getRoomDetails()[4]}<br></br>
+                        {<FontAwesomeIcon icon={faPhoneSquareAlt}/>}<b> Contact Number: </b>{this.getRoomDetails()[11]}<br></br>
+                        --<br></br>
+                        {<FontAwesomeIcon icon={faCalendarAlt}/>}<b> Date:</b> {this.getDateFromLocalStorage()}<br></br>
+                        {<FontAwesomeIcon icon={faClock}/>}<b> Time:</b> {this.getTimeFromLocalStorage()}<br></br>
+                    </div>
+                    <div class="col-md-4 col-xs-12 icons">
+                        <h2>
+                            {this.getRoomDetails()[14]==="1"? <FontAwesomeIcon icon={faParking}/> : 
+                                <FontAwesomeIcon className="icon-disabled" icon={faParking}/>}&nbsp;-&nbsp;
+                            {this.getRoomDetails()[15]==="1"? <FontAwesomeIcon icon={faUtensils}/> : 
+                            <FontAwesomeIcon className="icon-disabled" icon={faUtensils}/>}&nbsp;-&nbsp;
+                            {this.getRoomDetails()[14]==="1"? <FontAwesomeIcon icon={faRestroom}/> : 
+                            <FontAwesomeIcon className="icon-disabled" icon={faRestroom}/>}&nbsp;-&nbsp;
+                            {this.getRoomDetails()[15]==="1"? <FontAwesomeIcon icon={faWheelchair}/> : 
+                                <FontAwesomeIcon className="icon-disabled" icon={faWheelchair}/>}
+                        </h2>
+                    </div>
+                    <div class="col-12">
+                    </div>
                 </div>
-                <Button variant="primary">Book Room</Button>
+                <Button variant="primary float-right">Book Room</Button>
             </Card.Body>
         </Card>
 
@@ -91,34 +150,35 @@ export class RoomDetails extends React.Component {
                 </div>
                 <div class="col-6">
                     <Map google={this.props.google}
-                        style={{width: '100%', height: '100vh', position: 'relative'}}
+                        style={{width: '100%', height: '60vh', position: 'relative'}}
                         className={'map'}
                         zoom={17}
                         initialCenter={this.getRoomLatitudeLongitude()}>
                     <Marker
-                        title={this.getRoomName()}
-                        name={this.getRoomName()}
+                        title={this.getRoomNumber()}
+                        name={this.getRoomNumber()}
                         position={this.getRoomLatitudeLongitude()} />
                     </Map>
                 </div>
             </Row>
         </Container>
-            {/* <div style={{ height: '100vh', width: '100%' }}>
-                <GoogleMapReact
-                bootstrapURLKeys={{ key: 'AIzaSyC1w6F4vC24W9aufbaWqXL4ILyanygTT7Y' }}
-                defaultCenter={this.getRoomLatitudeLongitude()}
-                defaultZoom={15}
-                >
-                <Marker position={this.getRoomLatitudeLongitude()} />
-
-                </GoogleMapReact>
-            </div> */}
         </Container>
         </div>
       )
     }
   }
 
+  async function getUsers(){
+    const usersResponse = await fetch("http://localhost:5000/users");
+    const responseData = await usersResponse.json();
+    return responseData.rows.rows;
+  }
+
+  async function getCatering(id){
+    const response = await fetch("http://localhost:5000/caterings/"+id);
+    const responseData = await response.json();
+    return responseData.rows.rows;
+  }
 
 export default GoogleApiWrapper({
 apiKey: ('AIzaSyC1w6F4vC24W9aufbaWqXL4ILyanygTT7Y')

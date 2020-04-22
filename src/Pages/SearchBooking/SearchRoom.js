@@ -25,103 +25,65 @@ class SearchRoom extends React.Component {
           cateringCheckBox: false,
           accessableCheckBox: false,
           parkingCheckBox: false,
+          rooms: []
         };
         this.createBooking = this.createBooking.bind(this);
-        this.getRooms = this.getRooms.bind(this);
+        this.buildRooms = this.buildRooms.bind(this);
     }
 
     handleRoomClick(room){
       ls.set('roomJson', JSON.stringify(room));
-      ls.set('attendees', attendees? attendees.toString():'0');
-      ls.set('date', date? date.toString():'0');
+      ls.set('attendees', this.attendees? this.attendees.toString():'0');
+    }
+    
+    componentDidMount() {
+      getRoomsFromDB().then(async (result) => {
+        let tempRooms = [];
+        for (let i = 0; i < result.length; i++) {
+          const element = result[i];
+          const buildingResult = await (getBuildingFromDB(element[6].toString()));
+          element[6] = buildingResult;
+          tempRooms.push(element);
+        }
+        this.setState({rooms:tempRooms, isLoaded: true});
+        // console.log(this.state);
+      });
     }
 
-    getRooms(){
+    buildRooms(){
         const { error, isLoaded, items } = this.state;
         if (error) {
           return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
           return <div>Loading...</div>;
         } else {
+          let componentArrays = [];
+          for(let i=0; i < this.state.rooms.length; i++){
+            let room = this.state.rooms[i];
+            componentArrays.push(
+              <div key={room} class="col-md-6">
+                <a href="/roomDetails" onClick={() => this.handleRoomClick(room)}>
+                <Room 
+                  picId={i+1}
+                  roomNumber={room[1]}
+                  floor={room[2]}
+                  capacity={room[3]}
+                  facilities={room[4]}
+                  accessibility={room[5]}
+                  building={room[6][0]}
+                  date={date}
+                  time={time}
+                ></Room>
+                </a>
+              </div>
+            )
+          }
           return (
             <Row>
-              {rooms.map((room, index) => (
-                  <div key={room} class="col-md-6">
-                    <a href="/roomDetails" onClick={this.handleRoomClick(room)}>
-                    <Room 
-                      picId={room[5]}
-                      roomName={room[0]}
-                      isAssessible={room[1]}
-                      isToilets={room[2]}
-                      isCatering={room[3]}
-                      isParking={room[4]}
-                      attendees={attendees}
-                      date={date}
-                      time={time}
-                      latitude={room[6]}
-                      longitude={room[7]}
-                    ></Room>
-                    </a>
-                  </div>
-              ))}
+              {componentArrays}
             </Row>
           );
         }
-    }
-    
-    generateRooms(){
-      var rooms2 = [
-      ["MI101", true, true, true, false, 1, 53.476292, -2.231379], 
-      ["MI102", false, false, true, true, 2, 53.476292, -2.231379], 
-      ["MI103", true, false, false, true, 3, 53.476292, -2.231379], 
-      ["MI201", false, true, true, true, 4, 53.476292, -2.231379], 
-      ["MI202", true, true, true, true, 6, 53.476292, -2.231379], 
-      ["MI203", false, false, true, false, 7, 53.476292, -2.231379], 
-      ["MI301", true, true, true, true, 8, 53.476292, -2.231379], 
-      ["MI302", false, false, false, true, 9, 53.476292, -2.231379], 
-      ["MI304", false, false, true, false, 2, 53.476292, -2.231379],
-      ["MA101", false, true, false, false, 4, 53.476292, -2.231379], 
-      ["MA102", true, false, false, false, 6, 53.476292, -2.231379], 
-      ["MA103", false, false, false, true, 8, 53.476292, -2.231379], 
-      ["MA201", false, true, true, true, 9, 53.476292, -2.231379], 
-      ["MA202", true, true, true, true, 1, 53.476292, -2.231379], 
-      ["MA203", true, false, true, true, 3, 53.476292, -2.231379], 
-      ["MA301", true, true, true, true, 5, 53.476292, -2.231379], 
-      ["MA302", true, false, false, true, 7, 53.476292, -2.231379], 
-      ["MA304", true, true, false, false, 9, 53.476292, -2.231379],
-      ["MC101", false, false, false, false, 1, 53.476292, -2.231379], 
-      ["MC102", true, false, false, true, 2, 53.476292, -2.231379], 
-      ["MC103", false, true, false, true, 3, 53.476292, -2.231379], 
-      ["MC201", true, true, true, false, 4, 53.476292, -2.231379], 
-      ["MC202", true, true, true, true, 5, 53.476292, -2.231379], 
-      ["MC203", false, false, true, true, 6, 53.476292, -2.231379], 
-      ["MC301", false, true, true, true, 7, 53.476292, -2.231379], 
-      ["MC302", true, false, false, true, 8, 53.476292, -2.231379], 
-      ["MC304", true, true, false, false, 9, 53.476292, -2.231379]
-    ]
-      this.setState({rooms: rooms2, isLoaded: true})
-      rooms = rooms2;
-      console.log("First Rooms" + rooms);
-    }
-
-    componentDidMount() {
-/*         fetch("http://209.97.191.60:3001/rooms")
-          .then(res => res.json())
-          .then(
-            (result) => {
-              this.setState({
-                isLoaded: true,
-                items: result.rows
-              });
-            },
-            (error) => {
-              this.setState({
-                isLoaded: true,
-                error
-              });
-            }
-        ) */
-        this.generateRooms();
     }
 
     state = {
@@ -133,20 +95,17 @@ class SearchRoom extends React.Component {
     };
     
     handleChange = dates => {
-      console.log("dates: " + dates);
-      console.log("dates: " + dates.getMonth());
       date = dates.getDate() + "-" + dates.getMonth() + "-" + dates.getFullYear();
-      time = dates.getHours() + ":" + dates.getMinutes();
-      console.log(date);
+      time = dates.getHours() + ":" + dates.getMinutes() + ":00";
+      ls.set('date', date? date.toString():'0');
+      ls.set('time', time? time.toString():'0');
+      console.log(date, "time:", dates);
         this.setState({
             startDate: dates
         });
     };
 
-    onValueChange = value => {
-      console.log(value);
-      attendees = value;
-    }
+    onGuestsChange = (event) => { this.attendees = event.target.value };
 
     handleCheckChange1 = () => {
         this.setState({ toiletCheckBox : !this.state.toiletCheckBox});
@@ -166,23 +125,23 @@ class SearchRoom extends React.Component {
   
     createBooking(){
       var roomQuery = [];
+      
+      // this.generateRooms();
+      // rooms.map(room => {
+      //   if(room[1] === this.state.accessableCheckBox
+      //     && room[2] === this.state.toiletCheckBox
+      //     && room[3] === this.state.cateringCheckBox
+      //     && room[4] === this.state.parkingCheckBox){
+      //       roomQuery.push(room)
+      //     }
+      // })
 
-      this.generateRooms();
-      rooms.map(room => {
-        if(room[1] === this.state.accessableCheckBox
-          && room[2] === this.state.toiletCheckBox
-          && room[3] === this.state.cateringCheckBox
-          && room[4] === this.state.parkingCheckBox){
-            roomQuery.push(room)
-          }
-      })
-
-      rooms = roomQuery;
-      console.log(rooms);
-      this.getRooms();
+      // rooms = roomQuery;
+      this.buildRooms();
     }
 
     render() {
+      console.log("State changed");
       return (
         <div>
         <GoogleLogin/>
@@ -194,7 +153,9 @@ class SearchRoom extends React.Component {
                     <Form.Group as={Col}controlId="formGridDate">
                         <FontAwesomeIcon icon={faUserFriends} />&nbsp;
                         <label>Guests</label>
-                        <Form.Control type="number" placeholder="Guests"/>
+                        <Form.Control type="number" placeholder="Guests" 
+                            onChange={this.onGuestsChange}
+                        />
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridDate">
                         <FontAwesomeIcon icon={faCalendarDay} />&nbsp;
@@ -264,11 +225,23 @@ class SearchRoom extends React.Component {
                 </Form.Group>
                 <hr></hr>
             </Form>
-              {this.getRooms()}
+              {this.buildRooms()}
         </Container>
         </div>
       )
     }     
+  }
+
+  async function getRoomsFromDB(){
+    const response = await fetch("http://localhost:5000/rooms");
+    const responseData = await response.json();
+    return responseData.rows.rows;
+  }
+
+  async function getBuildingFromDB(buildingId){
+    const response = await fetch("http://localhost:5000/buildings/"+buildingId);
+    const responseData = await response.json();
+    return responseData.rows.rows;
   }
   
 

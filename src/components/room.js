@@ -15,6 +15,7 @@ export default class Room extends Component {
           eventClick: true,
         }
         this.createEvent = this.createEvent.bind(this);
+        
     }
 
     //Functions Called On Load of the component
@@ -52,9 +53,9 @@ export default class Room extends Component {
 
     createEvent(){
        return event = {
-            'summary': this.props.roomName + "@" + this.props.date + " " + this.props.time,
+            'summary': this.props.roomNumber + "@" + this.props.date + " " + this.props.time,
             'location': '800 Howard St., San Francisco, CA 94103',
-            'description': this.props.attendees,
+            'description': this.props.capacity,
             'start': {
               'dateTime': this.props.date + 'T09:00:00-07:00',
               'timeZone': 'America/Los_Angeles'
@@ -87,12 +88,15 @@ export default class Room extends Component {
             <Card style={{ width: '100%', marginBottom:'1em' }}>
                 <Card.Img variant="top" src={"/roomPics/room"+this.props.picId+".jpg"} />
                 <Card.Body>
-                    <Card.Title>{this.props.roomName}</Card.Title>
+                    <Card.Title>
+                       Building: {this.props.building[1]} <br />
+                       Room #{this.props.roomNumber} - Floor: {this.props.floor}
+                    </Card.Title>
                     <div className="iconContainer">
-                        {this.showElement(this.props.isParking, faParking)}
+                        {/* {this.showElement(this.props.isParking, faParking)}
                         {this.showElement(this.props.isToilets, faRestroom)}
                         {this.showElement(this.props.isCatering, faUtensils)}
-                        {this.showElement(this.props.isAssessible, faWheelchair)}
+                        {this.showElement(this.props.isAssessible, faWheelchair)} */}
                     </div>
                     <Button variant="primary">Book Room</Button>
                 </Card.Body>

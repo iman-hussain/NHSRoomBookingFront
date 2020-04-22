@@ -21,3 +21,12 @@
 .react-datepicker-wrapper {
     width: 100%;
 }
+
+.icons {
+    color: navy;
+    margin-top: 1em;
+}
+
+.icon-disabled{
+    color: darkgray;
+}
