@@ -17,14 +17,10 @@ let Events = [];
 const MeetingList = () => {
   const bookings = useSelector(state => state.userInfo.bookings);
   var calendarEvents = [];
-  console.log(bookings)
   if (bookings[0].length > 0) {
     for (var i = 0; i < bookings.length; i++) {
-      console.log(bookings)
       calendarEvents.push([bookings[i][1], bookings[i][2], bookings[i][5]]);
     }
-
-    console.log(calendarEvents);
 
   Events = calendarEvents;
   return calendarEvents.map((event, i) => {
