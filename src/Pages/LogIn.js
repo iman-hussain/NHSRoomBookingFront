@@ -12,20 +12,20 @@ import { userLoggedIn, getUserDetails } from "../Redux/userInfo";
 /* The form will follow this schema */
 const schema = Yup.object({
   email: Yup.string().required(),
-  password: Yup.string().required()
+  password: Yup.string().required(),
 });
 
 /* Initial Form values */
 const initialValues = {
   email: "",
-  password: ""
+  password: "",
 };
 
 /*Determines whether to show the login functionality or sign out depending on stored data.*/
 const Login = () => {
-  const [loginState, setLoginState] = useState(false);
+  const [loginState, setLoginState] = useState(true);
   const dispatch = useDispatch(); // Prevents us from needing mapDispatch and connect
-  const loggedIn = useSelector(state => state.userInfo);
+  const loggedIn = useSelector((state) => state.userInfo);
   const [userData, setData] = useState([
     {
       username: "",
@@ -35,8 +35,8 @@ const Login = () => {
       email: "",
       address: "",
       phoneNumber: "",
-      expenseCode: ""
-    }
+      expenseCode: "",
+    },
   ]);
   //console.log("Logged: " + JSON.stringify(loggedIn));
   //console.log("User data: " + JSON.stringify(userData));
@@ -59,21 +59,21 @@ const Login = () => {
             values,
             touched,
             isInvalid,
-            errors
+            errors,
           }) => (
             <div className="Login">
               <Title title="Log In"></Title>
               <Container>
                 <Form noValidate onSubmit={handleSubmit}>
-                  <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
+                  <Form.Group controlId="formLogin">
+                    <Form.Label>Email address or Username</Form.Label>
                     <Form.Control
                       type="email"
                       name="email"
                       value={values.email}
                       onChange={handleChange}
                       isInvalid={!!errors.email}
-                      placeholder="Enter Email:"
+                      placeholder="Enter Email or Username:"
                     />
                     <Form.Control.Feedback type="invalid">
                       {"Email is required"}
@@ -103,7 +103,7 @@ const Login = () => {
                   <Button
                     variant="primary float-right"
                     type="submit"
-                    onClick={async e => {
+                    onClick={async (e) => {
                       (await attemptLogin(values, setLoginState, dispatch))
                         ? setLoginState(true)
                         : setLoginState(false);
@@ -111,6 +111,13 @@ const Login = () => {
                   >
                     Submit
                   </Button>
+                  {!loginState && (
+                    <Form.Group>
+                      <Form.Label style={{ color: "red" }}>
+                        Invalid Credentials
+                      </Form.Label>
+                    </Form.Group>
+                  )}
                   <br></br>
                   <br></br>
                   <br></br>
@@ -140,16 +147,15 @@ async function attemptLogin(values, setLoginState, dispatch) {
     method: "POST",
     mode: "cors",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       email: values.email,
-      password: values.password
-    })
+      password: values.password,
+    }),
   })
-    .then(response => response.json())
-    .then(json => {
-      //console.log(JSON.stringify(json.rows));
+    .then((response) => response.json())
+    .then((json) => {
       if (json.success) {
         userDetails = json.rows.rows[0];
         return true;
@@ -157,17 +163,23 @@ async function attemptLogin(values, setLoginState, dispatch) {
         return false;
       }
     });
-  let bookings = await getBookings()
-  userDetails.push(bookings);
-  dispatch(getUserDetails(userDetails));
+
+  let bookings = await getBookings();
+  if (userDetails) {
+    userDetails.push(bookings);
+    dispatch(getUserDetails(userDetails));
+  }
+
   return response;
 }
 
-async function getBookings(){
-  const bookingResponse = await fetch("http://209.97.191.60:5000/bookings/user/5000");
+async function getBookings() {
+  const bookingResponse = await fetch(
+    "http://209.97.191.60:5000/bookings/user/5000"
+  );
   const responseData = await bookingResponse.json();
   let bookings = responseData.rows.rows;
-/*   bookings = await bookings.map((data, i) => {
+  /*   bookings = await bookings.map((data, i) => {
     bookings[i].push('#' + Math.floor(Math.random() * 16777215).toString(16))
   }); */
   return bookings;
