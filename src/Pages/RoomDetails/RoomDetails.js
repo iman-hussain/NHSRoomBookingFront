@@ -169,13 +169,13 @@ export class RoomDetails extends React.Component {
   }
 
   async function getUsers(){
-    const usersResponse = await fetch("http://localhost:5000/users");
+    const usersResponse = await fetch("http://209.97.191.60:5000/users");
     const responseData = await usersResponse.json();
     return responseData.rows.rows;
   }
 
   async function getCatering(id){
-    const response = await fetch("http://localhost:5000/caterings/"+id);
+    const response = await fetch("http://209.97.191.60:5000/caterings/"+id);
     const responseData = await response.json();
     return responseData.rows.rows;
   }
