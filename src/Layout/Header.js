@@ -22,6 +22,7 @@ const Header = () => {
             />{" "}
           </a>
         </Navbar.Brand>
+        <p>Version 1.0.0</p>
         <Form inline>
           {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           {!loggedIn.email ? (
