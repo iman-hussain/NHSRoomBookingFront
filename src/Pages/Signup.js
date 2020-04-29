@@ -188,6 +188,7 @@ async function createUser(values) {
         USER_ID: Math.floor(Math.random() * Math.floor(1000)),
         USER_TYPE: 0, 
         USERNAME: values.username,
+        PASSWORD: values.password,
         FIRST_NAME: values.firstName, 
         SURNAME: values.surname, 
         EMAIL: values.email, 

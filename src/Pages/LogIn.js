@@ -166,6 +166,7 @@ async function attemptLogin(values, setLoginState, dispatch) {
 
   let bookings = await getBookings();
   if (userDetails) {
+    console.log(userDetails);
     userDetails.push(bookings);
     dispatch(getUserDetails(userDetails));
   }

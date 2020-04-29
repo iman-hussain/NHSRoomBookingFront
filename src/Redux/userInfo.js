@@ -54,13 +54,13 @@ export const getUserDetails = details => {
     dispatch(userLoggedIn({
       userID: details[0],
       userType: details[1],
-      username: details[2],
-      name: details[3] + " " + details[4],
-      email: details[5],
-      address: details[6],
-      phoneNumber: details[7],
-      expenseCode: details[8],
-      bookings: details[9]
+      username: details[3],
+      name: details[4] + " " + details[5],
+      email: details[6],
+      address: details[7],
+      phoneNumber: details[9],
+      expenseCode: details[9],
+      bookings: details[10]
     }))
   } 
 }
