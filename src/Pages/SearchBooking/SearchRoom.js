@@ -9,7 +9,7 @@ import { faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } fr
 import { GoogleLogin } from '../../components/GoogleLogin';
 import ls from 'local-storage';
 
-var rooms = [];
+var globalRooms = [];
 var attendees = 0;
 var location = {};
 var time = ""
@@ -27,7 +27,7 @@ class SearchRoom extends React.Component {
           parkingCheckBox: false,
           rooms: []
         };
-        this.createBooking = this.createBooking.bind(this);
+        this.filterRooms = this.filterRooms.bind(this);
         this.buildRooms = this.buildRooms.bind(this);
     }
 
@@ -46,8 +46,21 @@ class SearchRoom extends React.Component {
           tempRooms.push(element);
         }
         this.setState({rooms:tempRooms, isLoaded: true});
-        // console.log(this.state);
+        globalRooms = tempRooms;
       });
+    }
+
+    filterRooms(){
+      let tempRooms = [];
+      globalRooms.map(room => {
+        if(room[5] == this.state.accessableCheckBox &&
+          room[6][0][8] == this.state.parkingCheckBox &&
+          room[6][0][9] == this.state.cateringCheckBox){
+            tempRooms.push(room)
+        }
+      })
+      // this.setState({rooms: tempRooms})
+      this.buildRooms();
     }
 
     buildRooms(){
@@ -58,6 +71,13 @@ class SearchRoom extends React.Component {
           return <div>Loading...</div>;
         } else {
           let componentArrays = [];
+          let rooms = [];
+          // if(globalRooms == null){
+          //   rooms = this.state.rooms;
+          // }else{
+          //   rooms = globalRooms;
+          // }
+          console.log(this.state.rooms)
           for(let i=0; i < this.state.rooms.length; i++){
             let room = this.state.rooms[i];
             componentArrays.push(
@@ -71,6 +91,9 @@ class SearchRoom extends React.Component {
                   facilities={room[4]}
                   accessibility={room[5]}
                   building={room[6][0]}
+                  parking={room[6][0][8]}
+                  catering={room[6][0][9]}
+                  toilet={1}
                   date={date}
                   time={time}
                 ></Room>
@@ -109,39 +132,27 @@ class SearchRoom extends React.Component {
 
     handleCheckChange1 = () => {
         this.setState({ toiletCheckBox : !this.state.toiletCheckBox});
+        // this.filterRooms();
     }
 
     handleCheckChange2 = () => {
       this.setState({ cateringCheckBox : !this.state.cateringCheckBox});
+      // this.filterRooms();
     }
     
     handleCheckChange3 = () => {
       this.setState({ accessableCheckBox : !this.state.accessableCheckBox});
+      // this.filterRooms();
     }
 
     handleCheckChange4 = () => {
       this.setState({ parkingCheckBox : !this.state.parkingCheckBox});
+      // this.filterRooms();
     }
   
-    createBooking(){
-      var roomQuery = [];
-      
-      // this.generateRooms();
-      // rooms.map(room => {
-      //   if(room[1] === this.state.accessableCheckBox
-      //     && room[2] === this.state.toiletCheckBox
-      //     && room[3] === this.state.cateringCheckBox
-      //     && room[4] === this.state.parkingCheckBox){
-      //       roomQuery.push(room)
-      //     }
-      // })
 
-      // rooms = roomQuery;
-      this.buildRooms();
-    }
 
     render() {
-      console.log("State changed");
       return (
         <div>
         <GoogleLogin/>
@@ -219,7 +230,7 @@ class SearchRoom extends React.Component {
                         </Row>
                     </Col>
                     <Col className="pt-1" sm={2}>
-                        <Button variant="primary"  onClick={this.createBooking}>Search</Button>
+                        <Button variant="primary"  onClick={this.filterRooms()}>Search</Button>
                     </Col>
                 </Row>
                 </Form.Group>

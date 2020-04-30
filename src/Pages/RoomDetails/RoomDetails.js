@@ -127,10 +127,9 @@ export class RoomDetails extends React.Component {
                             {this.getRoomDetails()[14]==="1"? <FontAwesomeIcon icon={faParking}/> : 
                                 <FontAwesomeIcon className="icon-disabled" icon={faParking}/>}&nbsp;-&nbsp;
                             {this.getRoomDetails()[15]==="1"? <FontAwesomeIcon icon={faUtensils}/> : 
-                            <FontAwesomeIcon className="icon-disabled" icon={faUtensils}/>}&nbsp;-&nbsp;
-                            {this.getRoomDetails()[14]==="1"? <FontAwesomeIcon icon={faRestroom}/> : 
-                            <FontAwesomeIcon className="icon-disabled" icon={faRestroom}/>}&nbsp;-&nbsp;
-                            {this.getRoomDetails()[15]==="1"? <FontAwesomeIcon icon={faWheelchair}/> : 
+                                <FontAwesomeIcon className="icon-disabled" icon={faUtensils}/>}&nbsp;-&nbsp;
+                            {<FontAwesomeIcon icon={faRestroom}/>} &nbsp;-&nbsp;
+                            {this.getRoomDetails()[5]==="1"? <FontAwesomeIcon icon={faWheelchair}/> : 
                                 <FontAwesomeIcon className="icon-disabled" icon={faWheelchair}/>}
                         </h2>
                     </div>

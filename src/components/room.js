@@ -36,18 +36,18 @@ export default class Room extends Component {
 
     componentDidUpdate(){
         /* console.log(this.props.roomName);
-        console.log(this.props.isAssessible);
-        console.log(this.props.isToilets);
-        console.log(this.props.isCatering);
-        console.log(this.props.isParking);
         console.log(this.props.attendees);
         console.log(this.props.date);
         console.log(this.props.time);
+        console.log(this.props.accessibility);
+        console.log(this.props.toilet);
+        console.log(this.props.catering);
+        console.log(this.props.parking);
         console.log(this.props.location); */
-    }
+      }
     showElement(elem, type){
-        if(elem){
-            return <FontAwesomeIcon size="2x" icon={type} className="fa-fw" />
+        if(elem==1){
+            return <FontAwesomeIcon icon={type} className="fa-fw" />
         }
     }
 
@@ -93,10 +93,10 @@ export default class Room extends Component {
                        Room #{this.props.roomNumber} - Floor: {this.props.floor}
                     </Card.Title>
                     <div className="iconContainer">
-                        {/* {this.showElement(this.props.isParking, faParking)}
-                        {this.showElement(this.props.isToilets, faRestroom)}
-                        {this.showElement(this.props.isCatering, faUtensils)}
-                        {this.showElement(this.props.isAssessible, faWheelchair)} */}
+                        {this.showElement(this.props.parking, faParking)}
+                        {this.showElement(this.props.toilet, faRestroom)}
+                        {this.showElement(this.props.catering, faUtensils)}
+                        {this.showElement(this.props.accessibility, faWheelchair)}
                     </div>
                     <Button variant="primary">Book Room</Button>
                 </Card.Body>
