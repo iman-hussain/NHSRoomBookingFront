@@ -164,7 +164,7 @@ async function attemptLogin(values, setLoginState, dispatch) {
       }
     });
 
-  let bookings = await getBookings();
+  let bookings = await getBookings(userDetails[0]);
   if (userDetails) {
     console.log(userDetails);
     userDetails.push(bookings);
@@ -174,9 +174,9 @@ async function attemptLogin(values, setLoginState, dispatch) {
   return response;
 }
 
-async function getBookings() {
+async function getBookings(userDetails) {
   const bookingResponse = await fetch(
-    "http://209.97.191.60:5000/bookings/user/5000"
+    "http://209.97.191.60:5000/bookings/user/"+userDetails
   );
   const responseData = await bookingResponse.json();
   let bookings = responseData.rows.rows;

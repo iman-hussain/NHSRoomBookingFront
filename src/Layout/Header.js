@@ -22,7 +22,7 @@ const Header = () => {
             />{" "}
           </a>
         </Navbar.Brand>
-        <p>Version 1.0.1</p>
+        <p style={{position:'absolute', paddingTop: '55px'}}>Version 1.0.2</p>
         <Form inline>
           {/* <FormControl type="text" placeholder="Search" className="mr-sm-2" /> */}
           {!loggedIn.email ? (

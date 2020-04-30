@@ -175,14 +175,11 @@ const Signup = () => {
 };
 
 async function createUser(values) {
-  console.log("creating user");
-  console.log(values);
   await fetch("http://209.97.191.60:5000/users", {
-      method: 'POST',
-      mode: 'cors',
+      method: "POST",
+      mode: "cors",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         USER_ID: Math.floor(Math.random() * Math.floor(1000)),
