@@ -17,7 +17,7 @@ let Events = [];
 const MeetingList = () => {
   const bookings = useSelector(state => state.userInfo.bookings);
   var calendarEvents = [];
-  if (bookings[0].length > 0) {
+  if (bookings && !!bookings.length) {
     for (var i = 0; i < bookings.length; i++) {
       calendarEvents.push([bookings[i][1], bookings[i][2], bookings[i][5]]);
     }

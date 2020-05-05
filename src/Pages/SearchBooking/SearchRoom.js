@@ -52,15 +52,19 @@ class SearchRoom extends React.Component {
 
     filterRooms(){
       let tempRooms = [];
+
       globalRooms.map(room => {
+        console.log(room);
         if(room[5] == this.state.accessableCheckBox &&
           room[6][0][8] == this.state.parkingCheckBox &&
-          room[6][0][9] == this.state.cateringCheckBox){
+          room[6][0][9] == this.state.cateringCheckBox &&
+          room[7] == this.state.toiletCheckBox){
             tempRooms.push(room)
         }
       })
-      // this.setState({rooms: tempRooms})
-      this.buildRooms();
+      
+      this.setState({rooms: tempRooms})
+      //this.buildRooms();
     }
 
     buildRooms(){
@@ -132,22 +136,18 @@ class SearchRoom extends React.Component {
 
     handleCheckChange1 = () => {
         this.setState({ toiletCheckBox : !this.state.toiletCheckBox});
-        // this.filterRooms();
     }
 
     handleCheckChange2 = () => {
       this.setState({ cateringCheckBox : !this.state.cateringCheckBox});
-      // this.filterRooms();
     }
     
     handleCheckChange3 = () => {
       this.setState({ accessableCheckBox : !this.state.accessableCheckBox});
-      // this.filterRooms();
     }
 
     handleCheckChange4 = () => {
       this.setState({ parkingCheckBox : !this.state.parkingCheckBox});
-      // this.filterRooms();
     }
   
 
@@ -230,7 +230,7 @@ class SearchRoom extends React.Component {
                         </Row>
                     </Col>
                     <Col className="pt-1" sm={2}>
-                        <Button variant="primary"  onClick={this.filterRooms()}>Search</Button>
+                        <Button variant="primary"  onClick={this.filterRooms}>Search</Button>
                     </Col>
                 </Row>
                 </Form.Group>

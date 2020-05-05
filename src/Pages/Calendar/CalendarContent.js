@@ -61,7 +61,7 @@ const CalendarContent = (year, month, firstDay, currentDate, daysInMonth) => {
 
   useEffect(() => {
     let calendarEvents = [];
-    if (bookings[0].length > 0) {
+    if (bookings && !!bookings.length) {
       for (var i = 0; i < bookings.length; i++) {
         calendarEvents.push([bookings[i][1], bookings[i][2], bookings[i][5]]);
       }
