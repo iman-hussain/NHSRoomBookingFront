@@ -180,9 +180,6 @@ async function getBookings(userDetails) {
   );
   const responseData = await bookingResponse.json();
   let bookings = responseData.rows.rows;
-  /*   bookings = await bookings.map((data, i) => {
-    bookings[i].push('#' + Math.floor(Math.random() * 16777215).toString(16))
-  }); */
   return bookings;
 }
 export default Login;
