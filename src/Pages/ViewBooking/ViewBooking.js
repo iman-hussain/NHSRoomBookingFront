@@ -9,7 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faParking, faRestroom, faUtensils, faWheelchair} from '@fortawesome/free-solid-svg-icons'
 import GetBuilding from '../../API/getBuilding';
 import GetBookingInfo from '../../API/getBookingInfo';
+import {useParams} from "react-router-dom";
 const ViewBooking = () => {
+    const {id} = useParams()
+    console.log(id)
     const bookings = useSelector(state => state.userInfo.bookings);
     const buildingName = GetBuilding(bookings[0][0]);
     const [bookingInfo, setBookingInfo] = useState(["",0,0,0,0,0,0,0,0]);

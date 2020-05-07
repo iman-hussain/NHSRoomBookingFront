@@ -14,8 +14,19 @@ import { useSelector } from "react-redux"; // userSelector grabs state - in plac
 
 let Events = [];
 
+
+// Sort the bookings by date, closest first.
+function sortBookingsByDate(a, b) {
+  if(a[1] === b[1]) {
+      return 0;
+  } else {
+      return (a[1] < b[1]) ? -1 : 1;
+  }
+}
+
 const MeetingList = () => {
   const bookings = useSelector(state => state.userInfo.bookings);
+  bookings.sort(sortBookingsByDate);
   var calendarEvents = [];
   if (bookings && bookings.length > 1) {
     for (var i = 0; i < bookings.length; i++) {

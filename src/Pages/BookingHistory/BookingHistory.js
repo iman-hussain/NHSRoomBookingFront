@@ -11,6 +11,7 @@ import { useSelector } from "react-redux"; // userSelector grabs state - in plac
 
 //Checks all bookings to see if any are on the current day, then outputs them
 const BookingsToday = (calendarEvents, date) => {
+    console.log(calendarEvents)
     return calendarEvents.map((event, i) => {
         if (calendarEvents[i][1].slice(0, 10) === date) {
             return (
@@ -18,7 +19,7 @@ const BookingsToday = (calendarEvents, date) => {
                     <tr>
                         <td>{calendarEvents[i][0]}</td>
                         <td>{calendarEvents[i][1].slice(0, 19).replace('T', ' ')}</td>
-                        <td><Link to="/">Details</Link></td>
+                        <td><Link to="/viewBooking/">Details</Link></td>
                     </tr>
                 </tbody>
             )
@@ -28,8 +29,19 @@ const BookingsToday = (calendarEvents, date) => {
     });
 }
 
+// Sort the bookings by date, closest first.
+function sortBookingsByDate(a, b) {
+    if(a[1] === b[1]) {
+        return 0;
+    } else {
+        return (a[1] < b[1]) ? -1 : 1;
+    }
+}
+
 // Check all bookings to see if any are after the current day, then outputs them
 const NextBookings = (bookings, date) => {
+    bookings.sort(sortBookingsByDate);
+
     return bookings.map((event, i) => {
         if (bookings[i][1].slice(0, 10) > date) {
             var calendarDate = bookings[i][1].slice(0, 10);
@@ -52,6 +64,7 @@ const NextBookings = (bookings, date) => {
 
 // Checks all bookings to see if any are before the current day and outputs them.
 const PreviousBookings = (bookings, date) => {
+    bookings.sort(sortBookingsByDate);
     return bookings.map((event, i) => {
         console.log(bookings[i])
         console.log(bookings[i][1].slice(0,10))

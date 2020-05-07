@@ -37,7 +37,7 @@ class App extends React.Component {
         <Route path="/" exact component={HomePage} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup}/>
-        <Route path="/viewBooking" exact component={ViewBooking}/>
+        <Route path="/viewBooking/:id" exact component={ViewBooking}/>
         <Route path="/roomDetails" exact component={RoomDetails} />
         <Route path="/searchRoom" exact component={SearchRoom} />
         <Route path="/bookingHistory" exact component={BookingTable} />

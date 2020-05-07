@@ -152,6 +152,7 @@ export const RoomDetails = ({google}) => {
     };
     console.log(booking);
     CreateBooking(booking).then((response) => {
+      console.log(response)
       dispatch(addToBookings({booking: [
           booking.BOOKING_ID,
           booking.BOOKING_DATE,
