@@ -39,8 +39,9 @@ const userInfoSlice = createSlice({
             state.bookings = [[]]
         },
         addToBookings: (state, action) => {
-            const {bookings} = action.payload
-            state.bookings = bookings // Get from API and store here. 
+            const {booking} = action.payload
+            console.log(booking)
+            state.bookings.push(booking) // Get from API and store here. 
             // Needed - Booking Date, Time, Location (Building Name + Address + Room)
             // Add to bookings here, after successfully putting into the database.
         }

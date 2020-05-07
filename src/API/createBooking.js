@@ -8,6 +8,7 @@ const CreateBooking = async (booking) => {
             BOOKING_TIME: booking.BOOKING_TIME,
             DURATION: booking.DURATION,
             GUESTS: booking.GUESTS,
+            COLOUR: booking.COLOUR,
             USER_ID: booking.USER_ID,
             ROOM_ID: booking.ROOM_ID,
             REVIEW_ID: null

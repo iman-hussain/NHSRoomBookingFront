@@ -23,12 +23,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from "react-dropdown-select";
 import CreateBooking from "../../API/createBooking";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
-
+import { useSelector, useDispatch } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
+import { addToBookings} from '../../Redux/userInfo';
+import GetBookings from '../../API/getBookings';
 var hours = "00";
 var minutes = "00";
 
 export const RoomDetails = ({google}) => {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.userInfo.userID);
   const [users, setUsers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
@@ -128,18 +130,39 @@ export const RoomDetails = ({google}) => {
     const duration = hours + minutes;
     console.log(duration);
 
+    var colours = [
+        'RED',
+        'YELLOW',
+        'BLUE',
+        'GREEN',
+        'ORANGE',
+        'PURPLE'
+    ]
+
     const booking = {
       BOOKING_ID: null,
       BOOKING_DATE: date,
       BOOKING_TIME: date + " " + time,
       DURATION: duration,
       GUESTS: getAtendees() == 0 ? 1 : getAtendees(),
+      COLOUR: colours[Math.floor(Math.random()*colours.length)],
       USER_ID: user,
       ROOM_ID: getRoomDetails()[0].slice(1),
       REVIEW_ID: null,
     };
     console.log(booking);
     CreateBooking(booking).then((response) => {
+      dispatch(addToBookings({booking: [
+          booking.BOOKING_ID,
+          booking.BOOKING_DATE,
+          booking.BOOKING_TIME,
+          booking.DURATION,
+          booking.GUESTS,
+          booking.COLOUR,
+          booking.USER_ID,
+          booking.ROOM_ID,
+          booking.REVIEW_ID
+      ]}))
       setRedirect();
     });
   };
