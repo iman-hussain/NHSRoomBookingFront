@@ -40,7 +40,7 @@ function sortBookingsByDate(a, b) {
 
 // Check all bookings to see if any are after the current day, then outputs them
 const NextBookings = (bookings, date) => {
-    bookings.sort(sortBookingsByDate);
+    bookings = bookings.slice().sort(sortBookingsByDate);
 
     return bookings.map((event, i) => {
         if (bookings[i][1].slice(0, 10) > date) {
@@ -64,7 +64,7 @@ const NextBookings = (bookings, date) => {
 
 // Checks all bookings to see if any are before the current day and outputs them.
 const PreviousBookings = (bookings, date) => {
-    bookings.sort(sortBookingsByDate);
+    bookings = bookings.slice().sort(sortBookingsByDate);
     return bookings.map((event, i) => {
         console.log(bookings[i])
         console.log(bookings[i][1].slice(0,10))

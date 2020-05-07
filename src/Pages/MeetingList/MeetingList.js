@@ -2,7 +2,7 @@
   Developed by Liam Penn - 1415065
 */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import './MettingList.css';
 import {GoogleLogin, events} from '../../components/GoogleLogin.js';
 import { useSelector } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
@@ -25,10 +25,12 @@ function sortBookingsByDate(a, b) {
 }
 
 const MeetingList = () => {
-  const bookings = useSelector(state => state.userInfo.bookings);
-  bookings.sort(sortBookingsByDate);
+  let bookings = useSelector(state => state.userInfo.bookings);
   var calendarEvents = [];
+
   if (bookings && bookings.length > 1) {
+    console.log(bookings)
+    bookings = bookings.slice().sort(sortBookingsByDate);
     for (var i = 0; i < bookings.length; i++) {
       calendarEvents.push([bookings[i][1], bookings[i][2], bookings[i][5]]);
     }

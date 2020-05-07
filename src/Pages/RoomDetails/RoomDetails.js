@@ -151,12 +151,14 @@ export const RoomDetails = ({google}) => {
       REVIEW_ID: null,
     };
     console.log(booking);
+    var reduxDate = new Date(new Date(booking.BOOKING_DATE).toString().split('GMT')[0]+' UTC').toISOString()
+    var reduxTime = new Date(new Date(booking.BOOKING_TIME).toString().split('GMT')[0]+' UTC').toISOString()
     CreateBooking(booking).then((response) => {
       console.log(response)
       dispatch(addToBookings({booking: [
           booking.BOOKING_ID,
-          booking.BOOKING_DATE,
-          booking.BOOKING_TIME,
+          reduxDate,
+          reduxTime,
           booking.DURATION,
           booking.GUESTS,
           booking.COLOUR,
