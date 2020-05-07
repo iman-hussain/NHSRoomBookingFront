@@ -1,6 +1,6 @@
 const GetBuilding = async (building_id) => {
     const buildingResponse = await fetch(
-        "http://localhost:5000/building/"+building_id
+        "http://209.97.191.60:5000/building/"+building_id
       );
       const responseData = await buildingResponse.json();
       let building = responseData.rows.rows;

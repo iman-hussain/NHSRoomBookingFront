@@ -124,7 +124,7 @@ class SearchRoom extends React.Component {
     };
     
     handleChange = dates => {
-      date = moment(dates).format('DD-MMM-yyyy');
+      date = moment(dates).format('DD-MMM-YYYY');
       time = dates.getHours() + ":" + dates.getMinutes() + ":00";
       ls.set('date', date? date.toString():'0');
       ls.set('time', time? time.toString():'0');
