@@ -24,6 +24,7 @@ const MeetingList = () => {
   }
 
   Events = calendarEvents;
+  console.log(Events)
   if(calendarEvents && !!calendarEvents){
   return calendarEvents.map((event, i) => {
     return (

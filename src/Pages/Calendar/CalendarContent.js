@@ -16,13 +16,24 @@ checks for multiple events on the same day and adds the appropriate amount of ci
 */
 const CheckDay = (d) => {
   var eventColors = [];
+
   if (Events.length >= 0) {
     for (var i = 0; i < Events.length; ++i) {
-      if (d === Events[i][0].slice(0, 10).replace("T", " ")) {
+      //console.log(d)
+      var calendarDate = new Date(Events[i][0])
+      var checkingDate = new Date(d)
+      var altDate = new Date(checkingDate)
+      altDate.setHours(0,0,0,0)
+      console.log(checkingDate.getTime())
+      console.log(calendarDate.getTime());
+      console.log(checkingDate);
+      console.log(calendarDate);
+      if (calendarDate.getTime() == checkingDate.getTime() || calendarDate.getTime() == altDate.getTime()) {
         eventColors.push(Events[i][2]);
       }
     }
 
+    /* d === Events[i][0].slice(0, 10).replace("T", " ")*/
     return (
       <div>
         {eventColors.map(function (name, index) {
