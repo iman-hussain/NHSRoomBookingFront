@@ -11,8 +11,12 @@ import { faParking, faRestroom, faUtensils, faWheelchair, faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Select from "react-dropdown-select";
+import CreateBooking from "../../API/createBooking";
+import { Redirect } from "react-router-dom";
 
 
+var hours = "00";
+var minutes = "00";
 
 export class RoomDetails extends React.Component {
     // eslint-disable-next-line no-useless-constructor
@@ -34,7 +38,14 @@ export class RoomDetails extends React.Component {
  
     state = {
         startDate: new Date(),
+        redirect: false
       };
+
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    }
 
     showElement(elem, type){
         if(elem){
@@ -43,9 +54,9 @@ export class RoomDetails extends React.Component {
     }
     
     handleChange = date => {
-    this.setState({
-        startDate: date
-    });
+        this.setState({
+            startDate: date
+        });
     };
 
     getRoomLatitudeLongitude() { 
@@ -58,7 +69,7 @@ export class RoomDetails extends React.Component {
     }
 
     getPictureId(){
-        return ls.get('roomJson').split(',')[5];
+        return ls.get('picId');
     }
 
     getRoomDetails(){
@@ -70,10 +81,19 @@ export class RoomDetails extends React.Component {
         return parseInt(ls.get('attendees'));
     }
     getDateFromLocalStorage(){
-        return ls.get('date');
+        const _date = ls.get('date');
+        return _date;
     }
+
     getTimeFromLocalStorage(){
-        return ls.get('time');
+        const _time = ls.get('time');
+        let _hour = _time.split(':')[0];
+        _hour = _hour.length == 1 ? '0'+_hour : + _hour;
+        let _minute = _time.split(':')[1];
+        _minute = _minute.length == 1 ? '0'+_minute : + _minute;
+        const correctFormat = _hour+':'+_minute+':00';
+        
+        return correctFormat;
     }
         
     setUserValues(user){
@@ -95,6 +115,39 @@ export class RoomDetails extends React.Component {
             );
         }
         return guestFields;
+    }
+    onHoursChange = (event) => { hours = event.target.value };
+    onMinutesChange = (event) => { minutes = event.target.value };
+
+    _createBooking(){
+        const date = this.getDateFromLocalStorage();
+        const time = this.getTimeFromLocalStorage();
+        console.log(date +' '+time);
+        const hours = parseInt(document.getElementById('hours').value);
+        const minutes = parseInt(document.getElementById('minutes').value)/60;
+        const duration = hours + minutes;
+        console.log(duration);
+        
+        const booking = {
+            BOOKING_ID: null,
+            BOOKING_DATE: date,
+            BOOKING_TIME: date + ' ' + time,
+            DURATION: duration,
+            GUESTS: this.getAtendees() == 0 ? 1 : this.getAtendees(),
+            USER_ID: 42,
+            ROOM_ID: this.getRoomDetails()[0].slice(1),
+            REVIEW_ID: null
+          };
+          console.log(booking)
+        CreateBooking(booking).then(response => {
+            this.setRedirect();
+        });
+    }
+
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to='/bookingHistory' />
+        }
     }
 
     render() {
@@ -133,34 +186,55 @@ export class RoomDetails extends React.Component {
                                 <FontAwesomeIcon className="icon-disabled" icon={faWheelchair}/>}
                         </h2>
                     </div>
-                    <div class="col-12">
-                    </div>
                 </div>
-                <Button variant="primary float-right">Book Room</Button>
+
+                        <hr></hr>
+                <Container>
+                    <Row>
+                        <div class="col-6">
+                        <h5>Select the booking duration:</h5>
+                            <Row>
+                                <div class="col">
+                                    <b>Hours</b>
+                                    <Form.Control id="hours" as="select" onChange={this.onHoursChange}>
+                                        <option>00</option>
+                                        <option>01</option>
+                                        <option>02</option>
+                                    </Form.Control>
+                                </div> -
+                                <div class="col">
+                                    <b>Minutes</b>
+                                    <Form.Control id="minutes" as="select" onChange={this.onMinutesChange}>
+                                        <option>00</option>
+                                        <option>15</option>
+                                        <option>30</option>
+                                        <option>45</option>
+                                    </Form.Control>
+                                </div>
+                            </Row>
+                            <br></br>
+                            <Form id="createBookingForm">
+                                {this.buildGuestForms()}
+                            </Form>
+                        </div>
+                        <div class="col-6 height">
+                            <Map google={this.props.google}
+                                style={{width: '100%', height: '60vh', position: 'relative'}}
+                                className={'map'}
+                                zoom={17}
+                                initialCenter={this.getRoomLatitudeLongitude()}>
+                            <Marker
+                                title={this.getRoomNumber()}
+                                name={this.getRoomNumber()}
+                                position={this.getRoomLatitudeLongitude()} />
+                            </Map>
+                        </div>
+                    </Row>
+                </Container>
+                <Button variant="primary float-right" onClick={() => this._createBooking()}> Book Room</Button>
             </Card.Body>
         </Card>
-
-        <Container>
-            <Row>
-                <div class="col-6">
-                    <Form id="createBookingForm">
-                        {this.buildGuestForms()}
-                    </Form>
-                </div>
-                <div class="col-6">
-                    <Map google={this.props.google}
-                        style={{width: '100%', height: '60vh', position: 'relative'}}
-                        className={'map'}
-                        zoom={17}
-                        initialCenter={this.getRoomLatitudeLongitude()}>
-                    <Marker
-                        title={this.getRoomNumber()}
-                        name={this.getRoomNumber()}
-                        position={this.getRoomLatitudeLongitude()} />
-                    </Map>
-                </div>
-            </Row>
-        </Container>
+        {this.renderRedirect()}
         </Container>
         </div>
       )

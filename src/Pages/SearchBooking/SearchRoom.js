@@ -8,6 +8,7 @@ import Title from "../../components/title";
 import { faUserFriends, faCalendarDay, faClock, faMapMarkerAlt, faHandshake } from '@fortawesome/free-solid-svg-icons'
 import { GoogleLogin } from '../../components/GoogleLogin';
 import ls from 'local-storage';
+import moment from 'moment';
 
 var globalRooms = [];
 var attendees = 0;
@@ -31,8 +32,9 @@ class SearchRoom extends React.Component {
         this.buildRooms = this.buildRooms.bind(this);
     }
 
-    handleRoomClick(room){
+    handleRoomClick(picId, room){
       ls.set('roomJson', JSON.stringify(room));
+      ls.set('picId', picId.toString());
       ls.set('attendees', this.attendees? this.attendees.toString():'0');
     }
     
@@ -86,7 +88,7 @@ class SearchRoom extends React.Component {
             let room = this.state.rooms[i];
             componentArrays.push(
               <div key={room} class="col-md-6">
-                <a href="/roomDetails" onClick={() => this.handleRoomClick(room)}>
+                <a href="/roomDetails" onClick={() => this.handleRoomClick(i+1, room)}>
                 <Room 
                   picId={i+1}
                   roomNumber={room[1]}
@@ -122,7 +124,7 @@ class SearchRoom extends React.Component {
     };
     
     handleChange = dates => {
-      date = dates.getDate() + "-" + dates.getMonth() + "-" + dates.getFullYear();
+      date = moment(dates).format('DD-MMM-yyyy');
       time = dates.getHours() + ":" + dates.getMinutes() + ":00";
       ls.set('date', date? date.toString():'0');
       ls.set('time', time? time.toString():'0');
@@ -172,9 +174,11 @@ class SearchRoom extends React.Component {
                         <FontAwesomeIcon icon={faCalendarDay} />&nbsp;
                         <label>Date</label>
                         <DatePicker
+                            id="datePicker"
                             className="datePickerStyle"
                             selected={this.state.startDate}
                             onChange={this.handleChange}
+                            dateFormat={"dd-MMM-yyyy"}
                         />
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridTime">
@@ -188,7 +192,7 @@ class SearchRoom extends React.Component {
                             showTimeSelectOnly
                             timeIntervals={15}
                             timeCaption="Time"
-                            dateFormat="h:mm aa"
+                            dateFormat="hh:mm:aa"
                             />
                     </Form.Group>
                     </Form.Row>
