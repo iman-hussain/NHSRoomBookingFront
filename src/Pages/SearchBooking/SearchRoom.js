@@ -53,20 +53,7 @@ class SearchRoom extends React.Component {
     }
 
     filterRooms(){
-      let tempRooms = [];
-
-      globalRooms.map(room => {
-        console.log(room);
-        if(room[5] == this.state.accessableCheckBox &&
-          room[6][0][8] == this.state.parkingCheckBox &&
-          room[6][0][9] == this.state.cateringCheckBox &&
-          room[7] == this.state.toiletCheckBox){
-            tempRooms.push(room)
-        }
-      })
-      
-      this.setState({rooms: tempRooms})
-      //this.buildRooms();
+      return true;
     }
 
     buildRooms(){
@@ -77,36 +64,49 @@ class SearchRoom extends React.Component {
           return <div>Loading...</div>;
         } else {
           let componentArrays = [];
-          let rooms = [];
-          // if(globalRooms == null){
-          //   rooms = this.state.rooms;
-          // }else{
-          //   rooms = globalRooms;
-          // }
+          let filteredRooms = this.state.rooms.filter(room => {
+            let count = 0;
+
+            let requiredCount = 0;
+            requiredCount += this.state.accessableCheckBox?1:0;
+            requiredCount += this.state.parkingCheckBox?1:0;
+            requiredCount += this.state.cateringCheckBox?1:0;
+
+            if(this.state.parkingCheckBox && room[6][0][8] == this.state.parkingCheckBox){
+              count += 1;
+            }
+            if(this.state.accessableCheckBox && room[5] == this.state.accessableCheckBox){
+              count += 1;
+            }
+            if(this.state.cateringCheckBox && room[6][0][9] == this.state.cateringCheckBox){
+              count += 1;
+            }
+
+            return count === requiredCount;
+          })
           console.log(this.state.rooms)
-          for(let i=0; i < this.state.rooms.length; i++){
-            let room = this.state.rooms[i];
-            componentArrays.push(
-              <div key={room} class="col-md-6">
-                <a href="/roomDetails" onClick={() => this.handleRoomClick(i+1, room)}>
-                <Room 
-                  picId={i+1}
-                  roomNumber={room[1]}
-                  floor={room[2]}
-                  capacity={room[3]}
-                  facilities={room[4]}
-                  accessibility={room[5]}
-                  building={room[6][0]}
-                  parking={room[6][0][8]}
-                  catering={room[6][0][9]}
-                  toilet={1}
-                  date={date}
-                  time={time}
-                ></Room>
-                </a>
-              </div>
-            )
-          }
+          console.log("filtered rooms", filteredRooms);
+
+          componentArrays = filteredRooms.map((room, i) => {
+            return (<div key={room} class="col-md-6">
+            <a href="/roomDetails" onClick={() => this.handleRoomClick(i+1, room)}>
+            <Room 
+              picId={i+1}
+              roomNumber={room[1]}
+              floor={room[2]}
+              capacity={room[3]}
+              facilities={room[4]}
+              accessibility={room[5]}
+              building={room[6][0]}
+              parking={room[6][0][8]}
+              catering={room[6][0][9]}
+              toilet={1}
+              date={date}
+              time={time}
+            ></Room>
+            </a>
+          </div>);
+          })
           return (
             <Row>
               {componentArrays}
