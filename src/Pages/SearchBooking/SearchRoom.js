@@ -26,10 +26,13 @@ class SearchRoom extends React.Component {
           cateringCheckBox: false,
           accessableCheckBox: false,
           parkingCheckBox: false,
-          rooms: []
+          rooms: [],
+          render: false
         };
         this.filterRooms = this.filterRooms.bind(this);
         this.buildRooms = this.buildRooms.bind(this);
+        this.Guests = React.createRef();
+        this.Location = React.createRef();
     }
 
     handleRoomClick(picId, room){
@@ -64,9 +67,10 @@ class SearchRoom extends React.Component {
           return <div>Loading...</div>;
         } else {
           let componentArrays = [];
+
+          // Filter by checkbox
           let filteredRooms = this.state.rooms.filter(room => {
             let count = 0;
-
             let requiredCount = 0;
             requiredCount += this.state.accessableCheckBox?1:0;
             requiredCount += this.state.parkingCheckBox?1:0;
@@ -84,8 +88,34 @@ class SearchRoom extends React.Component {
 
             return count === requiredCount;
           })
+
+          // Filter by Inputs
+          filteredRooms = filteredRooms.filter(room => {
+            
+            // Filter by Room Capacity by Guests amount
+            if(room[3] < this.Guests.current.value){
+             return false; 
+            }
+            //Filter by Location
+            if(!room[6][0][2].includes(this.Location.current.value) && 
+                this.Location.current.value != "Any"){
+              return false;
+            }
+
+            return true;
+          })
+
+
           console.log(this.state.rooms)
           console.log("filtered rooms", filteredRooms);
+          console.log("element value", this.Guests.current.value);
+          console.log("element value", this.Location.current.value);
+
+          if(filteredRooms.length == 0){
+            return (
+              <h3>No Rooms Availables</h3>
+            )
+          }
 
           componentArrays = filteredRooms.map((room, i) => {
             return (<div key={room} class="col-md-6">
@@ -152,7 +182,10 @@ class SearchRoom extends React.Component {
       this.setState({ parkingCheckBox : !this.state.parkingCheckBox});
     }
   
-
+    reRender() {
+      //console.log("element", this.Guests);
+      this.setState({...this.state, ...{render: !this.state.render}});
+    }
 
     render() {
       return (
@@ -167,7 +200,7 @@ class SearchRoom extends React.Component {
                         <FontAwesomeIcon icon={faUserFriends} />&nbsp;
                         <label>Guests</label>
                         <Form.Control type="number" placeholder="Guests" 
-                            onChange={this.onGuestsChange}
+                            onChange={this.onGuestsChange} ref={this.Guests}
                         />
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridDate">
@@ -200,10 +233,14 @@ class SearchRoom extends React.Component {
                     <Form.Group as={Col}controlId="formGridDate">
                         <FontAwesomeIcon icon={faMapMarkerAlt} />&nbsp;
                         <label>Location</label>
-                        <Form.Control as="select">
+                        <Form.Control as="select" ref={this.Location}>
                             <option>Any</option>
-                            <option>Birmingham</option>
-                            <option>London</option>
+                            <option>BIRMINGHAM</option>
+                            <option>ENFIELD</option>
+                            <option>SWANSEA</option>
+                            <option>ABERDEEN</option>
+                            <option>HEREFORD</option>
+                            <option>DUDLEY</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group as={Col} controlId="formGridDate">
@@ -211,8 +248,9 @@ class SearchRoom extends React.Component {
                         <label>Type</label>
                         <Form.Control as="select">
                             <option>Conference</option>
-                            <option>Informal</option>
-                            <option>Status Update Meetings</option>
+                            <option>Meeting</option>
+                            <option>Room</option>
+                            <option>Theatre</option>
                         </Form.Control>
                     </Form.Group>
                     </Form.Row>
@@ -234,7 +272,7 @@ class SearchRoom extends React.Component {
                         </Row>
                     </Col>
                     <Col className="pt-1" sm={2}>
-                        <Button variant="primary"  onClick={this.filterRooms}>Search</Button>
+                        <Button variant="primary"  onClick={this.reRender.bind(this)}>Search</Button>
                     </Col>
                 </Row>
                 </Form.Group>
