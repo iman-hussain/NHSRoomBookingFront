@@ -3,14 +3,25 @@ import { Button, Form, Container, Col } from "react-bootstrap";
 import Title from "../components/title";
 import { Formik } from "formik";
 import {signUpValidation, initialValues} from '../components/SignupValidation';
+import { Redirect } from "react-router-dom";
 
 const Signup = () => {
+  const [redirect, settingRedirect] = useState(false);
+
+  const renderRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/login" />;
+    }
+  };
+
   return (
     <Formik
       validationSchema={signUpValidation}
       validateOnChange={false}
-      onSubmit={values =>
+      onSubmit={values =>{
         createUser(values)
+        settingRedirect(true)
+      }
       }
       initialValues={initialValues}
       isInitialValid={signUpValidation.isValidSync(initialValues)}
@@ -162,11 +173,11 @@ const Signup = () => {
               <Button
                 variant="primary float-right"
                 type="submit"
-                onClick={() => console.log("Clicked")}
               >
                 Sign up
               </Button>
             </Form>
+            {renderRedirect()}
           </Container>
         </div>
       )}
@@ -175,7 +186,7 @@ const Signup = () => {
 };
 
 async function createUser(values) {
-  await fetch("http://209.97.191.60:5000/users", {
+  await fetch("http://localhost:5000/users", {
       method: "POST",
       mode: "cors",
       headers: {

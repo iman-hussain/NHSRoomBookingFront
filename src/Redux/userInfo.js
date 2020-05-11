@@ -44,14 +44,17 @@ const userInfoSlice = createSlice({
             state.bookings.push(booking) // Get from API and store here. 
             // Needed - Booking Date, Time, Location (Building Name + Address + Room)
             // Add to bookings here, after successfully putting into the database.
+        },
+        setBookings: (state, action) => {
+            const {bookings} = action.payload
+            console.log(bookings)
+            state.bookings = bookings
         }
     }
 })
 
 export const getUserDetails = details => {
    return async dispatch => {
-    console.log("Details: ")
-    console.log(details)
     dispatch(userLoggedIn({
       userID: details[0],
       userType: details[1],
@@ -66,6 +69,6 @@ export const getUserDetails = details => {
   } 
 }
 // Exported actions and reducers
-export const { userLoggedIn, addToBookings, userLoggedOut } = userInfoSlice.actions;
+export const { userLoggedIn, addToBookings, userLoggedOut, setBookings } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

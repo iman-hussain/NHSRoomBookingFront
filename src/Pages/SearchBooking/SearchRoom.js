@@ -286,13 +286,13 @@ class SearchRoom extends React.Component {
   }
 
   async function getRoomsFromDB(){
-    const response = await fetch("http://209.97.191.60:5000/rooms");
+    const response = await fetch("http://localhost:5000/rooms");
     const responseData = await response.json();
     return responseData.rows.rows;
   }
 
   async function getBuildingFromDB(buildingId){
-    const response = await fetch("http://209.97.191.60:5000/buildings/"+buildingId);
+    const response = await fetch("http://localhost:5000/buildings/"+buildingId);
     const responseData = await response.json();
     return responseData.rows.rows;
   }

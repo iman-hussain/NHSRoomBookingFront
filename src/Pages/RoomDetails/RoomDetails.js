@@ -24,7 +24,7 @@ import Select from "react-dropdown-select";
 import CreateBooking from "../../API/createBooking";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
-import { addToBookings} from '../../Redux/userInfo';
+import { addToBookings, setBookings} from '../../Redux/userInfo';
 import GetBookings from '../../API/getBookings';
 var hours = "00";
 var minutes = "00";
@@ -114,6 +114,7 @@ export const RoomDetails = ({google}) => {
     }
     return guestFields;
   };
+  
   const onHoursChange = (event) => {
     hours = event.target.value;
   };
@@ -150,12 +151,18 @@ export const RoomDetails = ({google}) => {
       ROOM_ID: getRoomDetails()[0].slice(1),
       REVIEW_ID: null,
     };
-    console.log(booking);
+    //console.log(booking);
     var reduxDate = new Date(new Date(booking.BOOKING_DATE).toString().split('GMT')[0]+' UTC').toISOString()
     var reduxTime = new Date(new Date(booking.BOOKING_TIME).toString().split('GMT')[0]+' UTC').toISOString()
-    CreateBooking(booking).then((response) => {
-      console.log(response)
-      dispatch(addToBookings({booking: [
+    CreateBooking(booking).then(async (response) => {
+      //console.log(response)
+      GetBookings(user).then((response) => {
+        console.log(response)
+        dispatch(setBookings({bookings: response}))
+        setRedirect();
+      })
+        
+      /* dispatch(addToBookings({booking: [
           booking.BOOKING_ID,
           reduxDate,
           reduxTime,
@@ -165,8 +172,8 @@ export const RoomDetails = ({google}) => {
           booking.USER_ID,
           booking.ROOM_ID,
           booking.REVIEW_ID
-      ]}))
-      setRedirect();
+      ]})) */
+      
     });
   };
 
@@ -325,7 +332,7 @@ export const RoomDetails = ({google}) => {
 };
 
 async function getUsers(setUsers, users) {
-  const usersResponse = await fetch("http://209.97.191.60:5000/users");
+  const usersResponse = await fetch("http://localhost:5000/users");
   const responseData = await usersResponse.json();
   setUsers(
     users.map((user) => {
@@ -339,7 +346,7 @@ async function getUsers(setUsers, users) {
 }
 
 async function getCatering(id) {
-  const response = await fetch("http://209.97.191.60:5000/caterings/" + id);
+  const response = await fetch("http://localhost/caterings/" + id);
   const responseData = await response.json();
   return responseData.rows.rows;
 }

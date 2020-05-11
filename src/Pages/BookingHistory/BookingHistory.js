@@ -11,7 +11,7 @@ import { useSelector } from "react-redux"; // userSelector grabs state - in plac
 
 //Checks all bookings to see if any are on the current day, then outputs them
 const BookingsToday = (calendarEvents, date) => {
-    console.log(calendarEvents)
+    //console.log(calendarEvents)
     return calendarEvents.map((event, i) => {
         if (calendarEvents[i][1].slice(0, 10) === date) {
             return (
@@ -66,9 +66,9 @@ const NextBookings = (bookings, date) => {
 const PreviousBookings = (bookings, date) => {
     bookings = bookings.slice().sort(sortBookingsByDate);
     return bookings.map((event, i) => {
-        console.log(bookings[i])
-        console.log(bookings[i][1].slice(0,10))
-        console.log(date)
+        //console.log(bookings[i])
+        //console.log(bookings[i][1].slice(0,10))
+       // console.log(date)
         if (bookings[i][1].slice(0, 10) < date) {
             return (
                 <tbody key={event}>
