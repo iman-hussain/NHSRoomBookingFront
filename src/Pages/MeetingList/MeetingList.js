@@ -28,7 +28,7 @@ const MeetingList = () => {
   let bookings = useSelector(state => state.userInfo.bookings);
   var calendarEvents = [];
 
-  if (bookings && bookings.length > 1) {
+  if (bookings[0] && bookings[0].length > 0) {
     console.log(bookings)
     bookings = bookings.slice().sort(sortBookingsByDate);
     for (var i = 0; i < bookings.length; i++) {
@@ -40,12 +40,17 @@ const MeetingList = () => {
   console.log(Events)
   if(calendarEvents && !!calendarEvents){
   return calendarEvents.map((event, i) => {
+    var calendarDate = calendarEvents[i][1].slice(0, 19).replace('T', ' ')
+    var nDate = new Date(calendarDate);
+    console.log(calendarEvents[i][3])
+    nDate.setTime( nDate.getTime() - nDate.getTimezoneOffset() * 60 * 1000 );
+    //calendarEvents[i][1].slice(0, 19).replace('T', ' ')
     return (
       <tbody key={event}>
-        <tr >
-          <td className="center"><div className="circle" style={{background: calendarEvents[i][2]}}></div></td>
-          <td>{calendarEvents[i][0]}</td>
-          <td>{calendarEvents[i][1].slice(0, 19).replace('T', ' ')}</td>
+        <tr className="meetingList">
+          <td style={{width: "10%"}} className="center"><div className="circle" style={{background: calendarEvents[i][2]}}></div></td>
+          <td style={{width: "45%"}} >{calendarEvents[i][0]}</td>
+          <td style={{width: "45%"}} >{nDate.toDateString() + ' ' + nDate.toLocaleTimeString()}</td>
         </tr>        
       </tbody>
     )
