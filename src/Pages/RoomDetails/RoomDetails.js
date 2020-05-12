@@ -38,7 +38,7 @@ export const RoomDetails = ({google}) => {
   const [users, setUsers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [redirect, settingRedirect] = useState(false);
-
+  const [selectedUsers, setSelectedUsers] = useState([]);
   useEffect(() => {
     getUsers(setUsers, users);
   }, []);
@@ -97,7 +97,13 @@ export const RoomDetails = ({google}) => {
 
   const setUserValues = (user) => {
     console.log(user);
+    var newUsers = selectedUsers
+    newUsers.push(user)
+    setSelectedUsers(newUsers);
+    console.log(selectedUsers)
   };
+
+
 
   const buildGuestForms = () => {
     var guestFields = [];
@@ -349,18 +355,17 @@ export const RoomDetails = ({google}) => {
 async function getUsers(setUsers, users) {
   const usersResponse = await fetch("http://localhost:5000/users");
   const responseData = await usersResponse.json();
-  console.log(responseData)
+  var res = responseData.rows.rows
+
   setUsers(
-    users.map((user) => {
+    res.map((user) => {
       return {
-        value: user[0],
-        label: user[3] + " " + user[4] + " - " + user[5],
+        'value': user[6],
+        'label': user[3] + " " + user[4] + " - " + user[5],
       };
     })
   );
-/*   setUsers(responseData.rows.rows.map(item => {
-    return item[6]
-  })) */
+
   return responseData.rows.rows;
 }
 
