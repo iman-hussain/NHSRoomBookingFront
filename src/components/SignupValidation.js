@@ -1,3 +1,8 @@
+/*
+  Developed by Liam Penn - 1415065
+  Validate the users sign up information to ensure each input matches the database requirements
+*/
+
 import * as Yup from "yup";
 
 /* Sign up Form validation requirements */
@@ -7,6 +12,7 @@ const signUpValidation = Yup.object().shape({
     .max(20, "Too Large")
     .required("Required"),
   email: Yup.string().email("Invalid Email").required("Required"),
+  /*Ensure the password and retype password match*/
   password: Yup.string()
     .min(6, "Password needs to be 6 Characters or more")
     .required("Required"),

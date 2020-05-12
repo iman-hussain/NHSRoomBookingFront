@@ -1,3 +1,7 @@
+/*
+  Partially developed by Liam Penn - 1415065
+  Updated form using Formik for validation and easier state control.
+*/
 import React, { useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import "./Login.css";
@@ -38,8 +42,7 @@ const Login = () => {
       expenseCode: "",
     },
   ]);
-  //console.log("Logged: " + JSON.stringify(loggedIn));
-  //console.log("User data: " + JSON.stringify(userData));
+
   return (
     <div>
       {loggedIn.email ? (
@@ -136,10 +139,8 @@ const Login = () => {
 };
 
 /*
-  Send Values
-  Check if they exist in database
-  Dispatch with userData + bookings
-  Return true;
+  Developed by Liam Penn - 1415065
+  Log the user in and fetch bookings.
 */
 async function attemptLogin(values, setLoginState, dispatch) {
   let userDetails = "";

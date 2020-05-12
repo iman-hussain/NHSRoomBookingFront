@@ -24,10 +24,6 @@ const CheckDay = (d) => {
       var checkingDate = new Date(d)
       var altDate = new Date(checkingDate)
       altDate.setHours(0,0,0,0)
-      console.log(checkingDate.getTime())
-      console.log(calendarDate.getTime());
-      console.log(checkingDate);
-      console.log(calendarDate);
       if (calendarDate.getTime() == checkingDate.getTime() || calendarDate.getTime() == altDate.getTime()) {
         eventColors.push(Events[i][2]);
       }

@@ -1,3 +1,7 @@
+/*
+  Developed by Liam Penn - 1415065
+  Initialize user information and set reducers which can be called to change the userInfo state.
+*/
 import { createSlice } from "@reduxjs/toolkit";
 
 const userInfoSlice = createSlice({
@@ -14,6 +18,7 @@ const userInfoSlice = createSlice({
         bookings: [[]]
     },
     reducers: {
+        /* Change the state values when logged in */
         userLoggedIn: (state, action) => {
             const {username, userType, userID, name, email, address, phoneNumber, expenseCode, loggedIn, bookings} = action.payload
             console.log(action.payload)
@@ -27,6 +32,7 @@ const userInfoSlice = createSlice({
             state.expenseCode = expenseCode
             state.bookings = bookings
         },
+        /* Reset user information to default when logged out */
         userLoggedOut: (state, action) => {
             state.username = ""
             state.userType = ""
@@ -38,13 +44,13 @@ const userInfoSlice = createSlice({
             state.expenseCode = ""
             state.bookings = [[]]
         },
+        /* Add a new booking to the array */
         addToBookings: (state, action) => {
             const {booking} = action.payload
             console.log(booking)
-            state.bookings.push(booking) // Get from API and store here. 
-            // Needed - Booking Date, Time, Location (Building Name + Address + Room)
-            // Add to bookings here, after successfully putting into the database.
+            state.bookings.push(booking) 
         },
+        /* Overwrite the current bookings with the new bookings */
         setBookings: (state, action) => {
             const {bookings} = action.payload
             console.log(bookings)
@@ -53,6 +59,7 @@ const userInfoSlice = createSlice({
     }
 })
 
+// Overwrite state using the received details.
 export const getUserDetails = details => {
    return async dispatch => {
     dispatch(userLoggedIn({

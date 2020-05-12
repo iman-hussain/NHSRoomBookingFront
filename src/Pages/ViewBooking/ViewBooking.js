@@ -4,25 +4,45 @@
 Room Information Icons, Picture*/
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
-import {Container, Card} from 'react-bootstrap';
+import {Container, Card, Row, Col} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faParking, faRestroom, faUtensils, faWheelchair} from '@fortawesome/free-solid-svg-icons'
 import GetBuilding from '../../API/getBuilding';
 import GetBookingInfo from '../../API/getBookingInfo';
 import {useParams} from "react-router-dom";
+import Title from "../../components/title";
 const ViewBooking = () => {
     const {id} = useParams()
     console.log(id)
     const bookings = useSelector(state => state.userInfo.bookings);
     const buildingName = GetBuilding(bookings[0][0]);
     const [bookingInfo, setBookingInfo] = useState(["",0,0,0,0,0,0,0,0]);
-
-    useEffect(async () => {
-        setBookingInfo(await GetBookingInfo(bookings[0][0]))
+    const [dateInfo, setDateInfo] = useState(null);
+    const [date, setDate] = useState(new Date())
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await GetBookingInfo(id);
+            setBookingInfo(result)
+          }
+          fetchData();
     }, [])
 
-    console.log(bookingInfo)
+    useEffect(() => {
+        const result = bookings.filter(item => {
+            return item[0] == id;
+        })
+        
+        setDateInfo(result);
+    }, [])
 
+    useEffect(() => {
+        if(dateInfo){
+           setDate(new Date(dateInfo[0][1])) 
+        }
+  
+    }, [dateInfo])
+    console.log(date)
+    const bookingDate = date.toDateString();
     /*
     "USER_ID"
     "USER_TYPE"
@@ -50,20 +70,26 @@ const ViewBooking = () => {
 
     /* Get Room by Room_ID */
     /* Get Building Name */
-    const date = new Date(bookings[0][1]);
-    const bookingDate = date.toDateString();
+ 
     return(
+        <>
+        <Title title="Booking Details"></Title>
         <Container>
-        <Card style={{ width: '100%', marginBottom:'1em' }}>
-            <Card.Img variant="top" src={"/roomPics/room"+1+".jpg"} style={{width: '50%', padding: '20px'}}>  
+        <Row>
+        <Col sm={true}>
+            <Card.Img variant="top" src={"/roomPics/room"+1+".jpg"} style={{width: '100%', alignSelf: 'center'}}>  
             </Card.Img>
-            <Card.Body>
-                <Card.Title>
+        </Col>
+        <Col md="auto">
+ 
+            <Card.Body style={{alignSelf: 'center', padding: '15px 25px 0px 0px'}}>
+                <Card.Title >
                    Building: {bookingInfo[0][0]} <br />
-                   Room #{bookings[0][7]} - Floor: {bookingInfo[0][3]} <br />
+                   Floor: {bookingInfo[0][3]} - Room #{bookings[0][7]}  <br />
                    Date: {bookingDate} <br />
-                   Duration: {bookings[0][3]} <br />
-                   Guests: {bookings[0][4]}
+                   Duration: {bookings[0][3]} hrs <br />
+                   Guests: {bookings[0][4]} <br/>
+                   Meeting Host: {bookingInfo[0][10]}
                 </Card.Title>
                 <div className="iconContainer">
                     {bookingInfo[0][5] === 1 && ShowIcon(faParking)}
@@ -72,8 +98,11 @@ const ViewBooking = () => {
                     {bookingInfo[0][7] === 1 && ShowIcon(faWheelchair)}
                 </div>
             </Card.Body>
-        </Card>
+            
+        </Col>
+        </Row>
         </Container>
+        </>
     );
 }
 

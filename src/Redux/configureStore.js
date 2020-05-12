@@ -1,3 +1,9 @@
+/*
+  Developed by Liam Penn - 1415065
+  Make redux-persist work with the redux store. 
+  Return a store to be called within the application as a higher order component to be accessible by all components.
+*/
+
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
 import {
   persistStore,

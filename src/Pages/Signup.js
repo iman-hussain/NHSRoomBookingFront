@@ -1,3 +1,9 @@
+/*
+  Developed by Liam Penn - 1415065
+  Display a form to create an account.
+  Use Formik for validation before sending a request to the API.
+*/
+
 import React, { useState } from "react";
 import { Button, Form, Container, Col } from "react-bootstrap";
 import Title from "../components/title";

@@ -32,8 +32,6 @@ class App extends React.Component {
       <Router>
         <Header/>
         <div className="yellowLine"></div>
-        
-        
         <Route path="/" exact component={HomePage} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup}/>
@@ -41,9 +39,7 @@ class App extends React.Component {
         <Route path="/roomDetails" exact component={RoomDetails} />
         <Route path="/searchRoom" exact component={SearchRoom} />
         <Route path="/bookingHistory" exact component={BookingTable} />
-
         <div className="footerSpace"></div>
-        {/* <Footer/> */}
       </Router>
     </div>
     </PersistGate>
