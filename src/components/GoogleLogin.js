@@ -170,35 +170,41 @@ export {
   calendarEvents as events
 }
 
-var event = {
-  'summary': 'MI101 @ 07/03/2020 - 16:00-17:00',
-  'location': 'MI1010',
-  'description': 'A booked room',
-  'start': {
-    'dateTime': '2020-03-7T09:00:00-07:00',
-    'timeZone': 'America/Los_Angeles'
-  },
-  'end': {
-    'dateTime': '2020-03-07T17:00:00-07:00',
-    'timeZone': 'America/Los_Angeles'
-  },
-  'recurrence': [
-    'RRULE:FREQ=DAILY;COUNT=1'
-  ],
-  'attendees': [
-    {'email': 'liamcsdev@gmail.com'}
-  ],
-  'reminders': {
-    'useDefault': false,
-    'overrides': [
-      {'method': 'email', 'minutes': 24 * 60},
-      {'method': 'popup', 'minutes': 10}
-    ]
-  }
-};
+const setEvent = (building, start, end, lat, long) =>{
+  var event = {
+    'summary': building,
+    'location': `${lat}, ${long}`,
+    'description': 'NHS Room Booked',
+    'start': {
+      'dateTime': start.toString(),
+      'timeZone': 'Europe/Zurich'
+    },
+    'end': {
+      'dateTime': end.toString(),
+      'timeZone': 'Europe/Zurich'
+    },
+    'recurrence': [
+      'RRULE:FREQ=DAILY;COUNT=1'
+    ],
+    'attendees': [
+      {'email': 'liamcsdev@gmail.com',
+      'email': 'liamparsons2013@gmail.com'}
+    ],
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'email', 'minutes': 24 * 60},
+        {'method': 'popup', 'minutes': 10}
+      ]
+    }
+  };
+  return event;
+}
 
-
-export const SendEvent = () => {
+const SendEvent = ({building, start, end, lat, long}) => {
+  console.log(start)
+  console.log(end)
+  const event = setEvent(building, start, end, lat, long);
   var request = window.gapi.client.calendar.events.insert({
     'calendarId': "primary",
     'resource': event
@@ -209,10 +215,14 @@ export const SendEvent = () => {
   });
 }
 
-export const CreateEvent = (evt) =>{
-  event = evt;    
+export {SendEvent}
+
+const CreateEvent = (evt) =>{
+  //event = evt;    
   SendEvent();
 }
+
+export {CreateEvent}
 
 // Returns the accessible google calendars
 export const getList = () => {

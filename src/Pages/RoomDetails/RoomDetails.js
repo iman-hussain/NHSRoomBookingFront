@@ -26,6 +26,9 @@ import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"; // userSelector grabs state - in place of mapStateToProps
 import { addToBookings, setBookings} from '../../Redux/userInfo';
 import GetBookings from '../../API/getBookings';
+import  {SendEvent, GoogleLogin} from '../../components/GoogleLogin';
+import moment from 'moment';
+
 var hours = "00";
 var minutes = "00";
 
@@ -35,10 +38,12 @@ export const RoomDetails = ({google}) => {
   const [users, setUsers] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [redirect, settingRedirect] = useState(false);
+
   useEffect(() => {
     getUsers(setUsers, users);
   }, []);
 
+  console.log(users)
   const setRedirect = () => {
     settingRedirect(true);
   };
@@ -155,7 +160,17 @@ export const RoomDetails = ({google}) => {
     var reduxDate = new Date(new Date(booking.BOOKING_DATE).toString().split('GMT')[0]+' UTC').toISOString()
     var reduxTime = new Date(new Date(booking.BOOKING_TIME).toString().split('GMT')[0]+' UTC').toISOString()
     CreateBooking(booking).then(async (response) => {
-      //console.log(response)
+      console.log(getRoomDetails()[7])
+
+      var start = new Date(booking.BOOKING_TIME)
+      var endMeeting = new Date(start);
+      endMeeting.setTime((endMeeting.getTime() - start.getTimezoneOffset() * 60 * 1000) + (60 * 60 * 1000 * duration))
+      var endDateTime = moment(endMeeting).format('YYYY-MM-DDTHH:mm:ssZ'); 
+      var startDateTime = moment(start).format('YYYY-MM-DDTHH:mm:ssZ'); 
+      var latLong = getRoomLatitudeLongitude()
+      console.log(latLong)
+
+      SendEvent({building: getRoomDetails()[7], start: startDateTime, end: endDateTime, lat: latLong.lat, long: latLong.lng});
       GetBookings(user).then((response) => {
         console.log(response)
         dispatch(setBookings({bookings: response}))
@@ -186,7 +201,7 @@ export const RoomDetails = ({google}) => {
   return (
     <div>
       <Title title="Room Details" route="/roomDetails"></Title>
-
+      <GoogleLogin/>
       <Container>
         {/* <h3>Building: {this.getRoomDetails()[7]} <br />
             Room #{this.getRoomDetails()[1]} - Floor: {this.getRoomDetails()[2]} </h3> */}
@@ -334,6 +349,7 @@ export const RoomDetails = ({google}) => {
 async function getUsers(setUsers, users) {
   const usersResponse = await fetch("http://localhost:5000/users");
   const responseData = await usersResponse.json();
+  console.log(responseData)
   setUsers(
     users.map((user) => {
       return {
@@ -342,6 +358,9 @@ async function getUsers(setUsers, users) {
       };
     })
   );
+/*   setUsers(responseData.rows.rows.map(item => {
+    return item[6]
+  })) */
   return responseData.rows.rows;
 }
 
