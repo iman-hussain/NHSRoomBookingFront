@@ -26,10 +26,21 @@ const getInfo = async (bookings) => {
       res.push(result)
     })
   }
-  console.log(res)
   return res;
 }
 
+// Return the next five bookings
+const getNextFive = (bookings, date) => {
+  for (var i = 0; i < bookings.length; i++) {
+    var bookingDate = new Date()
+    bookingDate.setDate(bookingDate.getDate()-1);
+    if(new Date(bookings[i][0]) >= bookingDate){
+      console.log(bookings.slice(i, i+5))
+      return bookings.slice(i, i+5);
+    }
+  }
+
+}
 
 const MeetingList = () => {
   let bookings = useSelector(state => state.userInfo.bookings);
@@ -59,9 +70,9 @@ const MeetingList = () => {
       var calEvents = []
       if (bookings[0] && bookings[0].length > 0) {
         for (var i = 0; i < bookings.length; i++) {
-          console.log(info[i])
           calEvents.push([bookings[i][1], bookings[i][2], bookings[i][5], info[i][0], bookings[i][3]]);
         }
+        calEvents = getNextFive(calEvents, new Date())
       }
       setBookingInfo(calEvents)
     } 
@@ -70,7 +81,6 @@ const MeetingList = () => {
   }, [info])
 
   if (bookings[0] && bookings[0].length > 0) {
-    //console.log(bookings)
     bookings = bookings.slice().sort(sortBookingsByDate);
     
     for (var i = 0; i < bookings.length; i++) {
@@ -78,23 +88,15 @@ const MeetingList = () => {
     }
   }
 
-  console.log(info)
   Events = calendarEvents;
-  console.log(Events)
-  console.log(bookingInfo)
-  /*  Date || Time || Color || Building || LAT || LONG || FLOOR || CAPACITY || PARKING || CATERING || ACCESS || TOILET_ID || DURATION */
+
   if(bookingInfo && !!bookingInfo){
   return bookingInfo.map((event, i) => {
     var calendarDate = bookingInfo[i][1].slice(0, 19).replace('T', ' ')
     var nDate = new Date(calendarDate);
-    console.log(bookingInfo[i][3])
     nDate.setTime( nDate.getTime() - nDate.getTimezoneOffset() * 60 * 1000 );
     var endMeeting = new Date(calendarDate);
     endMeeting.setTime((endMeeting.getTime() - nDate.getTimezoneOffset() * 60 * 1000) + (60 * 60 * 1000 * bookingInfo[i][3][9]))
-    console.log("Duration")
-    console.log(bookingInfo[i][3][9])
-    console.log(nDate)
-    console.log(endMeeting)
     //calendarEvents[i][1].slice(0, 19).replace('T', ' ')
     return (
       <tbody key={event}>

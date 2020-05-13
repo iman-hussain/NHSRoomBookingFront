@@ -24,8 +24,6 @@ const getInfo = async (bookings) => {
       res.push(result)
     })
   }
-  console.log("Getting Info")
-  console.log(res)
   return res;
 }
 
@@ -137,8 +135,6 @@ const BookingTable = () => {
   const bookings = useSelector((state) => state.userInfo.bookings);
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [date, setDate] = useState(null);
-  console.log(calendarEvents);
-
   const [bookingInfo, setBookingInfo] = useState([]);
   const [info, setInfo] = useState([])
   const [firstLoad, setFirstLoad] = useState(true)
@@ -151,15 +147,6 @@ const BookingTable = () => {
       }
       fetchData();
     }
-    
-    /* if (bookings[0] && bookings[0].length > 0) {
-      fetchData(bookings, setInfo);
-      /* fetchData(bookings).then(response => {
-        setInfo(response);
-        for (var i = 0; i < bookings.length; i++) {
-          calendarEvents.push([bookings[i][1], bookings[i][2], bookings[i][5]]);
-        }
-      }) }*/
   }, [])
 
   useEffect(() => {

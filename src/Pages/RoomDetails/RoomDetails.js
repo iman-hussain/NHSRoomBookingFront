@@ -162,12 +162,13 @@ export const RoomDetails = ({google}) => {
       ROOM_ID: getRoomDetails()[0].slice(1),
       REVIEW_ID: null,
     };
-    //console.log(booking);
+    
+    /* Developed by Liam Penn 1415065 
+    Sending the event to the google calendar API, to create the event and issue this to all guests.
+    */
     var reduxDate = new Date(new Date(booking.BOOKING_DATE).toString().split('GMT')[0]+' UTC').toISOString()
     var reduxTime = new Date(new Date(booking.BOOKING_TIME).toString().split('GMT')[0]+' UTC').toISOString()
     CreateBooking(booking).then(async (response) => {
-      console.log(getRoomDetails()[7])
-
       var start = new Date(booking.BOOKING_TIME)
       var endMeeting = new Date(start);
       endMeeting.setTime((endMeeting.getTime() - start.getTimezoneOffset() * 60 * 1000) + (60 * 60 * 1000 * duration))
@@ -175,26 +176,16 @@ export const RoomDetails = ({google}) => {
       var startDateTime = moment(start).format('YYYY-MM-DDTHH:mm:ssZ'); 
       var latLong = getRoomLatitudeLongitude()
       console.log(latLong)
-
-      SendEvent({building: getRoomDetails()[7], start: startDateTime, end: endDateTime, lat: latLong.lat, long: latLong.lng});
+      var guests = [];
+      selectedUsers.map(guest => {
+        guests.push({'email' : guest.value})
+      })
+      guests.push({'email' : 'liamparsons2013@gmail.com'})
+      SendEvent({building: getRoomDetails()[7], start: startDateTime, end: endDateTime, lat: latLong.lat, long: latLong.lng, guests: guests});
       GetBookings(user).then((response) => {
-        console.log(response)
         dispatch(setBookings({bookings: response}))
         setRedirect();
       })
-        
-      /* dispatch(addToBookings({booking: [
-          booking.BOOKING_ID,
-          reduxDate,
-          reduxTime,
-          booking.DURATION,
-          booking.GUESTS,
-          booking.COLOUR,
-          booking.USER_ID,
-          booking.ROOM_ID,
-          booking.REVIEW_ID
-      ]})) */
-      
     });
   };
 
@@ -353,7 +344,7 @@ export const RoomDetails = ({google}) => {
 };
 
 async function getUsers(setUsers, users) {
-  const usersResponse = await fetch("http://localhost:5000/users");
+  const usersResponse = await fetch("http://209.97.191.60:5000/users");
   const responseData = await usersResponse.json();
   var res = responseData.rows.rows
 
@@ -370,7 +361,7 @@ async function getUsers(setUsers, users) {
 }
 
 async function getCatering(id) {
-  const response = await fetch("http://localhost/caterings/" + id);
+  const response = await fetch("http://209.97.191.60/caterings/" + id);
   const responseData = await response.json();
   return responseData.rows.rows;
 }

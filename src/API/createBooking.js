@@ -15,7 +15,7 @@ const CreateBooking = async (booking) => {
         })
     };
     const response = await fetch(
-        "http://localhost:5000/bookings", requestOptions
+        "http://209.97.191.60:5000/bookings", requestOptions
       );
       const responseData = await response.json();
       console.log(responseData)

@@ -144,7 +144,7 @@ const Login = () => {
 */
 async function attemptLogin(values, setLoginState, dispatch) {
   let userDetails = "";
-  const response = await fetch("http://localhost:5000/users/login", {
+  const response = await fetch("http://209.97.191.60:5000/users/login", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -177,7 +177,7 @@ async function attemptLogin(values, setLoginState, dispatch) {
 
 async function getBookings(userDetails) {
   const bookingResponse = await fetch(
-    "http://localhost:5000/bookings/user/"+userDetails
+    "http://209.97.191.60:5000/bookings/user/"+userDetails
   );
   const responseData = await bookingResponse.json();
   let bookings = responseData.rows.rows;

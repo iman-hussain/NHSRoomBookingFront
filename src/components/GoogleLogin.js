@@ -170,7 +170,7 @@ export {
   calendarEvents as events
 }
 
-const setEvent = (building, start, end, lat, long) =>{
+const setEvent = (building, start, end, lat, long, guests) =>{
   var event = {
     'summary': building,
     'location': `${lat}, ${long}`,
@@ -186,10 +186,7 @@ const setEvent = (building, start, end, lat, long) =>{
     'recurrence': [
       'RRULE:FREQ=DAILY;COUNT=1'
     ],
-    'attendees': [
-      {'email': 'liamcsdev@gmail.com',
-      'email': 'liamparsons2013@gmail.com'}
-    ],
+    'attendees': guests,
     'reminders': {
       'useDefault': false,
       'overrides': [
@@ -201,10 +198,11 @@ const setEvent = (building, start, end, lat, long) =>{
   return event;
 }
 
-const SendEvent = ({building, start, end, lat, long}) => {
+const SendEvent = ({building, start, end, lat, long, guests}) => {
   console.log(start)
   console.log(end)
-  const event = setEvent(building, start, end, lat, long);
+  console.log(guests)
+  const event = setEvent(building, start, end, lat, long, guests);
   var request = window.gapi.client.calendar.events.insert({
     'calendarId': "primary",
     'resource': event

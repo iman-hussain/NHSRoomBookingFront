@@ -1,6 +1,6 @@
 const GetBookingInfo = async (id) => {
     const response = await fetch(
-        "http://localhost:5000/bookings/info/"+id
+        "http://209.97.191.60:5000/bookings/info/"+id
       );
       const responseData = await response.json();
       console.log(responseData)

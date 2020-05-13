@@ -41,35 +41,8 @@ const ViewBooking = () => {
         }
   
     }, [dateInfo])
-    console.log(date)
+
     const bookingDate = date.toDateString();
-    /*
-    "USER_ID"
-    "USER_TYPE"
-    "PASSWORD"
-    "USERNAME"
-    "FIRST_NAME"
-    "SURNAME"
-    "EMAIL"
-    "ADDRESS"
-    "PHONE_NUMBER"
-    "EXPENSE_CODE"
-    */
-
-    /*
-    "BOOKING_ID"
-    "BOOKING_DATE"
-    "BOOKING_TIME"
-    "DURATION"
-    "GUESTS"
-    "COLOUR"
-    "USER_ID"
-    "ROOM_ID"
-    "REVIEW_ID"
-    */
-
-    /* Get Room by Room_ID */
-    /* Get Building Name */
  
     return(
         <>
