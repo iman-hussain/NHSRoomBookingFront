@@ -14,7 +14,7 @@
     "formik": "^2.1.4",
     "google-map-react": "^1.1.7",
     "google-maps-react": "^2.0.2",
-    "googleapis": "24.0.0",
+    "googleapis": "39.1.0",
     "local-storage": "^2.0.0",
     "localforage": "^1.7.3",
     "moment": "^2.25.3",
